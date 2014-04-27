@@ -118,11 +118,10 @@
       </p>
       <p>
         For every MIME-type/subtype of an existing media container format, this specification defines the following information:
-        <ol type='a'>
+        <ol>
           <li>Track order.</li>
           <li>How to identify the type of tracks.</li>
           <li>Setting track attributes 'id', 'kind', 'language' and 'label'.</li>
-          <li>For other data tracks: how to create text track cues.</li>
         </ol>
       </p>
     </section>
@@ -165,7 +164,7 @@
             <tr>
               <th>"kind" attribute</th>
               <td>
-                Given URN="urn:mpeg:dash:role:2011":
+                <p>Given URN="urn:mpeg:dash:role:2011":</p>
                 <ul>
                   <li>"captions": if the role descriptor's value is "caption"</li>
                   <li>"subtitles": if the role descriptor's value is "subtitle"</li>
@@ -205,7 +204,7 @@
             <tr>
               <th>"kind" attribute</th>
               <td>
-                Given a role scheme of "urn:mpeg:dash:role:2011", determine the "kind" attribute from the value of the role descriptors associated with the track.
+                <p>Given a role scheme of "urn:mpeg:dash:role:2011", determine the "kind" attribute from the value of the role descriptors in the AdaptationSet element.</p>
                 <ul>
                   <li>"alternative": if the role is "alternate" but not also "main" or "commentary", or "dub"</li>
                   <li>"captions": if the role is "caption" and also "main"</li>
