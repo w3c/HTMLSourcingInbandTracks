@@ -73,11 +73,20 @@
       };
     </script>
     <style type="text/css">
-      #registry table { border-collapse: collapse; border-style: hidden hidden none hidden; }
-      #registry table thead, table tbody { border-bottom: solid; }
-      #registry table tbody th:first-child { border-left: solid; }
-      #registry table tbody th { text-align: left; }
-      #registry table td, table th { border-left: solid; border-right: solid; border-bottom: solid thin; vertical-align: top; padding: 0.2em; }
+      table {
+        border-collapse: collapse;
+        border-style: hidden hidden none hidden;
+      }
+      table thead, table tbody {
+        border-bottom: solid;
+      }
+      table td, table th {
+        border-left: solid;
+        border-right: solid;
+        border-bottom: solid thin;
+        vertical-align: top;
+        padding: 0.2em;
+      }
     </style>
   </head>
   <body>
@@ -110,7 +119,8 @@
       <p>
         For every MIME-type/subtype of an existing media container format, this specification defines the following information:
         <ol type='a'>
-          <li>Implied track order.</li>
+          <li>Track order.</li>
+          <li>How to identify the type of tracks.</li>
           <li>Setting track attributes 'id', 'kind', 'language' and 'label'.</li>
           <li>For other data tracks: how to create text track cues.</li>
         </ol>
@@ -120,6 +130,113 @@
     <section id='mpegdash'>
       <h2>MPEG DASH</h2>
       <b>MIME type/subtype: application/dash+xml</b>
+
+      <ol>
+        <li>Track Order
+          <p>
+            The order of tracks specified in the MPD (Media Presentation Description) format [[MPEGDASH]] is maintained when sourcing multiple MPEG DASH tracks into HTML.
+          </p>
+        </li>
+
+        <li>Determining the type of track
+          <p>
+            A user agent recognises and supports data from a MPEG DASH media resource as being equivalent to a HTML track based on the adaptationSet mimeType:
+            <ul>
+              <li>text track: the mimeType is of main type "application" or "text"</li>
+              <li>video track: the mimeType is of main type "video"</li>
+              <li>audio track: the mimeType is of main type "audio"</li>
+            </ul>
+          </p>
+        </li>
+
+        <li>Track Attributes for sourced Text Tracks
+          <p>
+          <table>
+            <thead>
+              <th>Attribute</th>
+              <th>How to source its value</th>
+            </thead>
+            <tr>
+              <th>"id" attribute</th>
+              <td>
+                Content of the "id" attribute in the AdaptationSet element. Empty string if "id" attribute is not present.
+              </td>
+            </tr>
+            <tr>
+              <th>"kind" attribute</th>
+              <td>
+                Given URN="urn:mpeg:dash:role:2011":
+                <ul>
+                  <li>"captions": if the role descriptor's value is "caption"</li>
+                  <li>"subtitles": if the role descriptor's value is "subtitle"</li>
+                  <li>"metadata": otherwise</li>
+                </ul>
+              </td>
+            </tr>
+            <tr>
+              <th>"label" attribute</th>
+              <td>
+                The empty string.
+              </td>
+            </tr>
+            <tr>
+              <th>"language" attribute</th>
+              <td>
+                Content of the "lang" attribute in the AdaptationSet element.
+              </td>
+            </tr>
+          </table>
+          </p>
+        </li>
+
+        <li>Track Attributes for sourced Audio and Video Tracks
+          <p>
+          <table>
+            <thead>
+              <th>Attribute</th>
+              <th>How to source its value</th>
+            </thead>
+            <tr>
+              <th>"id" attribute</th>
+              <td>
+                Content of the "id" attribute in the AdaptationSet element. Empty string if "id" attribute is not present.
+              </td>
+            </tr>
+            <tr>
+              <th>"kind" attribute</th>
+              <td>
+                Given a role scheme of "urn:mpeg:dash:role:2011", determine the "kind" attribute from the value of the role descriptors associated with the track.
+                <ul>
+                  <li>"alternative": if the role is "alternate" but not also "main" or "commentary", or "dub"</li>
+                  <li>"captions": if the role is "caption" and also "main"</li>
+                  <li>"descriptions": if the role is "description" and also "supplementary"</li>
+                  <li>"main": if the role is "main" but not also "caption", "subtitle", or "dub"</li>
+                  <li>"main-desc": if the role is "main" and also "description"</li>
+                  <li>"sign": not used</li>
+                  <li>"subtitles": if the role is "subtitle" and also "main"</li>
+                  <li>"translation": if the role is "dub" and also "main"</li>
+                  <li>"commentary": if the role is "commentary" but not also "main"</li>
+                  <li>"": otherwise</li>
+                </ul>
+              </td>
+            </tr>
+            <tr>
+              <th>"label" attribute</th>
+              <td>
+                The empty string.
+              </td>
+            </tr>
+            <tr>
+              <th>"language" attribute</th>
+              <td>
+                Content of the "lang" attribute in the AdaptationSet element.
+              </td>
+            </tr>
+          </table>
+          </p>
+        </li>
+      </ol>
+
     </section>
 
     <section id='mpeg2ts'>
@@ -145,7 +262,7 @@
     <section class='appendix'>
       <h2>Acknowledgements</h2>
       <p>
-        Thanks to all In-band Track Community Group members in helping to create this registry.
+        Thanks to all In-band Track Community Group members in helping to create this specification.
       </p>
     </section>
   </body>
