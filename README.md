@@ -1,4 +1,4 @@
-Sourcing Inband Media Resource Tracks into HTML - Media Container Registry
+Sourcing Inband Media Resource Tracks from Media Containers into HTML
 ======
 
 A proposed registry for the W3C HTML WG.
