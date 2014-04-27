@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Sourcing In-band Media Resource Tracks from Media Containers into HTML</title>
+    <meta charset='utf-8'>
+    <script src='http://www.w3.org/Tools/respec/respec-w3c-common'
+            async class='remove'></script>
+    <script class='remove'>
+      var respecConfig = {
+          // specification status (e.g. WD, LCWD, WG-NOTE, etc.). If in doubt use ED.
+          specStatus:           "unofficial",
+
+          // the specification's short name, as in http://www.w3.org/TR/short-name/
+          shortName:            "in-band-tracks",
+
+          // if your specification has a subtitle that goes below the main
+          // formal title, define it here
+          // subtitle   :  "an excellent document",
+
+          // if you wish the publication date to be other than the last modification, set this
+          // publishDate:  "2009-08-06",
+
+          // if the specification's copyright date is a range of years, specify
+          // the start date here:
+          // copyrightStart: "2005"
+
+          // if there is a previously published draft, uncomment this and set its YYYY-MM-DD date
+          // and its maturity status
+          // previousPublishDate:  "1977-03-15",
+          // previousMaturity:  "WD",
+
+          // if there a publicly available Editor's Draft, this is the link
+          edDraftURI:           "http://rawgit.com/silviapfeiffer/HTMLSourcingInbandTracks/master/index.html",
+
+          // if this is a LCWD, uncomment and set the end of its review period
+          // lcEnd: "2009-08-05",
+
+          // editors, add as many as you like
+          // only "name" is required
+          editors:  [
+              {
+                  name:       "Bob Lund"
+              ,   url:        ""
+              ,   mailto:     ""
+              ,   company:    "CableLabs Inc"
+              ,   companyURL: "http://www.cablelabs.com/"
+              },
+              {
+                  name:       "Silvia Pfeiffer"
+              ,   url:        ""
+              ,   mailto:     "mailto:silviapfeiffer1@gmail.com"
+              ,   company:    "NICTA"
+              ,   companyURL: "http://nicta.com.au/"
+              }
+          ],
+
+          // name of the WG
+          wg:           "HTML Working Group",
+
+          // URI of the public WG page
+          wgURI:        "http://www.w3.org/html/wg/",
+
+          // name (without the @w3c.org) of the public mailing to which comments are due
+          wgPublicList: "public-html",
+
+          // URI of the patent status for this WG, for Rec-track documents
+          // !!!! IMPORTANT !!!!
+          // This is important for Rec-track documents, do not copy a patent URI from a random
+          // document unless you know what you're doing. If in doubt ask your friendly neighbourhood
+          // Team Contact.
+          wgPatentURI:  "",
+          // !!!! IMPORTANT !!!! MAKE THE ABOVE BLINK IN YOUR HEAD
+      };
+    </script>
+    <style type="text/css">
+      #registry table { border-collapse: collapse; border-style: hidden hidden none hidden; }
+      #registry table thead, table tbody { border-bottom: solid; }
+      #registry table tbody th:first-child { border-left: solid; }
+      #registry table tbody th { text-align: left; }
+      #registry table td, table th { border-left: solid; border-right: solid; border-bottom: solid thin; vertical-align: top; padding: 0.2em; }
+    </style>
+  </head>
+  <body>
+    <section id='abstract'>
+      <p>
+        This specification is provided to promote interoperability among implementations and users of in-band text tracks sourced for [[HTML5]] from media resource containers. The specification provides guidelines for the creation of video, audio and text tracks and their attribute values as mapped from in-band tracks from media resource types typically supported by User Agents.
+      </p>
+      <p>
+        Mappings are defined for [[MPEGDASH]], [[ISOBMFF]], [[MPEG2TS]], [[OGGSKELETON]] and [[WebM]].
+      </p>
+    </section>
+
+    <section id='sotd'>
+      <p>
+        This is the first draft.
+      </p>
+    </section>
+
+    <section>
+      <h2>Introduction</h2>
+      <p>
+        The specification maintains mappings from in-band audio, video and other data tracks of MIME-type/subtype media resources to HTML VideoTrack, AudioTrack, and TextTrack objects and their attribute values.
+      </p>
+      <p>
+        A generic rule to follow is that a track as exposed in HTML only ever represents a single semantic concept. For example, a HTML TextTrack object is either a subtitle track or a caption track. Assuming, caption tracks contain additional cues with transcripts of audio-only information that subtitle tracks do not require, it is possible that a media container may encapsulate a subtitle and a caption track in a single in-band track to save space. In HTML, these tracks will be exposed as two TextTrack objects. This allows users to choose between the two tracks and activate the desired one in the same manner that they do it if the two tracks were provided through two track elements.
+      </p>
+      <p>
+        Another generic rule to follow for in-band data tracks is that in order to map them to TextTrack objects, they need to be mapped to media-time aligned cues that relate to a non-zero interval of time.
+      </p>
+      <p>
+        For every MIME-type/subtype of an existing media container format, this specification defines the following information:
+        <ol type='a'>
+          <li>Implied track order.</li>
+          <li>Setting track attributes 'id', 'kind', 'language' and 'label'.</li>
+          <li>For other data tracks: how to create text track cues.</li>
+        </ol>
+      </p>
+    </section>
+
+    <section id='mpegdash'>
+      <h2>MPEG DASH</h2>
+      <b>MIME type/subtype: application/dash+xml</b>
+    </section>
+
+    <section id='mpeg2ts'>
+      <h2>MPEG-2 Transport Streams</h2>
+      <b>MIME type/subtype: audio/mp2t , video/mp2t</b>
+    </section>
+
+    <section id='mpeg4'>
+      <h2>MPEG-4 ISOBMFF</h2>
+      <b>MIME type/subtype: audio/mp4 , video/mp4</b>
+    </section>
+
+    <section id='webm'>
+      <h2>WebM</h2>
+      <b>MIME type/subtype: audio/webm , video/webm</b>
+    </section>
+
+    <section id='ogg'>
+      <h2>Ogg</h2>
+      <b>MIME type/subtype: audio/ogg , video/ogg</b>
+    </section>
+
+    <section class='appendix'>
+      <h2>Acknowledgements</h2>
+      <p>
+        Thanks to all In-band Track Community Group members in helping to create this registry.
+      </p>
+    </section>
+  </body>
+</html>
