@@ -39,18 +39,18 @@
           // only "name" is required
           editors:  [
               {
-                  name:       "Bob Lund"
-              ,   url:        ""
-              ,   mailto:     ""
-              ,   company:    "CableLabs Inc"
-              ,   companyURL: "http://www.cablelabs.com/"
-              },
-              {
                   name:       "Silvia Pfeiffer"
               ,   url:        "mailto:silviapfeiffer1@gmail.com"
               ,   mailto:     ""
               ,   company:    "NICTA"
               ,   companyURL: "http://nicta.com.au/"
+              },
+              {
+                  name:       "Bob Lund"
+              ,   url:        ""
+              ,   mailto:     ""
+              ,   company:    "CableLabs Inc"
+              ,   companyURL: "http://www.cablelabs.com/"
               }
           ],
 
@@ -121,7 +121,8 @@
         <ol>
           <li>Track order.</li>
           <li>How to identify the type of tracks.</li>
-          <li>Setting track attributes 'id', 'kind', 'language' and 'label'.</li>
+          <li>Setting track attributes 'id', 'kind', 'language' and 'label' for sourced text tracks.</li>
+          <li>Setting track attributes 'id', 'kind', 'language' and 'label' for sourced audio and video tracks.</li>
         </ol>
       </p>
     </section>
@@ -245,7 +246,7 @@
       <ol>
         <li>Track Order
           <p>
-            Tracks are called "elementary streams" in a MPEG-2 Transport Stream (TS)[[MPEG2TS]]. The order in which elementary streams are listed in the "Program Map Table" (PMT) of a MPEG-2 TS is maintained when sourcing multiple MPEG-2 tracks into HTML.
+            Tracks are called "elementary streams" in a MPEG-2 Transport Stream (TS) [[MPEG2TS]]. The order in which elementary streams are listed in the "Program Map Table" (PMT) of a MPEG-2 TS is maintained when sourcing multiple MPEG-2 tracks into HTML.
           </p>
         </li>
 
@@ -465,7 +466,7 @@
       <ol>
         <li>Track Order
           <p>
-            The order of tracks specified in the EBML initialisation segment [[WEBMCG]] is maintained when sourcing multiple WebM tracks into HTML.
+            The order of tracks specified in the EBML initialisation segment [[WebM]] is maintained when sourcing multiple WebM tracks into HTML.
           </p>
         </li>
 
