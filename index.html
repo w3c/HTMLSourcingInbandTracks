@@ -241,6 +241,111 @@
     <section id='mpeg2ts'>
       <h2>MPEG-2 Transport Streams</h2>
       <b>MIME type/subtype: audio/mp2t , video/mp2t</b>
+
+      <ol>
+        <li>Track Order
+          <p>
+            Tracks are called "elementary streams" in a MPEG-2 Transport Stream (TS)[[MPEG2TS]]. The order in which elementary streams are listed in the "Program Map Table" (PMT) of a MPEG-2 TS is maintained when sourcing multiple MPEG-2 tracks into HTML.
+          </p>
+        </li>
+
+        <li>Determining the type of track
+          <p>
+            A user agent recognises and supports data from a MPEG-2 TS resource as being equivalent to a HTML track based on the value of the 'stream_id' field of an elementary stream as given in a Transport or Program Stream header and which maps to a "stream type":
+            <ul>
+              <li>text track: the stream type value is "0x02", "0x05" or between "0x80" and "0xFF"</li>
+              <li>video track: the stream type value is "0x01", "0x02", "0x10", "0x1B", or between "0x1E" and "0x23"</li>
+              <li>audio track: the stream type value is "0x03", "0x04", "0x0F", "0x11", or "0x1C"</li>
+            </ul>
+          </p>
+        </li>
+
+        <li>Track Attributes for sourced Text Tracks
+          <p>
+          <table>
+            <thead>
+              <th>Attribute</th>
+              <th>How to source its value</th>
+            </thead>
+            <tr>
+              <th>id</th>
+              <td>
+                Decimal representation of the elementary stream's identifier ('elementary_PID' field) in the PMT. In the case of CEA708 closed captions this will be the identifier of the video elementary stream containing captions in the Picture User Data.
+              </td>
+            </tr>
+            <tr>
+              <th>kind</th>
+              <td>
+                <ul>
+                  <li>"captions": if a "Caption Service Descriptor section" is present in a video elementary stream of stream type "0x02", but its 'cc_type' is not "line21"</li>
+                  <li>"subtitles": if the stream type value is "0x82"</li>
+                  <li>"metadata": otherwise</li>
+                </ul>
+              </td>
+            </tr>
+            <tr>
+              <th>label</th>
+              <td>
+                The empty string.
+              </td>
+            </tr>
+            <tr>
+              <th>language</th>
+              <td>
+                Content of the 'ISO_639_language_descriptor' field.
+              </td>
+            </tr>
+          </table>
+          </p>
+        </li>
+
+        <li>Track Attributes for sourced Audio and Video Tracks
+          <p>
+          <table>
+            <thead>
+              <th>Attribute</th>
+              <th>How to source its value</th>
+            </thead>
+            <tr>
+              <th>id</th>
+              <td>
+                Decimal representation of the elementary stream's identifier ('elementary_PID' field) in the PMT.
+              </td>
+            </tr>
+            <tr>
+              <th>kind</th>
+              <td>
+                <ul>
+                  <li>"alternative": not used</li>
+                  <li>"captions": if a "Caption Service Descriptor section" is present in a video elementary stream of stream type "0x02" and its 'cc_type' is "line21"</li>
+                  <li>"descriptions": AC3 audio in MPEG-2 TS: bsmod=2 and full_svc=0</li>
+                  <li>"main": first audio (video) elementary stream in the PMT</li>
+                  <li>"main-desc": AC3 audio in MPEG-2 TS: bsmod=2 and full_svc=1</li>
+                  <li>"sign": not used</li>
+                  <li>"subtitles": not used</li>
+                  <li>"translation": not first audio elementary stream in the PMT and bsmod=0</li>
+                  <li>"commentary": not used</li>
+                  <li>"": otherwise</li>
+                </ul>
+              </td>
+            </tr>
+            <tr>
+              <th>label</th>
+              <td>
+                The empty string.
+              </td>
+            </tr>
+            <tr>
+              <th>language</th>
+              <td>
+                Content of the 'ISO_639_language_descriptor' field.
+              </td>
+            </tr>
+          </table>
+          </p>
+        </li>
+      </ol>
+
     </section>
 
     <section id='mpeg4'>
