@@ -351,6 +351,111 @@
     <section id='mpeg4'>
       <h2>MPEG-4 ISOBMFF</h2>
       <b>MIME type/subtype: audio/mp4 , video/mp4</b>
+
+      <ol>
+        <li>Track Order
+          <p>
+            The order of tracks specified by TrackBox ('trak') boxes in the MovieBox ('moov') container [[ISOBMFF]] is maintained when sourcing multiple MPEG-4 tracks into HTML.
+          </p>
+        </li>
+
+        <li>Determining the type of track
+          <p>
+            A user agent recognises and supports data from a MPEG-4 TrackBox as being equivalent to a HTML track based on the value of the 'handler_type' field in the HandlerBox ('hdlr) of the MediaBox ('mdia') of the TrackBox:
+            <ul>
+              <li>text track: the 'handler_type' value is "meta", "subt" or "text"</li>
+              <li>video track: the 'handler_type' value is "soun"</li>
+              <li>audio track: the 'handler_type' value is "vide"</li>
+            </ul>
+          </p>
+        </li>
+
+        <li>Track Attributes for sourced Text Tracks
+          <p>
+          <table>
+            <thead>
+              <th>Attribute</th>
+              <th>How to source its value</th>
+            </thead>
+            <tr>
+              <th>id</th>
+              <td>
+                Decimal representation of the 'track_ID' of a TrackHeaderBox ('tkhd') in a TrackBox ('trak').
+              </td>
+            </tr>
+            <tr>
+              <th>kind</th>
+              <td><!-- see http://www.mp4ra.org/codecs.html -->
+                <ul>
+                  <li>"captions": 'handler_type' is "text" and the SampleEntry code ('format' field) is "tx3g" or "stpp"</li>
+                  <li>"subtitles": 'handler_type' is "subt"</li>
+                  <li>"metadata": otherwise</li>
+                </ul>
+              </td>
+            </tr>
+            <tr>
+              <th>label</th>
+              <td>
+                Content of the 'name' field in the HandlerBox.
+              </td>
+            </tr>
+            <tr>
+              <th>language</th>
+              <td>
+                Content of the 'language' field in the MediaHeaderBox.
+              </td>
+            </tr>
+          </table>
+          </p>
+        </li>
+
+        <li>Track Attributes for sourced Audio and Video Tracks
+          <p>
+          <table>
+            <thead>
+              <th>Attribute</th>
+              <th>How to source its value</th>
+            </thead>
+            <tr>
+              <th>id</th>
+              <td>
+                Decimal representation of the 'track_ID' of a TrackHeaderBox ('tkhd') in a TrackBox ('trak').
+              </td>
+            </tr>
+            <tr>
+              <th>kind</th>
+              <td>
+                <ul>
+                  <li>"alternative": not used</li>
+                  <li>"captions": not used</li>
+                  <li>"descriptions": not explicitly exposed</li>
+                  <li>"main": first audio (video) track</li>
+                  <li>"main-desc": next explicitly exposed</li>
+                  <li>"sign": not used</li>
+                  <li>"subtitles": not used</li>
+                  <li>"translation": not first audio (video) track</li>
+                  <li>"commentary": not used</li>
+                  <li>"": otherwise</li>
+                </ul>
+              </td>
+            </tr>
+            <tr>
+              <th>label</th>
+              <td>
+                Content of the 'name' field in the HandlerBox.
+              </td>
+            </tr>
+            <tr>
+              <th>language</th>
+              <td>
+                Content of the 'language' field in the MediaHeaderBox.
+              </td>
+            </tr>
+          </table>
+          </p>
+        </li>
+      </ol>
+
     </section>
 
     <section id='webm'>
