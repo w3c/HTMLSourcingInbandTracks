@@ -461,6 +461,115 @@
     <section id='webm'>
       <h2>WebM</h2>
       <b>MIME type/subtype: audio/webm , video/webm</b>
+
+      <ol>
+        <li>Track Order
+          <p>
+            The order of tracks specified in the EBML initialisation segment [[WEBMCG]] is maintained when sourcing multiple WebM tracks into HTML.
+          </p>
+        </li>
+
+        <li>Determining the type of track
+          <p>
+            A user agent recognises and supports data from a WebM resource as being equivalent to a HTML track based on the value of the 'TrackType' field of the track in the Segment info:
+            <ul>
+              <li>text track: 'TrackType' field is "0x11" or "0x21"</li>
+              <li>video track: 'TrackType' field is "0x01"</li>
+              <li>audio track: 'TrackType' field is "0x02"</li>
+            </ul>
+          </p>
+        </li>
+
+        <li>Track Attributes for sourced Text Tracks
+          <p>
+          <table>
+            <thead>
+              <th>Attribute</th>
+              <th>How to source its value</th>
+            </thead>
+            <tr>
+              <th>id</th>
+              <td>
+                Decimal representation of the 'TrackUID' field of the track in the Segment info.
+              </td>
+            </tr>
+            <tr>
+              <th>kind</th>
+              <td>
+                <p>
+                  Map the content of the 'TrackType' and 'CodecID' fields of the track as follows:
+                </p>
+                <ul>
+                  <li>"captions": 'TrackType' is "0x11" and 'CodecId' is “D_WEBVTT/captions“</li>
+                  <li>"subtitles": 'TrackType' is "0x11" and 'CodecId' is “D_WEBVTT/subtitles“</li>
+                  <li>"descriptions": 'TrackType' is "0x11" and 'CodecId' is “D_WEBVTT/descriptions“</li>
+                  <li>"metadata": otherwise</li>
+                </ul>
+              </td>
+            </tr>
+            <tr>
+              <th>label</th>
+              <td>
+                Content of the 'name' field of the track in the Segment info.
+              </td>
+            </tr>
+            <tr>
+              <th>language</th>
+              <td>
+                Content of the 'language' field of the track in the Segment info.
+              </td>
+            </tr>
+          </table>
+          </p>
+        </li>
+
+        <li>Track Attributes for sourced Audio and Video Tracks
+          <p>
+          <table>
+            <thead>
+              <th>Attribute</th>
+              <th>How to source its value</th>
+            </thead>
+            <tr>
+              <th>id</th>
+              <td>
+                Decimal representation of the 'TrackUID' field of the track in the Segment info.
+              </td>
+            </tr>
+            <tr>
+              <th>kind</th>
+              <td>
+                <ul>
+                  <li>"alternative": not used</li>
+                  <li>"captions": not used</li>
+                  <li>"descriptions": not used</li>
+                  <li>"main": the 'FlagDefault' element is set on the track</li>
+                  <li>"main-desc": not used</li>
+                  <li>"sign": not used</li>
+                  <li>"subtitles": not used</li>
+                  <li>"translation": not first audio (video) track</li>
+                  <li>"commentary": not used</li>
+                  <li>"": otherwise</li>
+                </ul>
+              </td>
+            </tr>
+            <tr>
+              <th>label</th>
+              <td>
+                Content of the 'name' field of the track in the Segment info.
+              </td>
+            </tr>
+            <tr>
+              <th>language</th>
+              <td>
+                Content of the 'language' field of the track in the Segment info.
+              </td>
+            </tr>
+          </table>
+          </p>
+        </li>
+      </ol>
+
     </section>
 
     <section id='ogg'>
