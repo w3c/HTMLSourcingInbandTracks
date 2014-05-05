@@ -277,7 +277,7 @@
               <th>kind</th>
               <td>
                 <ul>
-                  <li>"captions": if a "Caption Service Descriptor section" is present in a video elementary stream of stream type "0x02", but its 'cc_type' is not "line21"</li>
+                  <li>"captions": if a "Caption Service Descriptor section" is present in a video elementary stream of stream type "0x02", but its 'cc_type' is not "line21"</li><!-- see http://www.etherguidesystems.com/help/sdos/atsc/semantics/descriptors/CaptionService.aspx -->
                   <li>"subtitles": if the stream type value is "0x82"</li>
                   <li>"metadata": otherwise</li>
                 </ul>
@@ -318,7 +318,7 @@
                 <ul>
                   <li>"alternative": not used</li>
                   <li>"captions": if a "Caption Service Descriptor section" is present in a video elementary stream of stream type "0x02" and its 'cc_type' is "line21"</li>
-                  <li>"descriptions": AC3 audio in MPEG-2 TS: bsmod=2 and full_svc=0</li>
+                  <li>"descriptions": AC3 audio in MPEG-2 TS: bsmod=2 and full_svc=0</li><!-- see http://www.atsc.org/cms/pdf/bootcamp/PSIP_Captions_rev2.pdf -->
                   <li>"main": first audio (video) elementary stream in the PMT</li>
                   <li>"main-desc": AC3 audio in MPEG-2 TS: bsmod=2 and full_svc=1</li>
                   <li>"sign": not used</li>
