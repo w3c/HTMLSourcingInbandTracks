@@ -92,7 +92,7 @@
   <body>
     <section id='abstract'>
       <p>
-        This specification is provided to promote interoperability among implementations and users of in-band text tracks sourced for [[HTML5]]/[[HTML]] from media resource containers. The specification provides guidelines for the creation of video, audio and text tracks and their attribute values as mapped from in-band tracks from media resource types typically supported by User Agents.
+        This specification is provided to promote interoperability among implementations and users of in-band text tracks sourced for [[HTML5]]/[[HTML]] from media resource containers. The specification provides guidelines for the creation of video, audio and text tracks and their attribute values as mapped from in-band tracks from media resource types typically supported by User Agents. It also explains how the UA should map in-band text track content into text track cues.
       </p>
       <p>
         Mappings are defined for [[MPEGDASH]], [[ISOBMFF]], [[MPEG2TS]], [[OGGSKELETON]] and [[WebM]].
@@ -123,6 +123,7 @@
           <li>How to identify the type of tracks.</li>
           <li>Setting track attributes 'id', 'kind', 'language' and 'label' for sourced text tracks.</li>
           <li>Setting track attributes 'id', 'kind', 'language' and 'label' for sourced audio and video tracks.</li>
+          <li>Mapping text track content into text track cues.</li>
         </ol>
       </p>
     </section>
@@ -235,6 +236,10 @@
           </table>
           </p>
         </li>
+
+        <li>Mapping text track content into text track cues
+          <p>TBD</p>
+        </li>
       </ol>
 
     </section>
@@ -344,6 +349,10 @@
             </tr>
           </table>
           </p>
+        </li>
+
+        <li>Mapping text track content into text track cues
+          <p>TBD</p>
         </li>
       </ol>
 
@@ -455,6 +464,10 @@
           </table>
           </p>
         </li>
+
+        <li>Mapping text track content into text track cues
+          <p>TBD</p>
+        </li>
       </ol>
 
     </section>
@@ -483,6 +496,7 @@
 
         <li>Track Attributes for sourced Text Tracks
           <p>
+            WebM has defined how to store WebVTT [[WEBVTT]] files in WebM [[WEBM]][[WEBVTT-WEBM]]. Sourcing text tracks from WebM is different for chapter tracks from tracks of other kinds and will be explained separately.
           <table>
             <thead>
               <th>Attribute</th>
@@ -491,7 +505,7 @@
             <tr>
               <th>id</th>
               <td>
-                Decimal representation of the 'TrackNumber' field of the track in the Segment info.
+                Decimal representation of the 'TrackNumber' field of the track in the "Track" section of the WebM file Segment.
               </td>
             </tr>
             <tr>
@@ -511,16 +525,18 @@
             <tr>
               <th>label</th>
               <td>
-                Content of the 'name' field of the track in the Segment info.
+                Content of the 'name' field of the track.
               </td>
             </tr>
             <tr>
               <th>language</th>
               <td>
-                Content of the 'language' field of the track in the Segment info.
+                Content of the 'language' field of the track.
               </td>
             </tr>
           </table>
+
+          Tracks of kind "chapters" are found in the "Chapters" section of the WebM file Segment, which are all at the beginning such that chapters can be used for navigation. The details of this mapping have not been specified yet and simply point to the more powerful Matroska chapter specification [[Matroska]]. Presumably, the 'id' attribute could be found in 'EditionUID', 'label' is empty, and 'language' can come from the first ChapterAtom's 'ChapLanguage' value.
           </p>
         </li>
 
@@ -567,6 +583,43 @@
               </td>
             </tr>
           </table>
+          </p>
+        </li>
+
+        <li>Mapping text track content into text track cues
+          <p>
+            Since the only types of text tracks that WebM currently supports stem from WebVTT [[WEBVTT-WEBM]], cues on a text track are created as VTTCue objects [[WEBVTT]]. Each 'Block' in the 'BlockGroup' of the WebM track that has the actual data of the text track creates a VTTCue object with its TextTrackCue attributes sourced as follows:
+            <table>
+              <thead>
+                <th>Attribute</th>
+                <th>How to source its value</th>
+              </thead>
+              <tr>
+                <th>id</th>
+                <td>
+                  First line of the Block's data.
+                </td>
+              </tr>
+              <tr>
+                <th>startTime</th>
+                <td>
+                  Calculated from the 'BlockTimecode' field in the Block's header and the 'Timecode' field in the Cluster relative to which 'BlockTimecode' is specified.
+                </td>
+              </tr>
+              <tr>
+                <th>endTime</th>
+                <td>
+                  Calculated from the 'BlockDuration' filed in the Block's header and the startTime.
+                </td>
+              </tr>
+              <tr>
+                <th>pauseOnExit</th>
+                <td>
+                  Set to 'false'.
+                </td>
+              </tr>
+            </table>
+            The remaining attributes of the VTTCue object are parsed from a block of VTT cue settings which are provided in the second line of the Block's data.
           </p>
         </li>
       </ol>
@@ -687,6 +740,10 @@
             </tr>
           </table>
           </p>
+        </li>
+
+        <li>Mapping text track content into text track cues
+          <p>TBD</p>
         </li>
       </ol>
 
