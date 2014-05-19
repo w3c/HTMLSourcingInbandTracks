@@ -111,7 +111,15 @@
         The specification maintains mappings from in-band audio, video and other data tracks of MIME-type/subtype media resources to HTML VideoTrack, AudioTrack, and TextTrack objects and their attribute values.
       </p>
       <p>
-        A generic rule to follow is that a track as exposed in HTML only ever represents a single semantic concept. For example, a HTML TextTrack object is either a subtitle track or a caption track. Assuming, caption tracks contain additional cues with transcripts of audio-only information that subtitle tracks do not require, it is possible that a media container may encapsulate a subtitle and a caption track in a single in-band track to save space. In HTML, these tracks will be exposed as two TextTrack objects. This allows users to choose between the two tracks and activate the desired one in the same manner that they do it if the two tracks were provided through two track elements.
+        A generic rule to follow is that a track as exposed in HTML only ever represents a single semantic concept. When mapping from a media resource, sometimes an in-band track does not relate 1-to-1 to a HTML text, audio or video track.
+      </p>
+      <p class="note">For example, a HTML TextTrack object is either a subtitle track or a caption track, never both. However, in-band text tracks may encapsulate caption and subtitle cues of the same language as a single in-band track. Since a caption track is essentially a subtitle track with additional cues of transcripts of audio-only information, such an encapsulation in a single in-band track can save space. In HTML, these tracks should be exposed as two TextTrack objects, since they represent different semantic concepts. The cues appear in their relevant tracks - subtitle cues would be present in both. This allows users to choose between the two tracks and activate the desired one in the same manner that they do when the two tracks are provided through two track elements.
+      </p>
+      <p class="note">
+        A similar logic applies to in-band text tracks that have subtitle cues of different languages mixed together in one track. They, too, should be exposed in a track of their own language each.
+      </p>
+      <p class="note">
+        A further example is when a UA decides to implement rendering for a caption track but without exposing the caption track through the TextTrack API. To the Web developer and the Web page user, such a video appears as though it has burnt-in captions. Therefore, the UA could expose two video tracks on the HTMLMediaElement - one with captions and a kind="captions" and one without captions with a kind="main". In this way, the user and the Web developer still get the choice of whether to see the video with or without captions.
       </p>
       <p>
         Another generic rule to follow for in-band data tracks is that in order to map them to TextTrack objects, they need to be mapped to media-time aligned cues that relate to a non-zero interval of time.
