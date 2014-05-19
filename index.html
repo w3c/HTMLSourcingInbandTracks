@@ -496,7 +496,8 @@
 
         <li>Track Attributes for sourced Text Tracks
           <p>
-            WebM has defined how to store WebVTT [[WEBVTT]] files in WebM [[WEBM]][[WEBVTT-WEBM]]. Sourcing text tracks from WebM is different for chapter tracks from tracks of other kinds and will be explained separately.
+            WebM has defined how to store WebVTT [[WEBVTT]] files in WebM [[WEBM]][[WEBVTT-WEBM]]. Sourcing text tracks from WebM is different for chapter tracks from tracks of other kinds and is explained below the table.
+          </p>
           <table>
             <thead>
               <th>Attribute</th>
@@ -535,8 +536,10 @@
               </td>
             </tr>
           </table>
-
-          Tracks of kind "chapters" are found in the "Chapters" section of the WebM file Segment, which are all at the beginning such that chapters can be used for navigation. The details of this mapping have not been specified yet and simply point to the more powerful Matroska chapter specification [[Matroska]]. Presumably, the 'id' attribute could be found in 'EditionUID', 'label' is empty, and 'language' can come from the first ChapterAtom's 'ChapLanguage' value.
+          <p>
+          Tracks of kind "chapters" are found in the "Chapters" section of the WebM file Segment, which are all at the beginning of the WebM file, such that chapters can be used for navigation. The details of this mapping have not been specified yet and simply point to the more powerful Matroska chapter specification [[Matroska]]. Presumably, the 'id' attribute could be found in 'EditionUID', 'label' is empty, and 'language' can come from the first ChapterAtom's 'ChapLanguage' value.
+          </p>
+          <p class='note'>The Matroska container format, which is the basis for WebM, has specifications for other text tracks, in particular SRT, SSA/ASS, and VOBSUB. The described attribute mappings can be applied to these, too, except that the 'kind' field will always be "subtitles". The information of their 'CodecPrivate' field is exposed in the 'inBandMetadataTrackDispatchType' attribute.
           </p>
         </li>
 
@@ -588,38 +591,51 @@
 
         <li>Mapping text track content into text track cues
           <p>
-            Since the only types of text tracks that WebM currently supports stem from WebVTT [[WEBVTT-WEBM]], cues on a text track are created as VTTCue objects [[WEBVTT]]. Each 'Block' in the 'BlockGroup' of the WebM track that has the actual data of the text track creates a VTTCue object with its TextTrackCue attributes sourced as follows:
-            <table>
-              <thead>
-                <th>Attribute</th>
-                <th>How to source its value</th>
-              </thead>
-              <tr>
-                <th>id</th>
-                <td>
-                  First line of the Block's data.
-                </td>
-              </tr>
-              <tr>
-                <th>startTime</th>
-                <td>
-                  Calculated from the 'BlockTimecode' field in the Block's header and the 'Timecode' field in the Cluster relative to which 'BlockTimecode' is specified.
-                </td>
-              </tr>
-              <tr>
-                <th>endTime</th>
-                <td>
-                  Calculated from the 'BlockDuration' filed in the Block's header and the startTime.
-                </td>
-              </tr>
-              <tr>
-                <th>pauseOnExit</th>
-                <td>
-                  Set to 'false'.
-                </td>
-              </tr>
-            </table>
-            The remaining attributes of the VTTCue object are parsed from a block of VTT cue settings which are provided in the second line of the Block's data.
+            The only types of text tracks that WebM is defined for are in the WebVTT format [[WEBVTT-WEBM]]. Therefore, cues on a text track are created as VTTCue objects [[WEBVTT]]. Each 'Block' in the 'BlockGroup' of the WebM track that has the actual data of the text track creates a VTTCue object with its TextTrackCue attributes sourced as follows:
+          </p>
+          <table>
+            <thead>
+              <th>Attribute</th>
+              <th>How to source its value</th>
+            </thead>
+            <tr>
+              <th>id</th>
+              <td>
+                First line of the Block's data.
+              </td>
+            </tr>
+            <tr>
+              <th>startTime</th>
+              <td>
+                Calculated from the 'BlockTimecode' field in the Block's header and the 'Timecode' field in the Cluster relative to which 'BlockTimecode' is specified.
+              </td>
+            </tr>
+            <tr>
+              <th>endTime</th>
+              <td>
+                Calculated from the 'BlockDuration' filed in the Block's header and the startTime.
+              </td>
+            </tr>
+            <tr>
+              <th>pauseOnExit</th>
+              <td>
+                'false'
+              </td>
+            </tr>
+            <tr>
+              <th>cue setting attributes</th>
+              <td>
+                Parsed from the second line of the Block's data.
+              </td>
+            </tr>
+            <tr>
+              <th>text</th>
+              <td>
+                The third and all following lines of the Block's data.
+              </td>
+            </tr>
+          </table>
+          <p class='note'>Other Matroska container format's text tracks can also be mapped to TextTrackCue objects. These will be created as DataCue objects with 'id', 'startTime', 'endTime', and 'pauseOnExit' attributes filled identically to the VTTCue objects, and the 'text' attribute containing the Block's data.
           </p>
         </li>
       </ol>
