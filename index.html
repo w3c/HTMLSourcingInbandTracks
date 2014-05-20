@@ -267,7 +267,7 @@
           <p>
             A user agent recognises and supports data from a MPEG-2 TS resource as being equivalent to a HTML track based on the value of the 'stream_id' field of an elementary stream as given in a Transport or Program Stream header and which maps to a "stream type":
             <ul>
-              <li>text track: the stream type value is "0x02", "0x05" or between "0x80" and "0xFF"</li>
+              <li>text track: the elementary stream with PID 0x02 or the stream type value is "0x02", "0x05" or between "0x80" and "0xFF"</li>
               <li>video track: the stream type value is "0x01", "0x02", "0x10", "0x1B", or between "0x1E" and "0x23"</li>
               <li>audio track: the stream type value is "0x03", "0x04", "0x0F", "0x11", or "0x1C"</li>
             </ul>
