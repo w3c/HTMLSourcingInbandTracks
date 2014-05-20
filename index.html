@@ -92,7 +92,7 @@
   <body>
     <section id='abstract'>
       <p>
-        This specification is provided to promote interoperability among implementations and users of in-band text tracks sourced for [[HTML5]]/[[HTML]] from media resource containers. The specification provides guidelines for the creation of video, audio and text tracks and their attribute values as mapped from in-band tracks from media resource types typically supported by User Agents.
+        This specification is provided to promote interoperability among implementations and users of in-band text tracks sourced for [[HTML5]]/[[HTML]] from media resource containers. The specification provides guidelines for the creation of video, audio and text tracks and their attribute values as mapped from in-band tracks from media resource types typically supported by User Agents. It also explains how the UA should map in-band text track content into text track cues.
       </p>
       <p>
         Mappings are defined for [[MPEGDASH]], [[ISOBMFF]], [[MPEG2TS]], [[OGGSKELETON]] and [[WebM]].
@@ -111,7 +111,15 @@
         The specification maintains mappings from in-band audio, video and other data tracks of MIME-type/subtype media resources to HTML VideoTrack, AudioTrack, and TextTrack objects and their attribute values.
       </p>
       <p>
-        A generic rule to follow is that a track as exposed in HTML only ever represents a single semantic concept. For example, a HTML TextTrack object is either a subtitle track or a caption track. Assuming, caption tracks contain additional cues with transcripts of audio-only information that subtitle tracks do not require, it is possible that a media container may encapsulate a subtitle and a caption track in a single in-band track to save space. In HTML, these tracks will be exposed as two TextTrack objects. This allows users to choose between the two tracks and activate the desired one in the same manner that they do it if the two tracks were provided through two track elements.
+        A generic rule to follow is that a track as exposed in HTML only ever represents a single semantic concept. When mapping from a media resource, sometimes an in-band track does not relate 1-to-1 to a HTML text, audio or video track.
+      </p>
+      <p class="note">For example, a HTML TextTrack object is either a subtitle track or a caption track, never both. However, in-band text tracks may encapsulate caption and subtitle cues of the same language as a single in-band track. Since a caption track is essentially a subtitle track with additional cues of transcripts of audio-only information, such an encapsulation in a single in-band track can save space. In HTML, these tracks should be exposed as two TextTrack objects, since they represent different semantic concepts. The cues appear in their relevant tracks - subtitle cues would be present in both. This allows users to choose between the two tracks and activate the desired one in the same manner that they do when the two tracks are provided through two track elements.
+      </p>
+      <p class="note">
+        A similar logic applies to in-band text tracks that have subtitle cues of different languages mixed together in one track. They, too, should be exposed in a track of their own language each.
+      </p>
+      <p class="note">
+        A further example is when a UA decides to implement rendering for a caption track but without exposing the caption track through the TextTrack API. To the Web developer and the Web page user, such a video appears as though it has burnt-in captions. Therefore, the UA could expose two video tracks on the HTMLMediaElement - one with captions and a kind="captions" and one without captions with a kind="main". In this way, the user and the Web developer still get the choice of whether to see the video with or without captions.
       </p>
       <p>
         Another generic rule to follow for in-band data tracks is that in order to map them to TextTrack objects, they need to be mapped to media-time aligned cues that relate to a non-zero interval of time.
@@ -123,6 +131,7 @@
           <li>How to identify the type of tracks.</li>
           <li>Setting track attributes 'id', 'kind', 'language' and 'label' for sourced text tracks.</li>
           <li>Setting track attributes 'id', 'kind', 'language' and 'label' for sourced audio and video tracks.</li>
+          <li>Mapping text track content into text track cues.</li>
         </ol>
       </p>
     </section>
@@ -235,6 +244,10 @@
           </table>
           </p>
         </li>
+
+        <li>Mapping text track content into text track cues
+          <p>TBD</p>
+        </li>
       </ol>
 
     </section>
@@ -344,6 +357,49 @@
             </tr>
           </table>
           </p>
+        </li>
+
+        <li>Mapping text track content into text track cues
+          <p>
+            The only types of text tracks that are defined are in the DataCue format. Therefore, cues on a text track are created as DataCue objects [[HTML5]]. Each 'section' in an elementary stream identified as metadata text track creates a DataCue object with its TextTrackCue attributes sourced as follows:
+          </p>
+          <table>
+            <thead>
+              <th>Attribute</th>
+              <th>How to source its value</th>
+            </thead>
+            <tr>
+              <th>id</th>
+              <td>
+                Decimal representation of the table_id in the first 8 bits of the section data.
+              </td>
+            </tr>
+            <tr>
+              <th>startTime</th>
+              <td>
+                0
+              </td>
+            </tr>
+            <tr>
+              <th>endTime</th>
+              <td>
+                The time, in the media resource timeline, that corresponds to the presentation time of the video frame received immediately prior to the section in the media resource. 
+              </td>
+            </tr>
+            <tr>
+              <th>pauseOnExit</th>
+              <td>
+                'false'
+              </td>
+            </tr>
+            <tr>
+              <th>data</th>
+              <td>
+                The 'section_length' bytes immediately following the section_length field in the section.
+              </td>
+            </tr>
+          </table>
+        </li>
         </li>
       </ol>
 
@@ -455,6 +511,10 @@
           </table>
           </p>
         </li>
+
+        <li>Mapping text track content into text track cues
+          <p>TBD</p>
+        </li>
       </ol>
 
     </section>
@@ -483,6 +543,8 @@
 
         <li>Track Attributes for sourced Text Tracks
           <p>
+            WebM has defined how to store WebVTT [[WEBVTT]] files in WebM [[WEBM]][[WEBVTT-WEBM]]. Sourcing text tracks from WebM is different for chapter tracks from tracks of other kinds and is explained below the table.
+          </p>
           <table>
             <thead>
               <th>Attribute</th>
@@ -491,7 +553,7 @@
             <tr>
               <th>id</th>
               <td>
-                Decimal representation of the 'TrackNumber' field of the track in the Segment info.
+                Decimal representation of the 'TrackNumber' field of the track in the "Track" section of the WebM file Segment.
               </td>
             </tr>
             <tr>
@@ -511,16 +573,20 @@
             <tr>
               <th>label</th>
               <td>
-                Content of the 'name' field of the track in the Segment info.
+                Content of the 'name' field of the track.
               </td>
             </tr>
             <tr>
               <th>language</th>
               <td>
-                Content of the 'language' field of the track in the Segment info.
+                Content of the 'language' field of the track.
               </td>
             </tr>
           </table>
+          <p>
+          Tracks of kind "chapters" are found in the "Chapters" section of the WebM file Segment, which are all at the beginning of the WebM file, such that chapters can be used for navigation. The details of this mapping have not been specified yet and simply point to the more powerful Matroska chapter specification [[Matroska]]. Presumably, the 'id' attribute could be found in 'EditionUID', 'label' is empty, and 'language' can come from the first ChapterAtom's 'ChapLanguage' value.
+          </p>
+          <p class='note'>The Matroska container format, which is the basis for WebM, has specifications for other text tracks, in particular SRT, SSA/ASS, and VOBSUB. The described attribute mappings can be applied to these, too, except that the 'kind' field will always be "subtitles". The information of their 'CodecPrivate' field is exposed in the 'inBandMetadataTrackDispatchType' attribute.
           </p>
         </li>
 
@@ -567,6 +633,56 @@
               </td>
             </tr>
           </table>
+          </p>
+        </li>
+
+        <li>Mapping text track content into text track cues
+          <p>
+            The only types of text tracks that WebM is defined for are in the WebVTT format [[WEBVTT-WEBM]]. Therefore, cues on a text track are created as VTTCue objects [[WEBVTT]]. Each 'Block' in the 'BlockGroup' of the WebM track that has the actual data of the text track creates a VTTCue object with its TextTrackCue attributes sourced as follows:
+          </p>
+          <table>
+            <thead>
+              <th>Attribute</th>
+              <th>How to source its value</th>
+            </thead>
+            <tr>
+              <th>id</th>
+              <td>
+                First line of the Block's data.
+              </td>
+            </tr>
+            <tr>
+              <th>startTime</th>
+              <td>
+                Calculated from the 'BlockTimecode' field in the Block's header and the 'Timecode' field in the Cluster relative to which 'BlockTimecode' is specified.
+              </td>
+            </tr>
+            <tr>
+              <th>endTime</th>
+              <td>
+                Calculated from the 'BlockDuration' filed in the Block's header and the startTime.
+              </td>
+            </tr>
+            <tr>
+              <th>pauseOnExit</th>
+              <td>
+                'false'
+              </td>
+            </tr>
+            <tr>
+              <th>cue setting attributes</th>
+              <td>
+                Parsed from the second line of the Block's data.
+              </td>
+            </tr>
+            <tr>
+              <th>text</th>
+              <td>
+                The third and all following lines of the Block's data.
+              </td>
+            </tr>
+          </table>
+          <p class='note'>Other Matroska container format's text tracks can also be mapped to TextTrackCue objects. These will be created as DataCue objects with 'id', 'startTime', 'endTime', and 'pauseOnExit' attributes filled identically to the VTTCue objects, and the 'text' attribute containing the Block's data.
           </p>
         </li>
       </ol>
@@ -687,6 +803,10 @@
             </tr>
           </table>
           </p>
+        </li>
+
+        <li>Mapping text track content into text track cues
+          <p>TBD</p>
         </li>
       </ol>
 
