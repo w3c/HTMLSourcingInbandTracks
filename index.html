@@ -267,7 +267,7 @@
           <p>
             A user agent recognises and supports data from a MPEG-2 TS resource as being equivalent to a HTML track based on the value of the 'stream_id' field of an elementary stream as given in a Transport or Program Stream header and which maps to a "stream type":
             <ul>
-              <li>text track: the stream type value is "0x02", "0x05" or between "0x80" and "0xFF"</li>
+              <li>text track: the elementary stream with PID 0x02 or the stream type value is "0x02", "0x05" or between "0x80" and "0xFF"</li>
               <li>video track: the stream type value is "0x01", "0x02", "0x10", "0x1B", or between "0x1E" and "0x23"</li>
               <li>audio track: the stream type value is "0x03", "0x04", "0x0F", "0x11", or "0x1C"</li>
             </ul>
@@ -360,7 +360,45 @@
         </li>
 
         <li>Mapping text track content into text track cues
-          <p>TBD</p>
+          <p>
+            The only types of text tracks that are defined are in the DataCue format. Therefore, cues on a text track are created as DataCue objects [[HTML5]]. Each 'section' in an elementary stream identified as metadata text track creates a DataCue object with its TextTrackCue attributes sourced as follows:
+          </p>
+          <table>
+            <thead>
+              <th>Attribute</th>
+              <th>How to source its value</th>
+            </thead>
+            <tr>
+              <th>id</th>
+              <td>
+                Decimal representation of the table_id in the first 8 bits of the section data.
+              </td>
+            </tr>
+            <tr>
+              <th>startTime</th>
+              <td>
+                0
+              </td>
+            </tr>
+            <tr>
+              <th>endTime</th>
+              <td>
+                The time, in the media resource timeline, that corresponds to the presentation time of the video frame received immediately prior to the section in the media resource.
+              </td>
+            </tr>
+            <tr>
+              <th>pauseOnExit</th>
+              <td>
+                'false'
+              </td>
+            </tr>
+            <tr>
+              <th>data</th>
+              <td>
+                The 'section_length' bytes immediately following the section_length field in the section.
+              </td>
+            </tr>
+          </table>
         </li>
       </ol>
 
