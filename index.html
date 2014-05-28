@@ -361,7 +361,7 @@
 
         <li>Mapping text track content into text track cues
           <p>
-            The only types of text tracks that are defined are in the DataCue format. Therefore, cues on a text track are created as DataCue objects [[HTML5]]. Each 'section' in an elementary stream identified as metadata text track creates a DataCue object with its TextTrackCue attributes sourced as follows:
+            Cues on an MPEG-2 text track are created as DataCue objects [[HTML5]]. Each 'section' in an elementary stream identified as a text track creates a DataCue object with its TextTrackCue attributes sourced as follows:
           </p>
           <table>
             <thead>
@@ -371,7 +371,7 @@
             <tr>
               <th>id</th>
               <td>
-                Decimal representation of the table_id in the first 8 bits of the section data.
+                Decimal representation of the 'table_id' in the first 8 bits of the 'section' data.
               </td>
             </tr>
             <tr>
@@ -383,7 +383,7 @@
             <tr>
               <th>endTime</th>
               <td>
-                The time, in the media resource timeline, that corresponds to the presentation time of the video frame received immediately prior to the section in the media resource. 
+                The time, in the media resource timeline, that corresponds to the presentation time of the video frame received immediately prior to the 'section' in the media resource.
               </td>
             </tr>
             <tr>
@@ -395,11 +395,10 @@
             <tr>
               <th>data</th>
               <td>
-                The 'section_length' bytes immediately following the section_length field in the section.
+                The 'section_length' number of bytes immediately following the 'section_length' field in the 'section'.
               </td>
             </tr>
           </table>
-        </li>
         </li>
       </ol>
 
