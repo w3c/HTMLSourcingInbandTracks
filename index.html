@@ -70,6 +70,28 @@
           // Team Contact.
           wgPatentURI:  "",
           // !!!! IMPORTANT !!!! MAKE THE ABOVE BLINK IN YOUR HEAD
+
+          localBiblio: {
+            "CEA708": {
+              title: "Digital Television (DTV) Closed Captioning CEA-708-B",
+              href: "http://www.ce.org/Standards/Standard-Listings/R4-3-Television-Data-Systems-Subcommittee/CEA-708-D.aspx",
+              publisher: "CEA"
+            },
+
+            "SCTE27": {
+              title: "Subtitling Methods For Broadcast Cable",
+              href: "http://www.scte.org/documents/pdf/Standards/ANSI_SCTE_27_2011.pdf",
+              publisher: "ANSI/SCTE"
+            },
+
+            "VTT708": {
+              title: "Conversion of 608/708 captions to WebVTT",
+              href: "https://dvcs.w3.org/hg/text-tracks/raw-file/default/608toVTT/608toVTT.html",
+              authors: ["Silvia Pfieffer"],
+              status: "Draft Community Group Report",
+              publisher: "W3C"
+            }
+          }
       };
     </script>
     <style type="text/css">
@@ -361,44 +383,69 @@
 
         <li>Mapping text track content into text track cues
           <p>
-            Cues on an MPEG-2 text track are created as DataCue objects [[HTML5]]. Each 'section' in an elementary stream identified as a text track creates a DataCue object with its TextTrackCue attributes sourced as follows:
+            MPEG-2 transport streams may contain data that should be exposed as cues on 'captions', 'subtitles' or 'metadata' text tracks. No data is defined that equates to 'descriptions' or 'chapters' text track cues.
           </p>
-          <table>
-            <thead>
-              <th>Attribute</th>
-              <th>How to source its value</th>
-            </thead>
-            <tr>
-              <th>id</th>
-              <td>
-                Decimal representation of the 'table_id' in the first 8 bits of the 'section' data.
-              </td>
-            </tr>
-            <tr>
-              <th>startTime</th>
-              <td>
-                0
-              </td>
-            </tr>
-            <tr>
-              <th>endTime</th>
-              <td>
-                The time, in the media resource timeline, that corresponds to the presentation time of the video frame received immediately prior to the 'section' in the media resource.
-              </td>
-            </tr>
-            <tr>
-              <th>pauseOnExit</th>
-              <td>
-                'false'
-              </td>
-            </tr>
-            <tr>
-              <th>data</th>
-              <td>
-                The 'section_length' number of bytes immediately following the 'section_length' field in the 'section'.
-              </td>
-            </tr>
-          </table>
+          <p>
+            <ol type=a>
+              <p>
+              <li>Metadata cues
+                <p>
+                  Cues on an MPEG-2 metadata text track are created as DataCue objects [[HTML5]]. Each 'section' in an elementary stream identified as a text track creates a DataCue object with its TextTrackCue attributes sourced as follows:
+                </p>
+                <table>
+                  <thead>
+                    <th>Attribute</th>
+                    <th>How to source its value</th>
+                  </thead>
+                  <tr>
+                    <th>id</th>
+                    <td>
+                      Decimal representation of the 'table_id' in the first 8 bits of the 'section' data.
+                    </td>
+                  </tr>
+                  <tr>
+                    <th>startTime</th>
+                    <td>
+                      0
+                    </td>
+                  </tr>
+                  <tr>
+                    <th>endTime</th>
+                    <td>
+                      The time, in the media resource timeline, that corresponds to the presentation time of the video frame received immediately prior to the 'section' in the media resource.
+                    </td>
+                  </tr>
+                  <tr>
+                    <th>pauseOnExit</th>
+                    <td>
+                      'false'
+                    </td>
+                  </tr>
+                  <tr>
+                    <th>data</th>
+                    <td>
+                      The 'section_length' number of bytes immediately following the 'section_length' field in the 'section'.
+                    </td>
+                  </tr>
+                </table>
+              </li>
+              </p>
+              <p>
+              <li>Captions cues
+                <p>
+                  MPEG-2 captions are in the CEA 708 format [[CEA708]] so cues on an MPEG-2 captions text track require a CEA708Cue format to expose them, unless browsers want to map the CEA708 features into a WebVTTCue [[VTT708]].
+                </p>
+              </li>
+              </p>
+              <p>
+              <li> Subtitles cues
+                <p>
+                  MPEG-2 subtitles are in the SCTE 27 format [[SCTE27]] so cues on an MPEG-2 subtitle text track require a SCTE27Cue format to expose them, unless browsers want to map the SCTE 27 features into a WebVTTCue. This mapping process has not been defined.
+                </p>
+              </li>
+              </p> 
+            </ol>
+          </p>
         </li>
       </ol>
 
