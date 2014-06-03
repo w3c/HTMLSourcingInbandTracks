@@ -71,27 +71,6 @@
           wgPatentURI:  "",
           // !!!! IMPORTANT !!!! MAKE THE ABOVE BLINK IN YOUR HEAD
 
-          localBiblio: {
-            "CEA708": {
-              title: "Digital Television (DTV) Closed Captioning CEA-708-B",
-              href: "http://www.ce.org/Standards/Standard-Listings/R4-3-Television-Data-Systems-Subcommittee/CEA-708-D.aspx",
-              publisher: "CEA"
-            },
-
-            "SCTE27": {
-              title: "Subtitling Methods For Broadcast Cable",
-              href: "http://www.scte.org/documents/pdf/Standards/ANSI_SCTE_27_2011.pdf",
-              publisher: "ANSI/SCTE"
-            },
-
-            "VTT708": {
-              title: "Conversion of 608/708 captions to WebVTT",
-              href: "https://dvcs.w3.org/hg/text-tracks/raw-file/default/608toVTT/608toVTT.html",
-              authors: ["Silvia Pfieffer"],
-              status: "Draft Community Group Report",
-              publisher: "W3C"
-            }
-          }
       };
     </script>
     <style type="text/css">
@@ -433,14 +412,14 @@
               <p>
               <li>Captions cues
                 <p>
-                  MPEG-2 captions are in the CEA 708 format [[CEA708]] so cues on an MPEG-2 captions text track require a CEA708Cue format to expose them, unless browsers want to map the CEA708 features into a WebVTTCue [[VTT708]].
+                  MPEG-2 captions are in the CEA 708 format [[CEA708]] so cues on an MPEG-2 captions text track require an as yet to be specified CEA708Cue format to expose them, unless browsers want to map the CEA708 features into a WebVTTCue [[VTT708]].
                 </p>
               </li>
               </p>
               <p>
               <li> Subtitles cues
                 <p>
-                  MPEG-2 subtitles are in the SCTE 27 format [[SCTE27]] so cues on an MPEG-2 subtitle text track require a SCTE27Cue format to expose them, unless browsers want to map the SCTE 27 features into a WebVTTCue. This mapping process has not been defined.
+                  MPEG-2 subtitles are in the SCTE 27 format [[SCTE27]] so cues on an MPEG-2 subtitle text track require an as yet to be specified SCTE27Cue format to expose them, unless browsers want to map the SCTE 27 features into a WebVTTCue. This mapping process has not been defined.
                 </p>
               </li>
               </p> 
