@@ -470,8 +470,42 @@
               <p>
               <li> Subtitles cues
                 <p>
-                  MPEG-2 subtitles are in the SCTE 27 format [[SCTE27]] so cues on an MPEG-2 subtitle text track require an as yet to be specified SCTE27Cue format to expose them, unless browsers want to map the SCTE 27 features into a WebVTTCue. This mapping process has not been defined.
+                  Cues on an MPEG-2 subtitles text track are created as DataCue objects [[HTML5]]. MPEG-2 subtitle data is in the SCTE 27 format [[SCTE27]]. Each 'section' in an elementary stream identified as a subtitles text track creates a DataCue object with TexTrackCue attributes sourced as follows:
                 </p>
+                <table>
+                  <thead>
+                    <th>Attribute</th>
+                    <th>How to source its value</th>
+                  </thead>
+                  <tr>
+                    <th>id</th>
+                    <td>
+                      Decimal representation of the 'table_id' in the first 8 bits of the 'section' data.
+                    </td>
+                  </tr>
+                  <tr>
+                    <th>startTime</th>
+                    <td>
+                      The time, in the HTML media resource timeline, that corresponds to the 'display_in_PTS' field in the section data.
+                    </td>
+                  </tr>
+                  <tr>
+                    <th>endTime</th>
+                    <td>
+                      The sum of the startTime and the 'display_duration' field in the section data expressed in seconds.
+                    </td>
+                  </tr>
+                  <tr>
+                    <th>pauseOnExit</th>
+                    <td>'false'</td>
+                  </tr>
+                  <tr>
+                    <th>data</th>
+                    <td>
+                      The 'section_length' number of bytes immediately following the 'section_length' field in the 'section'.
+                    </td>
+                  </tr>
+                </table>
               </li>
               </p> 
             </ol>
