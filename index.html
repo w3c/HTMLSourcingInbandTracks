@@ -268,7 +268,11 @@
           <p>
             A user agent recognises and supports data from a MPEG-2 TS resource as being equivalent to a HTML track based on the value of the 'stream_id' field of an elementary stream as given in a Transport or Program Stream header and which maps to a "stream type":
             <ul>
-              <li>text track: the elementary stream with PID 0x02 or the stream type value is "0x02", "0x05" or between "0x80" and "0xFF"</li>
+              <li>text track:
+                <ul>
+                  <li>The elementary stream with PID 0x02 or the stream type value is "0x02", "0x05" or between "0x80" and "0xFF". </li>
+                  <li><a id="captionservice">The CEA 708 caption service</a> [[CEA708]] in the 'Picture User Data' of a video stream, as identified by a 'Caption Service Descriptor' [[ATSC65]] in the 'Elementary Stream Descriptors' in the PMT entry for a video stream with stream type 0x02.</li>
+                </ul>
               <li>video track: the stream type value is "0x01", "0x02", "0x10", "0x1B", or between "0x1E" and "0x23"</li>
               <li>audio track: the stream type value is "0x03", "0x04", "0x0F", "0x11", or "0x1C"</li>
             </ul>
@@ -285,14 +289,17 @@
             <tr>
               <th>id</th>
               <td>
-                Decimal representation of the elementary stream's identifier ('elementary_PID' field) in the PMT. In the case of CEA708 closed captions this will be the identifier of the video elementary stream containing captions in the Picture User Data.
+                Decimal representation of the elementary stream's identifier ('elementary_PID' field) in the PMT.
+               <p>
+                In the case of CEA 708 closed captions, decimal representation of the 'caption_service_number' in the 'Caption Service Descriptor' in the PMT.
+              </p>
               </td>
             </tr>
             <tr>
               <th>kind</th>
               <td>
                 <ul>
-                  <li>"captions": if a "Caption Service Descriptor section" is present in a video elementary stream of stream type "0x02" and its 'cc_type' is 1 (True)</li><!-- see http://www.etherguidesystems.com/help/sdos/atsc/semantics/descriptors/CaptionService.aspx -->
+                  <li>"captions": for a <a href="#captionservice">caption service</a></li>
                   <li>"subtitles": if the stream type value is "0x82"</li>
                   <li>"metadata": otherwise</li>
                 </ul>
@@ -306,8 +313,12 @@
             </tr>
             <tr>
               <th>language</th>
-              <td>
-                Content of the 'ISO_639_language_descriptor' field.
+              <td>@kind is
+                <ul>
+                  <li>'captions': Content of the 'language' field for the caption service in the 'Caption Service Descriptor'.</li>
+                  <li>'subtitles': Content of the 'ISO_639_language_descriptor' in the elementary stream descriptor array in the PMT.</li>
+                  <li>'metadata': The empty string.</li>
+                </ul>
               </td>
             </tr>
           </table>
@@ -412,8 +423,48 @@
               <p>
               <li>Captions cues
                 <p>
-                  MPEG-2 captions are in the CEA 708 format [[CEA708]] so cues on an MPEG-2 captions text track require an as yet to be specified CEA708Cue format to expose them, unless browsers want to map the CEA708 features into a WebVTTCue [[VTT708]].
+                  Cues on an MPEG-2 captions text track are created as DataCue objects [[HTML5]]. MPEG-2 captions data is in the CEA 708 format [[CEA708]]. Each 'service block' in an digital TV closed caption (DTVCC) transport channel creates a DataCue object with TexTrackCue attributes sourced as follows:
                 </p>
+                <table>
+                  <thead>
+                    <th>Attribute</th>
+                    <th>How to source its value</th>
+                  </thead>
+                  <tr>
+                    <th>id</th>
+                    <td>
+                      Decimal representation of the 'service_number' in the 'service_block'.
+                    </td>
+                  </tr>
+                  <tr>
+                    <th>startTime</th>
+                    <td>
+                      The time, in the HTML media resource timeline, that corresponds to the presentation time stamp for the video frame that contained the first 'Caption Channel Data Byte' of the 'service_block'. 
+                    </td>
+                  </tr>
+                  <tr>
+                    <th>endTime</th>
+                    <td>
+                      The sum of the startTime and 4 seconds.
+                      <p class='note'>
+                        CEA 708 captions do not have an explicit end time - a rendering device derives the end time for a caption based on subsequent caption data. Setting endTime equal to startTime might be more appropriate but this would require better support for zero-length cues, as proposed in <a href = 'https://www.w3.org/Bugs/Public/show_bug.cgi?id=25693'>HTML Bug 25693</a>.
+                      </p>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th>pauseOnExit</th>
+                    <td>
+                      'false'
+                    </td>
+                  </tr>
+                  <tr>
+                    <th>data</th>
+                    <td>
+                      The 'service_block'.
+                    </td>
+                  </tr>
+                </table>
+
               </li>
               </p>
               <p>
