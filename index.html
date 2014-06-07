@@ -127,14 +127,14 @@
       </p>
       <p>
         For every MIME-type/subtype of an existing media container format, this specification defines the following information:
-        <ol>
-          <li>Track order.</li>
-          <li>How to identify the type of tracks.</li>
-          <li>Setting track attributes 'id', 'kind', 'language' and 'label' for sourced text tracks.</li>
-          <li>Setting track attributes 'id', 'kind', 'language' and 'label' for sourced audio and video tracks.</li>
-          <li>Mapping text track content into text track cues.</li>
-        </ol>
       </p>
+      <ol>
+        <li>Track order.</li>
+        <li>How to identify the type of tracks.</li>
+        <li>Setting track attributes 'id', 'kind', 'language' and 'label' for sourced text tracks.</li>
+        <li>Setting track attributes 'id', 'kind', 'language' and 'label' for sourced audio and video tracks.</li>
+        <li>Mapping text track content into text track cues.</li>
+      </ol>
     </section>
 
     <section id='mpegdash'>
@@ -151,16 +151,15 @@
         <li>Determining the type of track
           <p>
             A user agent recognises and supports data from a MPEG DASH media resource as being equivalent to a HTML track based on the adaptationSet mimeType:
-            <ul>
-              <li>text track: the mimeType is of main type "application" or "text"</li>
-              <li>video track: the mimeType is of main type "video"</li>
-              <li>audio track: the mimeType is of main type "audio"</li>
-            </ul>
           </p>
+          <ul>
+            <li>text track: the mimeType is of main type "application" or "text"</li>
+            <li>video track: the mimeType is of main type "video"</li>
+            <li>audio track: the mimeType is of main type "audio"</li>
+          </ul>
         </li>
 
         <li>Track Attributes for sourced Text Tracks
-          <p>
           <table>
             <thead>
               <th>Attribute</th>
@@ -196,11 +195,9 @@
               </td>
             </tr>
           </table>
-          </p>
         </li>
 
         <li>Track Attributes for sourced Audio and Video Tracks
-          <p>
           <table>
             <thead>
               <th>Attribute</th>
@@ -243,7 +240,6 @@
               </td>
             </tr>
           </table>
-          </p>
         </li>
 
         <li>Mapping text track content into text track cues
@@ -267,20 +263,19 @@
         <li>Determining the type of track
           <p>
             A user agent recognises and supports data from a MPEG-2 TS resource as being equivalent to a HTML track based on the value of the 'stream_id' field of an elementary stream as given in a Transport or Program Stream header and which maps to a "stream type":
-            <ul>
-              <li>text track:
-                <ul>
-                  <li>The elementary stream with PID 0x02 or the stream type value is "0x02", "0x05" or between "0x80" and "0xFF". </li>
-                  <li><a id="captionservice">The CEA 708 caption service</a> [[CEA708]] in the 'Picture User Data' of a video stream, as identified by a 'Caption Service Descriptor' [[ATSC65]] in the 'Elementary Stream Descriptors' in the PMT entry for a video stream with stream type 0x02.</li>
-                </ul>
-              <li>video track: the stream type value is "0x01", "0x02", "0x10", "0x1B", or between "0x1E" and "0x23"</li>
-              <li>audio track: the stream type value is "0x03", "0x04", "0x0F", "0x11", or "0x1C"</li>
-            </ul>
           </p>
+          <ul>
+            <li>text track:
+              <ul>
+                <li>The elementary stream with PID 0x02 or the stream type value is "0x02", "0x05" or between "0x80" and "0xFF". </li>
+                <li><a id="captionservice">The CEA 708 caption service</a> [[CEA708]] in the 'Picture User Data' of a video stream, as identified by a 'Caption Service Descriptor' [[ATSC65]] in the 'Elementary Stream Descriptors' in the PMT entry for a video stream with stream type 0x02.</li>
+              </ul>
+            <li>video track: the stream type value is "0x01", "0x02", "0x10", "0x1B", or between "0x1E" and "0x23"</li>
+            <li>audio track: the stream type value is "0x03", "0x04", "0x0F", "0x11", or "0x1C"</li>
+          </ul>
         </li>
 
         <li>Track Attributes for sourced Text Tracks
-          <p>
           <table>
             <thead>
               <th>Attribute</th>
@@ -315,18 +310,16 @@
               <th>language</th>
               <td>@kind is
                 <ul>
-                  <li>'captions': Content of the 'language' field for the caption service in the 'Caption Service Descriptor'.</li>
-                  <li>'subtitles': Content of the 'ISO_639_language_descriptor' in the elementary stream descriptor array in the PMT.</li>
-                  <li>'metadata': The empty string.</li>
+                  <li>"captions": Content of the 'language' field for the caption service in the 'Caption Service Descriptor'.</li>
+                  <li>"subtitles": Content of the 'ISO_639_language_descriptor' in the elementary stream descriptor array in the PMT.</li>
+                  <li>"metadata": The empty string.</li>
                 </ul>
               </td>
             </tr>
           </table>
-          </p>
         </li>
 
         <li>Track Attributes for sourced Audio and Video Tracks
-          <p>
           <table>
             <thead>
               <th>Attribute</th>
@@ -368,148 +361,130 @@
               </td>
             </tr>
           </table>
-          </p>
         </li>
 
         <li>Mapping text track content into text track cues
           <p>
             MPEG-2 transport streams may contain data that should be exposed as cues on 'captions', 'subtitles' or 'metadata' text tracks. No data is defined that equates to 'descriptions' or 'chapters' text track cues.
           </p>
-          <p>
-            <ol type=a>
+          <ol type=a>
+            <li>Metadata cues
               <p>
-              <li>Metadata cues
-                <p>
-                  Cues on an MPEG-2 metadata text track are created as DataCue objects [[HTML5]]. Each 'section' in an elementary stream identified as a text track creates a DataCue object with its TextTrackCue attributes sourced as follows:
-                </p>
-                <table>
-                  <thead>
-                    <th>Attribute</th>
-                    <th>How to source its value</th>
-                  </thead>
-                  <tr>
-                    <th>id</th>
-                    <td>
-                      Decimal representation of the 'table_id' in the first 8 bits of the 'section' data.
-                    </td>
-                  </tr>
-                  <tr>
-                    <th>startTime</th>
-                    <td>
-                      0
-                    </td>
-                  </tr>
-                  <tr>
-                    <th>endTime</th>
-                    <td>
-                      The time, in the media resource timeline, that corresponds to the presentation time of the video frame received immediately prior to the 'section' in the media resource.
-                    </td>
-                  </tr>
-                  <tr>
-                    <th>pauseOnExit</th>
-                    <td>
-                      'false'
-                    </td>
-                  </tr>
-                  <tr>
-                    <th>data</th>
-                    <td>
-                      The 'section_length' number of bytes immediately following the 'section_length' field in the 'section'.
-                    </td>
-                  </tr>
-                </table>
-              </li>
+                Cues on an MPEG-2 metadata text track are created as DataCue objects [[HTML5]]. Each 'section' in an elementary stream identified as a text track creates a DataCue object with its TextTrackCue attributes sourced as follows:
               </p>
-              <p>
-              <li>Captions cues
-                <p>
-                  Cues on an MPEG-2 captions text track are created as DataCue objects [[HTML5]]. MPEG-2 captions data is in the CEA 708 format [[CEA708]]. Each 'service block' in an digital TV closed caption (DTVCC) transport channel creates a DataCue object with TexTrackCue attributes sourced as follows:
-                </p>
-                <table>
-                  <thead>
-                    <th>Attribute</th>
-                    <th>How to source its value</th>
-                  </thead>
-                  <tr>
-                    <th>id</th>
-                    <td>
-                      Decimal representation of the 'service_number' in the 'service_block'.
-                    </td>
-                  </tr>
-                  <tr>
-                    <th>startTime</th>
-                    <td>
-                      The time, in the HTML media resource timeline, that corresponds to the presentation time stamp for the video frame that contained the first 'Caption Channel Data Byte' of the 'service_block'. 
-                    </td>
-                  </tr>
-                  <tr>
-                    <th>endTime</th>
-                    <td>
-                      The sum of the startTime and 4 seconds.
-                      <p class='note'>
-                        CEA 708 captions do not have an explicit end time - a rendering device derives the end time for a caption based on subsequent caption data. Setting endTime equal to startTime might be more appropriate but this would require better support for zero-length cues, as proposed in <a href = 'https://www.w3.org/Bugs/Public/show_bug.cgi?id=25693'>HTML Bug 25693</a>.
-                      </p>
-                    </td>
-                  </tr>
-                  <tr>
-                    <th>pauseOnExit</th>
-                    <td>
-                      'false'
-                    </td>
-                  </tr>
-                  <tr>
-                    <th>data</th>
-                    <td>
-                      The 'service_block'.
-                    </td>
-                  </tr>
-                </table>
+              <table>
+                <thead>
+                  <th>Attribute</th>
+                  <th>How to source its value</th>
+                </thead>
+                <tr>
+                  <th>id</th>
+                  <td>
+                    Decimal representation of the 'table_id' in the first 8 bits of the 'section' data.
+                  </td>
+                </tr>
+                <tr>
+                  <th>startTime</th>
+                  <td>0</td>
+                </tr>
+                <tr>
+                  <th>endTime</th>
+                  <td>
+                    The time, in the media resource timeline, that corresponds to the presentation time of the video frame received immediately prior to the 'section' in the media resource.
+                  </td>
+                </tr>
+                <tr>
+                  <th>pauseOnExit</th>
+                  <td>"false"</td>
+                </tr>
+                <tr>
+                  <th>data</th>
+                  <td>
+                    The 'section_length' number of bytes immediately following the 'section_length' field in the 'section'.
+                  </td>
+                </tr>
+              </table>
+            </li>
 
-              </li>
-              </p>
+            <li>Captions cues
               <p>
-              <li> Subtitles cues
-                <p>
-                  Cues on an MPEG-2 subtitles text track are created as DataCue objects [[HTML5]]. MPEG-2 subtitle data is in the SCTE 27 format [[SCTE27]]. Each 'section' in an elementary stream identified as a subtitles text track creates a DataCue object with TexTrackCue attributes sourced as follows:
-                </p>
-                <table>
-                  <thead>
-                    <th>Attribute</th>
-                    <th>How to source its value</th>
-                  </thead>
-                  <tr>
-                    <th>id</th>
-                    <td>
-                      Decimal representation of the 'table_id' in the first 8 bits of the 'section' data.
-                    </td>
-                  </tr>
-                  <tr>
-                    <th>startTime</th>
-                    <td>
-                      The time, in the HTML media resource timeline, that corresponds to the 'display_in_PTS' field in the section data.
-                    </td>
-                  </tr>
-                  <tr>
-                    <th>endTime</th>
-                    <td>
-                      The sum of the startTime and the 'display_duration' field in the section data expressed in seconds.
-                    </td>
-                  </tr>
-                  <tr>
-                    <th>pauseOnExit</th>
-                    <td>'false'</td>
-                  </tr>
-                  <tr>
-                    <th>data</th>
-                    <td>
-                      The 'section_length' number of bytes immediately following the 'section_length' field in the 'section'.
-                    </td>
-                  </tr>
-                </table>
-              </li>
-              </p> 
-            </ol>
-          </p>
+                Cues on an MPEG-2 captions text track are created as DataCue objects [[HTML5]]. MPEG-2 captions data is in the CEA 708 format [[CEA708]]. Each 'service block' in an digital TV closed caption (DTVCC) transport channel creates a DataCue object with TexTrackCue attributes sourced as follows:
+              </p>
+              <table>
+                <thead>
+                  <th>Attribute</th>
+                  <th>How to source its value</th>
+                </thead>
+                <tr>
+                  <th>id</th>
+                  <td>Decimal representation of the 'service_number' in the 'service_block'.</td>
+                </tr>
+                <tr>
+                  <th>startTime</th>
+                  <td>
+                    The time, in the HTML media resource timeline, that corresponds to the presentation time stamp for the video frame that contained the first 'Caption Channel Data Byte' of the 'service_block'.
+                  </td>
+                </tr>
+                <tr>
+                  <th>endTime</th>
+                  <td>
+                    The sum of the startTime and 4 seconds.
+                    <p class='note'>
+                      CEA 708 captions do not have an explicit end time - a rendering device derives the end time for a caption based on subsequent caption data. Setting endTime equal to startTime might be more appropriate but this would require better support for zero-length cues, as proposed in <a href = 'https://www.w3.org/Bugs/Public/show_bug.cgi?id=25693'>HTML Bug 25693</a>.
+                    </p>
+                  </td>
+                </tr>
+                <tr>
+                  <th>pauseOnExit</th>
+                  <td>"false"</td>
+                </tr>
+                <tr>
+                  <th>data</th>
+                  <td>The 'service_block'.</td>
+                </tr>
+              </table>
+            </li>
+
+            <li> Subtitles cues
+              <p>
+                Cues on an MPEG-2 subtitles text track are created as DataCue objects [[HTML5]]. MPEG-2 subtitle data is in the SCTE 27 format [[SCTE27]]. Each 'section' in an elementary stream identified as a subtitles text track creates a DataCue object with TexTrackCue attributes sourced as follows:
+              </p>
+              <table>
+                <thead>
+                  <th>Attribute</th>
+                  <th>How to source its value</th>
+                </thead>
+                <tr>
+                  <th>id</th>
+                  <td>
+                    Decimal representation of the 'table_id' in the first 8 bits of the 'section' data.
+                  </td>
+                </tr>
+                <tr>
+                  <th>startTime</th>
+                  <td>
+                    The time, in the HTML media resource timeline, that corresponds to the 'display_in_PTS' field in the section data.
+                  </td>
+                </tr>
+                <tr>
+                  <th>endTime</th>
+                  <td>
+                    The sum of the startTime and the 'display_duration' field in the section data expressed in seconds.
+                  </td>
+                </tr>
+                <tr>
+                  <th>pauseOnExit</th>
+                  <td>"false"</td>
+                </tr>
+                <tr>
+                  <th>data</th>
+                  <td>
+                    The 'section_length' number of bytes immediately following the 'section_length' field in the 'section'.
+                  </td>
+                </tr>
+              </table>
+            </li>
+          </ol>
         </li>
       </ol>
 
@@ -529,16 +504,15 @@
         <li>Determining the type of track
           <p>
             A user agent recognises and supports data from a MPEG-4 TrackBox as being equivalent to a HTML track based on the value of the 'handler_type' field in the HandlerBox ('hdlr) of the MediaBox ('mdia') of the TrackBox:
-            <ul>
-              <li>text track: the 'handler_type' value is "meta", "subt" or "text"</li>
-              <li>video track: the 'handler_type' value is "soun"</li>
-              <li>audio track: the 'handler_type' value is "vide"</li>
-            </ul>
           </p>
+          <ul>
+            <li>text track: the 'handler_type' value is "meta", "subt" or "text"</li>
+            <li>video track: the 'handler_type' value is "soun"</li>
+            <li>audio track: the 'handler_type' value is "vide"</li>
+          </ul>
         </li>
 
         <li>Track Attributes for sourced Text Tracks
-          <p>
           <table>
             <thead>
               <th>Attribute</th>
@@ -573,11 +547,9 @@
               </td>
             </tr>
           </table>
-          </p>
         </li>
 
         <li>Track Attributes for sourced Audio and Video Tracks
-          <p>
           <table>
             <thead>
               <th>Attribute</th>
@@ -619,7 +591,6 @@
               </td>
             </tr>
           </table>
-          </p>
         </li>
 
         <li>Mapping text track content into text track cues
@@ -643,12 +614,12 @@
         <li>Determining the type of track
           <p>
             A user agent recognises and supports data from a WebM resource as being equivalent to a HTML track based on the value of the 'TrackType' field of the track in the Segment info:
-            <ul>
-              <li>text track: 'TrackType' field is "0x11" or "0x21"</li>
-              <li>video track: 'TrackType' field is "0x01"</li>
-              <li>audio track: 'TrackType' field is "0x02"</li>
-            </ul>
           </p>
+          <ul>
+            <li>text track: 'TrackType' field is "0x11" or "0x21"</li>
+            <li>video track: 'TrackType' field is "0x01"</li>
+            <li>audio track: 'TrackType' field is "0x02"</li>
+          </ul>
         </li>
 
         <li>Track Attributes for sourced Text Tracks
@@ -694,14 +665,14 @@
             </tr>
           </table>
           <p>
-          Tracks of kind "chapters" are found in the "Chapters" section of the WebM file Segment, which are all at the beginning of the WebM file, such that chapters can be used for navigation. The details of this mapping have not been specified yet and simply point to the more powerful Matroska chapter specification [[Matroska]]. Presumably, the 'id' attribute could be found in 'EditionUID', 'label' is empty, and 'language' can come from the first ChapterAtom's 'ChapLanguage' value.
+            Tracks of kind "chapters" are found in the "Chapters" section of the WebM file Segment, which are all at the beginning of the WebM file, such that chapters can be used for navigation. The details of this mapping have not been specified yet and simply point to the more powerful Matroska chapter specification [[Matroska]]. Presumably, the 'id' attribute could be found in 'EditionUID', 'label' is empty, and 'language' can come from the first ChapterAtom's 'ChapLanguage' value.
           </p>
-          <p class='note'>The Matroska container format, which is the basis for WebM, has specifications for other text tracks, in particular SRT, SSA/ASS, and VOBSUB. The described attribute mappings can be applied to these, too, except that the 'kind' field will always be "subtitles". The information of their 'CodecPrivate' field is exposed in the 'inBandMetadataTrackDispatchType' attribute.
+          <p class='note'>
+            The Matroska container format, which is the basis for WebM, has specifications for other text tracks, in particular SRT, SSA/ASS, and VOBSUB. The described attribute mappings can be applied to these, too, except that the 'kind' field will always be "subtitles". The information of their 'CodecPrivate' field is exposed in the 'inBandMetadataTrackDispatchType' attribute.
           </p>
         </li>
 
         <li>Track Attributes for sourced Audio and Video Tracks
-          <p>
           <table>
             <thead>
               <th>Attribute</th>
@@ -743,7 +714,6 @@
               </td>
             </tr>
           </table>
-          </p>
         </li>
 
         <li>Mapping text track content into text track cues
@@ -775,9 +745,7 @@
             </tr>
             <tr>
               <th>pauseOnExit</th>
-              <td>
-                'false'
-              </td>
+              <td>"false"</td>
             </tr>
             <tr>
               <th>cue setting attributes</th>
@@ -813,17 +781,18 @@
         <li>Determining the type of track
           <p>
             A user agent recognises and supports data from a Ogg resource as being equivalent to a HTML track based on the value of the 'role' field of the fisbone header in Ogg Skeleton:
-            <ul>
-              <li>text track:  'role' starts with "text"</li>
-              <li>video track: 'role' starts with "video"</li>
-              <li>audio track: 'role' starts with "audio"</li>
-            </ul>
+          </p>
+          <ul>
+            <li>text track:  'role' starts with "text"</li>
+            <li>video track: 'role' starts with "video"</li>
+            <li>audio track: 'role' starts with "audio"</li>
+          </ul>
+          <p>
             If no Skeleton track is available, determine the type based on the codec used in the BOS pages, e.g. Vorbis is an "audio" track and "theora" is a video track.
           </p>
         </li>
 
         <li>Track Attributes for sourced Text Tracks
-          <p>
           <table>
             <thead>
               <th>Attribute</th>
@@ -863,11 +832,9 @@
               </td>
             </tr>
           </table>
-          </p>
         </li>
 
         <li>Track Attributes for sourced Audio and Video Tracks
-          <p>
           <table>
             <thead>
               <th>Attribute</th>
@@ -912,7 +879,6 @@
               </td>
             </tr>
           </table>
-          </p>
         </li>
 
         <li>Mapping text track content into text track cues
