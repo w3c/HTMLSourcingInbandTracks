@@ -447,7 +447,7 @@
 
             <li> Subtitles cues
               <p>
-                Cues on an MPEG-2 subtitles text track are created as DataCue objects [[HTML5]]. MPEG-2 subtitle data is in the SCTE 27 format [[SCTE27]]. Each 'section' in an elementary stream identified as a subtitles text track creates a DataCue object with TextTrackCue attributes sourced as follows:
+                MPEG-2 subtitles are in the SCTE 27 format [[SCTE27]]. Browsers that can render the SCTE 27 format should expose them in as yet to be specified SCTE27Cue objects. Alternatively, browsers can also map the SCTE 27 features to WebVTTCue object via an as yet to be specified mapping process. Finally, browsers that cannot render SCTE 27 subtitles, should expose them as DataCue objects [[HTML5]]. In this case, each 'section' in an elementary stream identified as a subtitles text track creates a DataCue object with TextTrackCue attributes sourced as follows:
               </p>
               <table>
                 <thead>
