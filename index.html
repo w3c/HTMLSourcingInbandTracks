@@ -408,7 +408,7 @@
 
             <li>Captions cues
               <p>
-                Cues on an MPEG-2 captions text track are created as DataCue objects [[HTML5]]. MPEG-2 captions data is in the CEA 708 format [[CEA708]]. Each 'service block' in an digital TV closed caption (DTVCC) transport channel creates a DataCue object with TextTrackCue attributes sourced as follows:
+                MPEG-2 captions are in the CEA 708 format [[CEA708]]. Browsers that can render the CEA 708 format should expose them in as yet to be specified CEA708Cue objects. Alternatively, browsers can also map the CEA 708 features to WebVTTCue objects [[VTT708]]. Finally, browsers that cannot render CEA 708 captions should expose them as DataCue objects [[HTML5]]. In this case, each 'service block' in a digital TV closed caption (DTVCC) transport channel creates a DataCue object with TextTrackCue attributes sourced as follows:
               </p>
               <table>
                 <thead>
