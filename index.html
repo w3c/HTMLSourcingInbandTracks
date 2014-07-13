@@ -311,7 +311,7 @@
               <td>@kind is
                 <ul>
                   <li>"captions": Content of the 'language' field for the caption service in the 'Caption Service Descriptor'.</li>
-                  <li>"subtitles": Content of the 'ISO_639_language_descriptor' in the elementary stream descriptor array in the PMT.</li>
+                  <li>"subtitles": Content of the 'ISO_639_language_code' field in the 'ISO_639_language_descriptor' in the elementary stream descriptor array in the PMT.</li>
                   <li>"metadata": The empty string.</li>
                 </ul>
               </td>
@@ -337,7 +337,7 @@
                 <ul>
                   <li>"alternative": not used</li>
                   <li>"captions": not used</li>
-                  <li>"descriptions": AC3 audio in MPEG-2 TS: bsmod=2 and full_svc=0</li><!-- see http://www.atsc.org/cms/pdf/bootcamp/PSIP_Captions_rev2.pdf -->
+                  <li>"descriptions": AC3 audio in MPEG-2 TS [[ATSC52]]: bsmod=2 and full_svc=0</li><!-- see http://www.atsc.org/cms/pdf/bootcamp/PSIP_Captions_rev2.pdf -->
                   <li>"main": first audio (video) elementary stream in the PMT</li>
                   <li>"main-desc": AC3 audio in MPEG-2 TS: bsmod=2 and full_svc=1</li>
                   <li>"sign": not used</li>
@@ -356,8 +356,11 @@
             </tr>
             <tr>
               <th>language</th>
-              <td>
-                Content of the 'ISO_639_language_descriptor' field.
+              <td>@kind is:
+                <ul>
+                  <li> "descriptions" or "main-desc": Content of the 'language' field in the 'AC-3_audio_stream_descriptor' [[ATSC52]].</li>
+                  <li> otherwise: Content of the 'ISO_639_language_code' field in the 'ISO_639_language_descriptor'.</li>
+                </ul>
               </td>
             </tr>
           </table>
