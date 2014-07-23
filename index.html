@@ -71,7 +71,13 @@
  
           wgPatentURI:  "",
           // !!!! IMPORTANT !!!! MAKE THE ABOVE BLINK IN YOUR HEAD
-
+         localBiblio: {
+            "DASH-AVC-TT" : {
+              "title": "Guidelines for Implementation: DASH-AVC/264 Interoperability Points",
+              "href": "http://dashif.org/w/2013/06/DASH-AVC-264-base-v1.03.pdf",
+              "date": "June 4, 2013"
+            }
+          }
       };
     </script>
     <style type="text/css">
@@ -151,7 +157,7 @@
 
         <li><p>Determining the type of track</p>
           <p>
-            A user agent recognises and supports data from a MPEG DASH media resource as being equivalent to a HTML track based on the adaptationSet mimeType:
+            A user agent recognises and supports data from a MPEG DASH media resource as being equivalent to a HTML track based on the AdaptationSet or ContentComponent mimeType:
           </p>
           <ul>
             <li>text track: the mimeType is of main type "application" or "text"</li>
@@ -169,7 +175,7 @@
             <tr>
               <th>id</th>
               <td>
-                Content of the 'id' attribute in the AdaptationSet element. Empty string if 'id' attribute is not present.
+                Content of the 'id' attribute in the AdaptationSet or ContentComponent element. Empty string if 'id' attribute is not present.
               </td>
             </tr>
             <tr>
@@ -192,7 +198,7 @@
             <tr>
               <th>language</th>
               <td>
-                Content of the 'lang' attribute in the AdaptationSet element.
+                Content of the 'lang' attribute in the AdaptationSet or ContentComponent element.
               </td>
             </tr>
           </table>
@@ -207,7 +213,7 @@
             <tr>
               <th>id</th>
               <td>
-                Content of the 'id' attribute in the AdaptationSet element. Empty string if 'id' attribute is not present.
+                Content of the 'id' attribute in the AdaptationSet or ContentComponent element. Empty string if 'id' attribute is not present.
               </td>
             </tr>
             <tr>
@@ -237,7 +243,7 @@
             <tr>
               <th>language</th>
               <td>
-                Content of the 'lang' attribute in the AdaptationSet element.
+                Content of the 'lang' attribute in the AdaptationSet or ContentComponent element.
               </td>
             </tr>
           </table>
@@ -409,7 +415,6 @@
             </tr>
           </table>
         </li>
-
         <li><p><dfn id='MPEG2TS-TT'>Mapping text track content into text track cues</dfn></p>
           <p>
             MPEG-2 transport streams may contain data that should be exposed as cues on 'captions', 'subtitles' or 'metadata' text tracks. No data is defined that equates to 'descriptions' or 'chapters' text track cues.
@@ -655,7 +660,7 @@
             ISOBMFF text tracks may be in the WebVTT or TTML format [[ISO14496-30]], 3GPP Timed Text format [[3GPP-TT]], or other format.
           </p>
           <p>
-            WebVTT data is carried in ISOBMFF as described in [[ISO14496-30]]. Browsers that can render text tracks in the WebVTT format should expose a VTTCue [[WEBVTT]] as follows:
+            ISOBMFF text tracks carry WebVTT data if the media handler type is "text" and a 'WVTTSampleEntry' format is used, as described in [[ISO14496-30]]. Browsers that can render text tracks in the WebVTT format should expose a VTTCue [[WEBVTT]] as follows:
           </p>
             <table>
               <thead>
@@ -699,7 +704,7 @@
             </table>
           </p>
           <p>
-            TTML data is carried in ISOBMFF as described in [[ISO14496-30]]. Browsers that can render text tracks in the TTML format should expose an as yet to be defined TTMLCue.
+            ISOBMFF text tracks carry TTML data if the media handler type is "subt" and an 'XMLSubtileSampleEntry' format is used with a TTML-based 'name_space' field, as described in [[ISO14496-30]]. Browsers that can render text tracks in the TTML format should expose an as yet to be defined TTMLCue.
           </p>
           <p>
             TTML data may contain tunneled CEA708 captions [[SMPTE2052-11]]. Browsers that can render CEA708 data should expose it as defined for <a href='#CEA708Cue'>MPEG-2 TS CEA708 cues</a>.
