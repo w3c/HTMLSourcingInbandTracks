@@ -268,7 +268,7 @@
             <li>text track:
               <ul>
                 <li>The elementary stream with PID 0x02 or the stream type value is "0x02", "0x05" or between "0x80" and "0xFF". </li>
-                <li><dfn id="captionservice">The CEA 708 caption service</dfn> [[CEA708]] in the 'Picture User Data' of a video stream, as identified by a 'Caption Service Descriptor' [[ATSC65]] in the 'Elementary Stream Descriptors' in the PMT entry for a video stream with stream type 0x02.</li>
+                <li><dfn id="captionservice">The CEA 708 caption service</dfn> [[CEA708]], as identified by a 'Caption Service Descriptor' [[ATSC65]] in the 'Elementary Stream Descriptors' in the PMT entry for a video stream with stream type 0x02 or 0x1B.</li>
               </ul>
             <li>video track: the stream type value is "0x01", "0x02", "0x10", "0x1B", or between "0x1E" and "0x23"</li>
             <li>audio track: the stream type value is "0x03", "0x04", "0x0F", "0x11", or "0x1C"</li>
@@ -411,7 +411,7 @@
 
             <li><p>Captions cues</p>
               <p>
-                MPEG-2 captions are in the CEA 708 format [[CEA708]]. Browsers that can render the CEA 708 format should expose them in as yet to be specified CEA708Cue objects. Alternatively, browsers can also map the CEA 708 features to WebVTTCue objects [[VTT708]]. Finally, browsers that cannot render CEA 708 captions should expose them as DataCue objects [[HTML5]]. In this case, each 'service block' in a digital TV closed caption (DTVCC) transport channel creates a DataCue object with TextTrackCue attributes sourced as follows:
+                MPEG-2 TS captions are in the CEA 708 format [[CEA708]]. Caption data is carried in the video stream in Picture User Data [[ATSC53-4]] for 'stream_type' 0x02 and in Supplemental Enhancement Information [[ATSC72-1]] for 'stream_type' 0x1B. Browsers that can render the CEA 708 format should expose them in as yet to be specified CEA708Cue objects. Alternatively, browsers can also map the CEA 708 features to WebVTTCue objects [[VTT708]]. Finally, browsers that cannot render CEA 708 captions should expose them as DataCue objects [[HTML5]]. In this case, each 'service block' in a digital TV closed caption (DTVCC) transport channel creates a DataCue object with TextTrackCue attributes sourced as follows:
               </p>
               <table>
                 <thead>
