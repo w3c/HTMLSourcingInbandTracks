@@ -458,7 +458,7 @@
               </table>
             </li>
 
-            <li><dfn id='CEA708Cue'>Captions cues</dfn>
+            <li><p><dfn id='CEA708Cue'>Captions cues</dfn><p>
               <p>
                 MPEG-2 TS captions are in the CEA 708 format [[CEA708]]. Caption data is carried in the video stream in Picture User Data [[ATSC53-4]] for 'stream_type' 0x02 and in Supplemental Enhancement Information [[ATSC72-1]] for 'stream_type' 0x1B. Browsers that can render the CEA 708 format should expose them in as yet to be specified CEA708Cue objects. Alternatively, browsers can also map the CEA 708 features to WebVTTCue objects [[VTT708]]. Finally, browsers that cannot render CEA 708 captions should expose them as DataCue objects [[HTML5]]. In this case, each 'service block' in a digital TV closed caption (DTVCC) transport channel creates a DataCue object with TextTrackCue attributes sourced as follows:
               </p>
@@ -662,6 +662,7 @@
           <p>
             ISOBMFF text tracks carry WebVTT data if the media handler type is "text" and a 'WVTTSampleEntry' format is used, as described in [[ISO14496-30]]. Browsers that can render text tracks in the WebVTT format should expose a VTTCue [[WEBVTT]] as follows:
           </p>
+          <p>
             <table>
               <thead>
                 <th>Attribute</th>
