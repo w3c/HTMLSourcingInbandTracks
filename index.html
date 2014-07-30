@@ -247,7 +247,39 @@
             DASH text track data may be contained in files or encapsulated in MPEG media container formats ISOBMFF and MPEG-2 TS. DASH text track data contained in a file may be in the WebVTT or TTML format [[ISO14496-30]], 3GPP Timed Text format [[3GPP-TT]], or other format. Encapsulated DASH text track data may be in the format defined in this specification for <a href='#ISOBMFF-TT'>ISOBMFF text track</a> or <a href='#MPEG2TS-TT'>MPEG-2 TS text track</a>. 
           </p>
           <p>
-            DASH text track data is in a file in the WebVTT format if the file MIME type is "text/vtt" and should be exposed as a VTTCue as defined in [[WEBVTT]]. DASH text track data is in a file in the TTML format if the file MIME type is "application/ttml+xml" and should be exposed as an as yet to be defined TTMLCue. Alternatively, browsers can also map the TTML features to WebVTTCue objects.
+            DASH text track data is in a file in the WebVTT format if the file MIME type is "text/vtt" and should be exposed as a VTTCue as defined in [[WEBVTT]]. DASH text track data is in a file in the TTML format if the file MIME type is "application/ttml+xml" and should be exposed as an as yet to be defined TTMLCue. Alternatively, browsers can also map the TTML features to WebVTTCue objects. Finally, browsers that cannot render TTML [[ttaf1-dfxp]] format data should expose them as DataCue objects [[HTML5]]. In this case, the TTML file must be parsed in its entirety and then converted into a sequence of TTML Intermediate Synchronic Documents (ISDs). Each ISD creates a DataCue object with attributes sourced as follows: 
+            <p>
+              <table>
+                <thead>
+                  <th>Attribute</th>
+                  <th>How to source its value</th>
+                </thead>
+                <tr>
+                  <th>id</th>
+                  <td>Decimal representation of the ‘id’ attribute of the ‘head’ element in the XML document. Null if there is no ‘id’ attribute.</td>
+                </tr>
+                <tr>
+                  <th>startTime</th>
+                  <td>
+                    Value of the beginning media time of the active temporal interval of the ISD.
+                  </td>
+                </tr>
+                <tr>
+                  <th>endTime</th>
+                  <td>
+                    Value of the ending media time of the active temporal interval of the ISD.
+                  </td>
+                </tr>
+                <tr>
+                  <th>pauseOnExit</th>
+                  <td>"false"</td>
+                </tr>
+                <tr>
+                  <th>text</th>
+                  <td>The (UTF-16 encoded) character array composing the ISD resource.</td>
+                </tr>
+              </table>
+            </p>
           </p>
           <p>
             DASH text track data is encapsulated in an ISOBMFF container format if the MIME type is "application/mp4" (ISOBMFF container with one track) or "video/mp4" (ISOBMFF container with multiple tracks). Text track data in this format should be exposed following the same rules as for <a href='#ISOBMFF-TT'>ISOBMFF text track</a>.
