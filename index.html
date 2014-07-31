@@ -68,9 +68,16 @@
           // This is important for Rec-track documents, do not copy a patent URI from a random
           // document unless you know what you're doing. If in doubt ask your friendly neighbourhood
           // Team Contact.
+ 
           wgPatentURI:  "",
           // !!!! IMPORTANT !!!! MAKE THE ABOVE BLINK IN YOUR HEAD
-
+         localBiblio: {
+            "DASH-AVC-TT" : {
+              "title": "Guidelines for Implementation: DASH-AVC/264 Interoperability Points",
+              "href": "http://dashif.org/w/2013/06/DASH-AVC-264-base-v1.03.pdf",
+              "date": "June 4, 2013"
+            }
+          }
       };
     </script>
     <style type="text/css">
@@ -150,7 +157,7 @@
 
         <li><p>Determining the type of track</p>
           <p>
-            A user agent recognises and supports data from a MPEG DASH media resource as being equivalent to a HTML track based on the adaptationSet mimeType:
+            A user agent recognises and supports data from a MPEG DASH media resource as being equivalent to a HTML track based on the AdaptationSet or ContentComponent mimeType:
           </p>
           <ul>
             <li>text track: the mimeType is of main type "application" or "text"</li>
@@ -168,7 +175,7 @@
             <tr>
               <th>id</th>
               <td>
-                Content of the 'id' attribute in the AdaptationSet element. Empty string if 'id' attribute is not present.
+                Content of the 'id' attribute in the AdaptationSet or ContentComponent element. Empty string if 'id' attribute is not present.
               </td>
             </tr>
             <tr>
@@ -191,7 +198,7 @@
             <tr>
               <th>language</th>
               <td>
-                Content of the 'lang' attribute in the AdaptationSet element.
+                Content of the 'lang' attribute in the AdaptationSet or ContentComponent element.
               </td>
             </tr>
           </table>
@@ -206,7 +213,7 @@
             <tr>
               <th>id</th>
               <td>
-                Content of the 'id' attribute in the AdaptationSet element. Empty string if 'id' attribute is not present.
+                Content of the 'id' attribute in the AdaptationSet or ContentComponent element. Empty string if 'id' attribute is not present.
               </td>
             </tr>
             <tr>
@@ -236,7 +243,7 @@
             <tr>
               <th>language</th>
               <td>
-                Content of the 'lang' attribute in the AdaptationSet element.
+                Content of the 'lang' attribute in the AdaptationSet or ContentComponent element.
               </td>
             </tr>
           </table>
@@ -408,7 +415,6 @@
             </tr>
           </table>
         </li>
-
         <li><p><dfn id='MPEG2TS-TT'>Mapping text track content into text track cues</dfn></p>
           <p>
             MPEG-2 transport streams may contain data that should be exposed as cues on 'captions', 'subtitles' or 'metadata' text tracks. No data is defined that equates to 'descriptions' or 'chapters' text track cues.
@@ -452,7 +458,7 @@
               </table>
             </li>
 
-            <li><p>Captions cues</p>
+            <li><p><dfn id='CEA708Cue'>Captions cues</dfn><p>
               <p>
                 MPEG-2 TS captions are in the CEA 708 format [[CEA708]]. Caption data is carried in the video stream in Picture User Data [[ATSC53-4]] for 'stream_type' 0x02 and in Supplemental Enhancement Information [[ATSC72-1]] for 'stream_type' 0x1B. Browsers that can render the CEA 708 format should expose them in as yet to be specified CEA708Cue objects. Alternatively, browsers can also map the CEA 708 features to WebVTTCue objects [[VTT708]]. Finally, browsers that cannot render CEA 708 captions should expose them as DataCue objects [[HTML5]]. In this case, each 'service block' in a digital TV closed caption (DTVCC) transport channel creates a DataCue object with TextTrackCue attributes sourced as follows:
               </p>
@@ -574,8 +580,19 @@
               <th>kind</th>
               <td><!-- see http://www.mp4ra.org/codecs.html -->
                 <ul>
-                  <li>"captions": 'handler_type' is "text" and the SampleEntry code ('format' field) is "tx3g" or "stpp"</li>
-                  <li>"subtitles": 'handler_type' is "subt"</li>
+                  <li>"captions":
+                    <ul>
+                      <li><dfn id="WebVTTcaption">WebVTT caption</dfn>: 'handler_type' is "text" and SampleEntry format is 'WVTTSampleEntry' [[ISO14496-30]] and the VTT metadata header 'Kind' is "captions"</li>
+                      <li><dfn id="SMPTETTcaption">SMPTE-TT caption</dfn>: 'handler_type' is "subt" and SampleEntry format is 'XMLSubtitleSampleEntry' [[ISO14496-30]] and the 'namespace' is set to "http://www.smpte-ra.org/schemas/2052-1/2013/smpte-tt#cea708 [[SMPTE2052-11]].</li>
+                      <li><li><dfn id="3GPPcaption">3GPP caption</dfn>:'handler_type' is "text" and the SampleEntry code ('format' field) is "tx3g". <p class='note'>Are all sample entries of this type "captions"?</p></li>
+                    </ul>
+                  </li>
+                  <li>"subtitles":
+                    <ul>
+                      <li><dfn id="WebVTTsubtitle">WebVTT subtitle</dfn>: 'handler_type' is "text" and SampleEntry format is 'WVTTSampleEntry' [[ISO14496-30]] and the VTT metadata header 'Kind' is "subtitles"</li>
+                      <li><dfn id="SMPTE-TT subtitle">SMPTE-TT subtitle</dfn>: 'handler_type' is "subt" and SampleEntry format is 'XMLSubtitleSampleEntry' [[ISO14496-30]] and the 'namespace' is set to a TTML namespace that does not indicate a <a href="#SMPTETTcaption">SMPTE-TT caption</a>.</li>
+                    </ul>
+                  </li>
                   <li>"metadata": otherwise</li>
                 </ul>
               </td>
@@ -638,9 +655,96 @@
             </tr>
           </table>
         </li>
-
         <li><p><dfn id='ISOBMFF-TT'>Mapping text track content into text track cues</dfn></p>
-          <p>TBD</p>
+          <p>
+            ISOBMFF text tracks may be in the WebVTT or TTML format [[ISO14496-30]], 3GPP Timed Text format [[3GPP-TT]], or other format.
+          </p>
+          <p>
+            ISOBMFF text tracks carry WebVTT data if the media handler type is "text" and a 'WVTTSampleEntry' format is used, as described in [[ISO14496-30]]. Browsers that can render text tracks in the WebVTT format should expose a VTTCue [[WEBVTT]] as follows:
+          </p>
+          <p>
+            <table>
+              <thead>
+                <th>Attribute</th>
+                <th>How to source its value</th>
+              </thead>
+              <tr>
+                <th>id</th>
+                <td>
+                  The 'cue_id' field in the 'CueIDBox'.
+                </td>
+              </tr>
+              <tr>
+                <th>startTime</th>
+                <td>
+                  The sample presentation time.
+                </td>
+              </tr>
+              <tr>
+                <th>endTime</th>
+                <td>
+                  The sum of the startTime and the sample duration.
+                </td>
+              </tr>
+              <tr>
+                <th>pauseOnExit</th>
+                <td>"false"</td>
+              </tr>
+              <tr>
+                <th>cue setting attributes</th>
+                <td>
+                  The 'settings' field in the 'CueSettingsBox'.
+                </td>
+              </tr>
+              <tr>
+                <th>text</th>
+                <td>
+                  The 'cue_text' field in the 'CuePayloadBox'.
+                </td>
+              </tr>
+            </table>
+          </p>
+          <p>
+            ISOBMFF text tracks carry TTML data if the media handler type is "subt" and an 'XMLSubtileSampleEntry' format is used with a TTML-based 'name_space' field, as described in [[ISO14496-30]]. Browsers that can render text tracks in the TTML format should expose an as yet to be defined TTMLCue. Alternatively, browsers can also map the TTML features to WebVTTCue objects. Finally, browsers that cannot render TTML [[ttaf1-dfxp]] format data should expose them as DataCue objects [[HTML5]]. Each TTML subtitle sample consists of an XML document and creates a DataCue object with attributes sourced as follows: 
+            <p>
+              <table>
+                <thead>
+                  <th>Attribute</th>
+                  <th>How to source its value</th>
+                </thead>
+                <tr>
+                  <th>id</th>
+                  <td>Decimal representation of the ‘id’ attribute of the ‘head’ element in the XML document. Null if there is no ‘id’ attribute.</td>
+                </tr>
+                <tr>
+                  <th>startTime</th>
+                  <td>
+                    Value of the beginning media time of the top-level temporal interval of the XML document.
+                  </td>
+                </tr>
+                <tr>
+                  <th>endTime</th>
+                  <td>
+                    Value of the ending media time of the top-level temporal interval of the XML document.
+                  </td>
+                </tr>
+                <tr>
+                  <th>pauseOnExit</th>
+                  <td>"false"</td>
+                </tr>
+                <tr>
+                  <th>text</th>
+                  <td>The (UTF-16 encoded) character array composing the XML document.</td>
+                </tr>
+              </table>
+            </p>
+          </p>
+          <p>
+            TTML data may contain tunneled CEA708 captions [[SMPTE2052-11]]. Browsers that can render CEA708 data should expose it as defined for <a href='#CEA708Cue'>MPEG-2 TS CEA708 cues</a>.
+          </p>
+          <p>
+            3GPP timed text data is carried in ISOBMFF as described in [[3GPP-TT]]. Browsers that can render text tracks in the 3GPP Timed Text format should expose an as yet to be defined 3GPPCue. Alternatively, browsers can also map the 3GPP features to WebVTTCue objects.
+          </p>
         </li>
       </ol>
 
