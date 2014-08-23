@@ -3,8 +3,7 @@
   <head>
     <title>Sourcing In-band Media Resource Tracks from Media Containers into HTML</title>
     <meta charset='utf-8'>
-    <script src='http://www.w3.org/Tools/respec/respec-w3c-common'
-            async class='remove'></script>
+    <script src='http://www.w3.org/Tools/respec/respec-w3c-common' async class='remove'></script>
     <script class='remove'>
       var respecConfig = {
           // specification status (e.g. WD, LCWD, WG-NOTE, etc.). If in doubt use ED.
@@ -22,7 +21,7 @@
 
           // if the specification's copyright date is a range of years, specify
           // the start date here:
-          // copyrightStart: "2005"
+          copyrightStart:       "2014",
 
           // if there is a previously published draft, uncomment this and set its YYYY-MM-DD date
           // and its maturity status
@@ -73,6 +72,11 @@
           // !!!! IMPORTANT !!!! MAKE THE ABOVE BLINK IN YOUR HEAD
       };
     </script>
+    <!-- script to register bugs -->
+    <script src="https://dvcs.w3.org/hg/webcomponents/raw-file/tip/assets/scripts/bug-assist.js"></script>
+    <meta name="bug.short_desc" content="[InbandTracks] ">
+    <meta name="bug.product" content="HTML WG">
+    <meta name="bug.component" content="Sourcing In-band Media Resource Tracks">
     <style type="text/css">
       table {
         border-collapse: collapse;
@@ -87,6 +91,22 @@
         border-bottom: solid thin;
         vertical-align: top;
         padding: 0.2em;
+      }
+      /* fix bug entry form styling */
+      #bug-assist-form {
+        padding: 4px;
+        border: 1px solid red;
+        background-color: rgba(255, 255, 255, 0.6);
+        position: fixed;
+        top: 1em;
+        right: 1em;
+        width: 115px;
+        opacity: 0.8;
+        text-align: right;
+      }
+      /* move respec button out of the way of the bug button */
+      #respec-ui{
+          top: 100px !important;
       }
     </style>
   </head>
