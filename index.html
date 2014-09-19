@@ -172,6 +172,12 @@
               </td>
             </tr>
             <tr>
+              <th>inBandMetadataTrackDispatchType</th>
+              <td>
+                If @kind is "metadata" the concatenation of the AdaptationSet element and all child Role descriptors. The empty string otherwise.
+              </td>
+            </tr>
+            <tr>
               <th>kind</th>
               <td>
                 <p>Given URN="urn:mpeg:dash:role:2011":</p>
@@ -331,6 +337,12 @@
                <p>
                 In the case of CEA 708 closed captions, decimal representation of the 'caption_service_number' in the 'Caption Service Descriptor' in the PMT.
               </p>
+              </td>
+            </tr>
+            <tr>
+              <th>inBandMetadataTrackDispatchType</th>
+              <td>
+                If @kind is "metadata", then the concatenation of the 'stream_type' byte field in the program map table and 'ES_info_length' bytes following the 'ES_info_length' field expressed in hexadecimal using <a href="https://html.spec.whatwg.org/multipage/infrastructure.html#uppercase-ascii-hex-digits">uppercase ASCII hex digits</a>. The empty string otherwise.
               </td>
             </tr>
             <tr>
@@ -570,6 +582,12 @@
               </td>
             </tr>
             <tr>
+              <th>inBandMetadataTrackDispatchType</th>
+              <td>
+                If @kind is "metadata", then if a 'XMLMetaDataSampleEntry' box is present the concatenation of the string "metx", a U+0020 SPACE character, and the value of the 'namespace' field, otherwise, if a 'TextMetaDataSampleEntry' box is present the concatenation of the string "mett", a U+0020 SPACE character, and the value of the 'mime_format field', otherwise the empty string.
+              </td>
+            </tr>
+            <tr>
               <th>kind</th>
               <td><!-- see http://www.mp4ra.org/codecs.html -->
                 <ul>
@@ -781,6 +799,12 @@
               </td>
             </tr>
             <tr>
+              <th>inBandMetadataTrackDispatchType</th>
+              <td>
+                If @kind is "metadata", then the value of the 'CodecID' element. The empty string otherwise.
+              </td>
+            </tr>
+            <tr>
               <th>kind</th>
               <td>
                 <p>
@@ -945,6 +969,12 @@
               <th>id</th>
               <td>
                 Content of the 'name' message header field of the fisbone header in Ogg Skeleton. If no Skeleton header is available, use a decimal representation of the stream's serialnumber as given in the BOS.
+              </td>
+            </tr>
+            <tr>
+              <th>inBandMetadataTrackDispatchType</th>
+              <td>
+                If @kind is "metadata", then the value of the 'Role' header field. The empty string otherwise.
               </td>
             </tr>
             <tr>
