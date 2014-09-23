@@ -160,6 +160,9 @@
         </li>
 
         <li><p>Track Attributes for sourced Text Tracks</p>
+          <p>
+            Data for sourcing text track attributes may exist in the media content or in the MPD. Text track attribute values are first sourced from track data in the media container, as described for <a href='#mpeg2tstta'>text track attributes in MPEG-2 Transport Streams</a> and <a href='#mpeg4tta'>text track attributes in MPEG-4 ISOBMFF</a>. If a track attribute value cannot be determined from the media container, then the track attribute value is sourced from data in the MPD as follows:
+          </p>
           <table>
             <thead>
               <th>Attribute</th>
@@ -198,6 +201,9 @@
         </li>
 
         <li><p>Track Attributes for sourced Audio and Video Tracks</p>
+          <p>
+            Data for sourcing audio and video track attributes may exist in the media content or in the MPD. Audio and video track attribute values are first sourced from track data in the media container, as described for <a href='#mpeg2tsavta'>audio and video track attributes in MPEG-2 Transport Streams</a> and <a href='#mpeg4avta'>audio and video track attributes in MPEG-4 ISOBMFF</a>. If a track attribute value cannot be determined from the media container, then the track attribute value is sourced from data in the MPD as follows:
+          </p>
           <table>
             <thead>
               <th>Attribute</th>
@@ -318,7 +324,7 @@
           </ul>
         </li>
 
-        <li><p>Track Attributes for sourced Text Tracks</p>
+        <li id="mpeg2tstta"><p>Track Attributes for sourced Text Tracks</p>
           <table>
             <thead>
               <th>Attribute</th>
@@ -362,7 +368,7 @@
           </table>
         </li>
 
-        <li><p>Track Attributes for sourced Audio and Video Tracks</p>
+        <li id="mpeg2tsavta"><p>Track Attributes for sourced Audio and Video Tracks</p>
           <table>
             <thead>
               <th>Attribute</th>
@@ -557,7 +563,7 @@
           </ul>
         </li>
 
-        <li><p>Track Attributes for sourced Text Tracks</p>
+        <li id="mpeg4tta"><p>Track Attributes for sourced Text Tracks</p>
           <table>
             <thead>
               <th>Attribute</th>
@@ -605,7 +611,7 @@
           </table>
         </li>
 
-        <li><p>Track Attributes for sourced Audio and Video Tracks</p>
+        <li id="mpeg4avta"><p>Track Attributes for sourced Audio and Video Tracks</p>
           <table>
             <thead>
               <th>Attribute</th>
