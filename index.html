@@ -172,12 +172,6 @@
               </td>
             </tr>
             <tr>
-              <th>inBandMetadataTrackDispatchType</th>
-              <td>
-                If @kind is "metadata" the concatenation of the AdaptationSet element and all child Role descriptors. The empty string otherwise.
-              </td>
-            </tr>
-            <tr>
               <th>kind</th>
               <td>
                 <p>Given URN="urn:mpeg:dash:role:2011":</p>
@@ -198,6 +192,12 @@
               <th>language</th>
               <td>
                 Content of the 'lang' attribute in the AdaptationSet or ContentComponent element.
+              </td>
+            </tr>
+            <tr>
+              <th>inBandMetadataTrackDispatchType</th>
+              <td>
+                If @kind is "metadata" the concatenation of the AdaptationSet element and all child Role descriptors. The empty string otherwise.
               </td>
             </tr>
           </table>
@@ -340,12 +340,6 @@
               </td>
             </tr>
             <tr>
-              <th>inBandMetadataTrackDispatchType</th>
-              <td>
-                If @kind is "metadata", then the concatenation of the 'stream_type' byte field in the program map table and 'ES_info_length' bytes following the 'ES_info_length' field expressed in hexadecimal using <a href="https://html.spec.whatwg.org/multipage/infrastructure.html#uppercase-ascii-hex-digits">uppercase ASCII hex digits</a>. The empty string otherwise.
-              </td>
-            </tr>
-            <tr>
               <th>kind</th>
               <td>
                 <ul>
@@ -369,6 +363,12 @@
                   <li>"subtitles": Content of the 'ISO_639_language_code' field in the 'ISO_639_language_descriptor' in the elementary stream descriptor array in the PMT.</li>
                   <li>"metadata": The empty string.</li>
                 </ul>
+              </td>
+            </tr>
+            <tr>
+              <th>inBandMetadataTrackDispatchType</th>
+              <td>
+                If @kind is "metadata", then the concatenation of the 'stream_type' byte field in the program map table and 'ES_info_length' bytes following the 'ES_info_length' field expressed in hexadecimal using <a href="https://html.spec.whatwg.org/multipage/infrastructure.html#uppercase-ascii-hex-digits">uppercase ASCII hex digits</a>. The empty string otherwise.
               </td>
             </tr>
           </table>
@@ -582,12 +582,6 @@
               </td>
             </tr>
             <tr>
-              <th>inBandMetadataTrackDispatchType</th>
-              <td>
-                If @kind is "metadata", then if a 'XMLMetaDataSampleEntry' box is present the concatenation of the string "metx", a U+0020 SPACE character, and the value of the 'namespace' field, otherwise, if a 'TextMetaDataSampleEntry' box is present the concatenation of the string "mett", a U+0020 SPACE character, and the value of the 'mime_format field', otherwise the empty string.
-              </td>
-            </tr>
-            <tr>
               <th>kind</th>
               <td><!-- see http://www.mp4ra.org/codecs.html -->
                 <ul>
@@ -618,6 +612,21 @@
               <th>language</th>
               <td>
                 Content of the 'language' field in the MediaHeaderBox.
+              </td>
+            </tr>
+            <tr>
+              <th>inBandMetadataTrackDispatchType</th>
+              <td>
+                <ul>
+                  <li>@kind is "metadata":
+                    <ul>
+                      <li>if a 'XMLMetaDataSampleEntry' box is present the concatenation of the string "metx", a U+0020 SPACE character, and the value of the 'namespace' field</li>
+                      <li>if a 'TextMetaDataSampleEntry' box is present the concatenation of the string "mett", a U+0020 SPACE character, and the value of the 'mime_format field'</li>
+                      <li>otherwise the empty string</li>
+                    </ul>
+                  </li>
+                  <li>otherwise the empty string</li>
+                </ul>
               </td>
             </tr>
           </table>
@@ -799,12 +808,6 @@
               </td>
             </tr>
             <tr>
-              <th>inBandMetadataTrackDispatchType</th>
-              <td>
-                If @kind is "metadata", then the value of the 'CodecID' element. The empty string otherwise.
-              </td>
-            </tr>
-            <tr>
               <th>kind</th>
               <td>
                 <p>
@@ -828,6 +831,12 @@
               <th>language</th>
               <td>
                 Content of the 'language' field of the track.
+              </td>
+            </tr>
+            <tr>
+              <th>inBandMetadataTrackDispatchType</th>
+              <td>
+                If @kind is "metadata", then the value of the 'CodecID' element. The empty string otherwise.
               </td>
             </tr>
           </table>
@@ -947,12 +956,12 @@
 
         <li><p>Determining the type of track</p>
           <p>
-            A user agent recognises and supports data from a Ogg resource as being equivalent to a HTML track based on the value of the 'role' field of the fisbone header in Ogg Skeleton:
+            A user agent recognises and supports data from a Ogg resource as being equivalent to a HTML track based on the value of the 'Role' field of the fisbone header in Ogg Skeleton:
           </p>
           <ul>
-            <li>text track:  'role' starts with "text"</li>
-            <li>video track: 'role' starts with "video"</li>
-            <li>audio track: 'role' starts with "audio"</li>
+            <li>text track:  'Role' starts with "text"</li>
+            <li>video track: 'Role' starts with "video"</li>
+            <li>audio track: 'Role' starts with "audio"</li>
           </ul>
           <p>
             If no Skeleton track is available, determine the type based on the codec used in the BOS pages, e.g. Vorbis is an "audio" track and "theora" is a video track.
@@ -972,22 +981,16 @@
               </td>
             </tr>
             <tr>
-              <th>inBandMetadataTrackDispatchType</th>
-              <td>
-                If @kind is "metadata", then the value of the 'Role' header field. The empty string otherwise.
-              </td>
-            </tr>
-            <tr>
               <th>kind</th>
               <td>
                 <p>
-                  Map the content of the 'role' message header fields of Ogg Skeleton as follows:
+                  Map the content of the 'Role' message header fields of Ogg Skeleton as follows:
                 </p>
                 <ul>
-                  <li>"captions": 'role' is "text/captions“</li>
-                  <li>"subtitles": 'role' is "text/subtitle" or "text/karaoke“</li>
-                  <li>"descriptions": 'role' is "text/textaudiodesc“</li>
-                  <li>"chapters": 'role' is "text/chapters"</li>
+                  <li>"captions": 'Role' is "text/captions“</li>
+                  <li>"subtitles": 'Role' is "text/subtitle" or "text/karaoke“</li>
+                  <li>"descriptions": 'Role' is "text/textaudiodesc“</li>
+                  <li>"chapters": 'Role' is "text/chapters"</li>
                   <li>"metadata": otherwise</li>
                 </ul>
               </td>
@@ -1002,6 +1005,12 @@
               <th>language</th>
               <td>
                 Content of the 'language' message header field of the fisbone header. If no Skeleton header is available, the empty string.
+              </td>
+            </tr>
+            <tr>
+              <th>inBandMetadataTrackDispatchType</th>
+              <td>
+                If @kind is "metadata", then the value of the 'Role' header field. The empty string otherwise.
               </td>
             </tr>
           </table>
@@ -1023,18 +1032,18 @@
               <th>kind</th>
               <td>
                 <p>
-                  Map the content of the 'role' message header fields of Ogg Skeleton as follows:
+                  Map the content of the 'Role' message header fields of Ogg Skeleton as follows:
                 </p>
                 <ul>
-                  <li>"alternative": 'role' is "audio/alternate" or "video/alternate"</li>
-                  <li>"captions": 'role' is "video/captioned"</li>
-                  <li>"descriptions": 'role' is "audio/audiodesc"</li>
-                  <li>"main": 'role' is "audio/main" or "video/main"</li>
-                  <li>"main-desc": 'role' is "audio/described"</li>
-                  <li>"sign": 'role' is "video/sign"</li>
-                  <li>"subtitles": 'role' is "video/subtitled"</li>
-                  <li>"translation": 'role' is "audio/dub"</li>
-                  <li>"commentary": 'role' is "audio/commentary"</li>
+                  <li>"alternative": 'Role' is "audio/alternate" or "video/alternate"</li>
+                  <li>"captions": 'Role' is "video/captioned"</li>
+                  <li>"descriptions": 'Role' is "audio/audiodesc"</li>
+                  <li>"main": 'Role' is "audio/main" or "video/main"</li>
+                  <li>"main-desc": 'Role' is "audio/described"</li>
+                  <li>"sign": 'Role' is "video/sign"</li>
+                  <li>"subtitles": 'Role' is "video/subtitled"</li>
+                  <li>"translation": 'Role' is "audio/dub"</li>
+                  <li>"commentary": 'Role' is "audio/commentary"</li>
                   <li>"": otherwise</li>
                 </ul>
               </td>
