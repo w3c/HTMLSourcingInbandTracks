@@ -336,11 +336,11 @@
           <ul>
             <li>text track:
               <ul>
-                <li>The elementary stream with PID 0x02 or the stream type value is "0x02", "0x05" or between "0x80" and "0xFF". </li>
+                <li>The elementary stream with PID 0x02 or the stream type value is "0x02", "0x05", "0x80", between "0x82" and "0x86", or between "0x88 and 0xFF". </li>
                 <li><dfn id="captionservice">The CEA 708 caption service</dfn> [[CEA708]], as identified by a 'Caption Service Descriptor' [[ATSC65]] in the 'Elementary Stream Descriptors' in the PMT entry for a video stream with stream type 0x02 or 0x1B.</li>
               </ul>
-            <li>video track: the stream type value is "0x01", "0x02", "0x10", "0x1B", or between "0x1E" and "0x23"</li>
-            <li>audio track: the stream type value is "0x03", "0x04", "0x0F", "0x11", or "0x1C"</li>
+            <li>video track: the stream type value is "0x01", "0x02", "0x10", "0x1B", or between "0x1E" and "0x23".</li>
+            <li>audio track: the stream type value is "0x03", "0x04", "0x0F", "0x11", "0x1C", "0x81" or "0x87".</li>
           </ul>
         </li>
 
@@ -406,9 +406,21 @@
                 <ul>
                   <li>"alternative": not used</li>
                   <li>"captions": not used</li>
-                  <li>"descriptions": AC3 audio in MPEG-2 TS [[ATSC52]]: bsmod=2 and full_svc=0</li><!-- see http://www.atsc.org/cms/pdf/bootcamp/PSIP_Captions_rev2.pdf -->
+                  <li>"descriptions":
+                    <ul>
+                      <li>For AC-3 audio [[ATSC52]] if the 'bsmod' field is 2 and the 'full_svc' field is 0 in the 'AC-3_audio_stream_descriptor()' in the PMT</li>
+                      <li>For E-AC-3 audio [[ATSC52]] if the 'audio_service_type' field is 2 and the 'full_service_flag' is 0 in the 'E-AC-3_audio_descriptor()' in the PMT</li>
+                      <li>For AAC audio [[SCTE193-2]] if the 'AAC_service_type' field is 2 and the 'receiver_mix_rqd' is 1 in the 'MPEG_AAC_descriptor()' in the PMT</li>
+                    </ul>
+                  </li><!-- see http://www.atsc.org/cms/pdf/bootcamp/PSIP_Captions_rev2.pdf -->
                   <li>"main": first audio (video) elementary stream in the PMT</li>
-                  <li>"main-desc": AC3 audio in MPEG-2 TS: bsmod=2 and full_svc=1</li>
+                  <li>"main-desc":
+                    <ul>
+                      <li>For AC-3 audio [[ATSC52]] if the 'bsmod' field is 2 and the 'full_svc' field is 1 in the 'AC-3_audio_stream_descriptor()'</li>
+                      <li>For E-AC-3 audio [[ATSC52]] if the 'audio_service_type' field is 2 and the 'full_service_flag' is 1 in the 'E-AC-3_audio_descriptor()'</li>
+                      <li>For AAC audio [[SCTE193-2]] if the 'AAC_service_type' field is 2 and the 'receiver_mix_rqd' is 0 in the 'MPEG_AAC_descriptor()'</li>
+                    </ul>
+                  </li>
                   <li>"sign": not used</li>
                   <li>"subtitles": not used</li>
                   <li>"translation": not first audio elementary stream in the PMT and bsmod=0</li>
