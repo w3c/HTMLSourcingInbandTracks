@@ -336,6 +336,7 @@
           <p>
             Tracks are called "elementary streams" in a MPEG-2 Transport Stream (TS) [[MPEG2TS]]. The order in which elementary streams are listed in the "Program Map Table" (PMT) of a MPEG-2 TS is maintained when sourcing multiple MPEG-2 tracks into HTML.
           </p>
+          <p class='note'>The order of elementary streams in the PMT may change between when the media resource was created and when it is received by the user agent. Scripts should not infer any information from the ordering, or rely on any particular ordering being present.</p>
         </li>
 
         <li><p>Determining the type of track</p>
@@ -345,7 +346,7 @@
           <ul>
             <li>text track:
               <ul>
-                <li>The elementary stream with PID 0x02 or the stream type value is "0x02", "0x05" or between "0x80" and "0xFF". </li>
+                <li>The elementary stream with PID 0x02 or the 'stream_type' value is "0x02", "0x05" or between "0x80" and "0xFF". </li>
                 <li><dfn id="captionservice">The CEA 708 caption service</dfn> [[CEA708]], as identified by:
                   <ul>
                     <li>A 'caption_service_descriptor' [[ATSC65]] in the 'Elementary Stream Descriptors' in the PMT entry for a video stream with stream type 0x02 or 0x1B.</li>
@@ -353,9 +354,19 @@
                     <li>For stream type 0x1B, the presence of caption data in the ‘ATSC1_data()’ field [[SCTE128-1]].</li>
                   </ul>
                 </li>
+                <li>a DVB subtitle component [[DVB-SUB]] as identified by a 'subtitling_descriptor' [[DVB-SI]]in the 'Elementary Stream Descriptors' in the PMT entry for a stream with a 'stream_type' of  "0x06"</li>
+                <li>an ITU-R System B Teletext component [[DVB-TXT]] as identified by an 'teletext_descriptor' [[DVB-SI]] in the 'Elementary Stream Descriptors' in the PMT entry for a stream with a 'stream_type' of  "0x06"</li>
+                <li>a VBI data component [[DVB-VBI]] as identified by a 'VBI_data_descriptor' [[DVB-SI]] or a 'VBI_teletext_descriptor' [[DVB-SI]] in the 'Elementary Stream Descriptors' in the PMT entry for a stream with a 'stream_type' of  "0x06"</li>
               </ul>
-            <li>video track: the stream type value is "0x01", "0x02", "0x10", "0x1B", or between "0x1E" and "0x23".</li>
-            <li>audio track: the stream type value is "0x03", "0x04", "0x0F", "0x11", "0x1C", "0x81" or "0x87".</li>
+            <li>video track: the stream type value is "0x01", "0x02", "0x10", "0x1B", between "0x1E" and "0x24" or "0xEA".</li>
+            <li>audio track:
+              <ul>
+                <li>the stream type value is "0x03", "0x04", "0x0F", "0x11", "0x1C", "0x81" or "0x87".</li>
+                <li>an AC-3 audio component as identified by an 'AC-3_descriptor' [[DVB-SI]] in the 'Elementary Stream Descriptors' in the PMT entry for a stream with a 'stream_type' of  "0x06"</li>
+                <li>an Enhanced AC-3 audio component as identified by an 'enhanced_ac-3_descriptor' [[DVB-SI]]in the 'Elementary Stream Descriptors' in the PMT entry for a stream with a 'stream_type' of  "0x06"</li>
+                <li>a DTS&reg; audio component as identified by a 'DTS_audio_stream_descriptor' [[DVB-SI]] in the 'Elementary Stream Descriptors' in the PMT entry for a stream with a 'stream_type' of  "0x06"</li>
+                <li>a DTS-HD&reg; audio component as identified by a 'DTS-HD_audio_stream_descriptor' [[DVB-SI]] in the 'Elementary Stream Descriptors' in the PMT entry for a stream with a 'stream_type' of  "0x06"</li>
+              </ul>
           </ul>
         </li>
 
@@ -372,14 +383,40 @@
                <p>
                 In the case of CEA 708 closed captions, decimal representation of the 'caption_service_number' in the 'Caption Service Descriptor' in the PMT.
               </p>
+              <p>
+                If program 0 (zero) is present in the transport stream, a string of the format "OOOO.TTTT.SSSS.CC" consisting of the following, lower-case hexadecimal encoded fields:
+                <ul>
+                  <li>OOOO is the four character representation of the 16-bit 'original_network_id' [[DVB-SI]].</li>
+                  <li>TTTT is the four character representation of the 16-bit 'transport_stream_id' [[DVB-SI]].</li>
+                  <li>SSSS is the four character representation of the 16-bit 'service_id' [[DVB-SI]].</li>
+                  <li>CC is:
+                    <ul>
+                      <li>If a 'stream_identifier_descriptor' [[DVB-SI]] is present in the PMT, a two character representation of the 8-bit 'component_tag' value.</li>
+                      <li>Otherwise, a four character representation of the elementary stream's identifier (13-bit 'elementary_PID' field) in the PMT.</li>
+                    </ul>
+                  </li>
+                </ul>
+              </p>
               </td>
             </tr>
             <tr>
               <th>kind</th>
               <td>
                 <ul>
-                  <li>"captions": for a <a href="#captionservice">caption service</a></li>
-                  <li>"subtitles": if the stream type value is "0x82"</li>
+                  <li>"captions":
+                    <ul>
+                      <li>For a <a href="#captionservice">CEA708 caption service.</a></li>
+                      <li>for a DVB subtitle component [[DVB-SUB]] as identified by a 'subtitling_descriptor' [[DVB-SI]] in the PMT with a 'subtitling_type' in the range "0x20" to "0x25".</li>
+                      <li>an ITU-R System B Teletext component [[DVB-TXT]] as identified by an 'teletext_descriptor' [[DVB-SI]] with a 'teletext_type' value of "0x05" in the PMT</li>
+                      <li>a VBI data component [[DVB-VBI]] as identified by a 'VBI_teletext_descriptor' [[DVB-SI]] with a 'teletext_type' value of "0x05" in the PMT.</li>
+                    </ul>
+                  <li>"subtitles":
+                    <ul>
+                      <li>If the stream type value is "0x82".</li>
+                      <li>for a DVB subtitle component [[DVB-SUB]] as identified by a 'subtitling_descriptor' [[DVB-SI]] in the PMT with a 'subtitling_type' in the range "0x10" to "0x15".</li>
+                      <li>an ITU-R System B Teletext component [[DVB-TXT]] as identified by an 'teletext_descriptor' [[DVB-SI]] with a 'teletext_type' value of "0x02" in the PMT</li>
+                      <li>a VBI data component [[DVB-VBI]] as identified by a 'VBI_teletext_descriptor' [[DVB-SI]] with a 'teletext_type' value of "0x02" in the PMT.</li>
+                    </ul>
                   <li>"metadata": otherwise</li>
                 </ul>
               </td>
@@ -387,7 +424,9 @@
             <tr>
               <th>label</th>
               <td>
-                The DOMString representation of the 'component_name_string' field in the 'component_name_descriptor' [[ATSC65]] found immediately after the 'ES_info_length' field in the Program Map Table [[MPEG2TS]]. The empty string if the 'component_name_descriptor' is not present.
+                <ul>
+                  <li>If a 'component_name_descriptor' [[ATSC65]] is found immediately after the 'ES_info_length' field in the Program Map Table [[MPEG2TS]], the DOMString representation of the 'component_name_string' in that 'component_name_descriptor'.</li>
+                  <li>If a 'component_descriptor' [[DVB-SI]] for the component is present in the SDT or EIT, the DOMString representation of the content of the text field in that 'component_descriptor'</li>The empty string otherwise.
               </td>
             </tr>
             <tr>
@@ -396,16 +435,26 @@
                 <ul>
                   <li>"captions":
                     <ul>
-                      <li>Content of the 'language' field for the caption service in the 'caption_service_descriptor', if present.</li>
-                      <li>Otherwise:
+                      <li>For a <a href="#captionservice">CEA708 caption service.</a>
                         <ul>
-                          <li>For the first caption service, as identified by the 'service_number' field in the 'service_block' [[CEA708]] with a value of 1, the value of '@language' of the audio track where '@kind' has the value "main".</li>
+                          <li>Content of the 'language' field for the caption service in the 'caption_service_descriptor', if present.</li>
+                          <li>Otherwise, for the first caption service, as identified by the 'service_number' field in the 'service_block' [[CEA708]] with a value of 1, the value of '@language' of the audio track where '@kind' has the value "main".</li>
                           <li>The empty string for all other caption services, as identified by values greater than 1 in the 'service_number' field.</li>
                         </ul>
                       </li>
+                      <li>For a DVB subtitle component [[DVB-SUB]], the value of the 'ISO_639_language_code' field in the 'subtitling_descriptor' [[DVB-SI]] in the PMT</li>
+                      <li>For an ITU-R System B Teletext component [[DVB-TXT]], the value of the 'ISO_639_language_code' field in the 'teletext_descriptor' [[DVB-SI]] in the PMT</li>
+                      <li>For a VBI data component [[DVB-VBI]], the value of the 'ISO_639_language_code' field in the 'VBI_teletext_descriptor' [[DVB-SI]] in the PMT</li>
                     </ul>
                   </li>
-                  <li>"subtitles": Content of the 'ISO_639_language_code' field in the 'ISO_639_language_descriptor' in the elementary stream descriptor array in the PMT.</li>
+                  <li>"subtitles":
+                    <ul>
+                      <li> If 'stream_type' value is "0x82", the content of the 'ISO_639_language_code' field in the 'ISO_639_language_descriptor' in the elementary stream descriptor array in the PMT.</li>
+                      <li>for a DVB subtitle component [[DVB-SUB]], the value of the 'ISO_639_language_code' field in the 'subtitling_descriptor' [[DVB-SI]] in the PMT</li>
+                      <li>for an ITU-R System B Teletext component [[DVB-TXT]], the value of the 'ISO_639_language_code' field in the 'teletext_descriptor' [[DVB-SI]] in the PMT</li>
+                      <li>for a VBI data component [[DVB-VBI]], the value of the 'ISO_639_language_code' field in the 'VBI_teletext_descriptor' [[DVB-SI]] in the PMT</li>
+                    </ul>
+                  </li>
                   <li>"metadata": The empty string.</li>
                 </ul>
               </td>
@@ -428,49 +477,87 @@
             <tr>
               <th>id</th>
               <td>
-                Decimal representation of the elementary stream's identifier ('elementary_PID' field) in the PMT.
+                <ul>
+                  <li>Decimal representation of the elementary stream's identifier ('elementary_PID' field) in the PMT.</li>
+                  <li>If a program 0 (zero) is present in the transport stream, a string of the format "OOOO.TTTT.SSSS.CC" or "OOOO.TTTT.SSSS.CC&amp;CC", consisting of the following, lower-case hexadecimal encoded fields:
+                    <ul>
+                      <li>OOOO is the four character representation of the 16-bit 'original_network_id' [[DVB-SI]].</li>
+                      <li>TTTT is the four character representation of the 16-bit 'transport_stream_id' [[DVB-SI]].</li>
+                      <li>SSSS is the four character representation of the 16-bit 'service_id' [[DVB-SI]].</li>
+                      <li>CC is:
+                        <ul>
+                          <li>If a 'stream_identifier_descriptor' [[DVB-SI]] is present in the PMT, a two character representation of the 8-bit 'component_tag' value.</li>
+                          <li>Otherwise, a four character representation of the elementary stream's identifier (13-bit 'elementary_PID' field) in the PMT.</li>
+                        </ul>
+                      </li>
+                    </ul>
+                    <p>
+                      Where a track is derived from two components, the second form  ("CC&amp;CC") identifies the independent and dependent streams, where the first 'CC' identifies the independent stream, and the second 'CC' identifies the dependent stream. Otherwise the first form is used.
+                    </p>
+                  </li>
+                </ul>
               </td>
             </tr>
             <tr>
               <th>kind</th>
               <td>
                 <ul>
-                  <li>"alternative": not used</li>
-                  <li>"captions": not used</li>
-                  <li>"descriptions":
+                  <li>If a 'supplementary_audio_descriptor' [[DVB-SI]] is present in the PMT for an audio component, the value is derived according to the audio purpose defined in table&nbsp;J.3 of [[DVB-SI]] using the following rules:
                     <ul>
-                      <li>For AC-3 audio [[ATSC52]] if the 'bsmod' field is 2 and the 'full_svc' field is 0 in the 'AC-3_audio_stream_descriptor()' in the PMT</li>
-                      <li>For E-AC-3 audio [[ATSC52]] if the 'audio_service_type' field is 2 and the 'full_service_flag' is 0 in the 'E-AC-3_audio_descriptor()' in the PMT</li>
-                      <li>For AAC audio [[SCTE193-2]] if the 'AAC_service_type' field is 2 and the 'receiver_mix_rqd' is 1 in the 'MPEG_AAC_descriptor()' in the PMT</li>
-                    </ul>
-                  </li><!-- see http://www.atsc.org/cms/pdf/bootcamp/PSIP_Captions_rev2.pdf -->
-                  <li>"main": first audio (video) elementary stream in the PMT</li>
-                  <li>"main-desc":
-                    <ul>
-                      <li>For AC-3 audio [[ATSC52]] if the 'bsmod' field is 2 and the 'full_svc' field is 1 in the 'AC-3_audio_stream_descriptor()'</li>
-                      <li>For E-AC-3 audio [[ATSC52]] if the 'audio_service_type' field is 2 and the 'full_service_flag' is 1 in the 'E-AC-3_audio_descriptor()'</li>
-                      <li>For AAC audio [[SCTE193-2]] if the 'AAC_service_type' field is 2 and the 'receiver_mix_rqd' is 0 in the 'MPEG_AAC_descriptor()'</li>
+                      <li>"main" if PSI signalling of audio purpose indicates "Main audio" for the audio track that the user agent would select by default, otherwise to "translation"
+                      <p class='note'>Need to define how UA would select track by default.</p>
+                      </li>
+                      <li>components with an audio purpose of "Audio description (broadcast-mix)" map to "main-desc"</li>
+                      <li>components with an audio purpose of "Audio description (receiver-mix)":
+                        <ul>
+                          <li>The user agent exposes an audio track of @kind "main-desc" for each permitted combination of this track with another audio track as defined in annex J.2 of [[DVB-SI]]. Enabling this track results in the combination being presented.</li>
+                          <li>If the user agent can present the stream in isolation, it also exposes an audio track of @kind "descriptions" for this audio component.</li>
+                        </ul>
+                      </li>
+                      <li>components with an audio purpose of "Clean audio (broadcast-mix)", "Parametric data dependent stream", or "Unspecific audio for the general audience" map to "alternative"</li>
+                      <li>components with other audio purposes map to the empty string</li>
                     </ul>
                   </li>
-                  <li>"sign": not used</li>
-                  <li>"subtitles": not used</li>
-                  <li>"translation": not first audio elementary stream in the PMT and bsmod=0</li>
-                  <li>"commentary": not used</li>
-                  <li>"": otherwise</li>
+                  <li>Otherwise:
+                    <ul>
+                      <li>"descriptions":
+                        <ul>
+                          <li>For AC-3 audio [[ATSC52]] if the 'bsmod' field is 2 and the 'full_svc' field is 0 in the 'AC-3_audio_stream_descriptor()' in the PMT</li>
+                          <li>For E-AC-3 audio [[ATSC52]] if the 'audio_service_type' field is 2 and the 'full_service_flag' is 0 in the 'E-AC-3_audio_descriptor()' in the PMT</li>
+                          <li>For AAC audio [[SCTE193-2]] if the 'AAC_service_type' field is 2 and the 'receiver_mix_rqd' is 1 in the 'MPEG_AAC_descriptor()' in the PMT</li>
+                        </ul>
+                      </li><!-- see http://www.atsc.org/cms/pdf/bootcamp/PSIP_Captions_rev2.pdf -->
+                      <li>"main" if the first audio (video) elementary stream in the PMT and the 'audio_type' field in the 'ISO_639_language_descriptor', if present, is "0x00" or "0x01"</li>
+                      <li>"main-desc":
+                        <ul>
+                          <li>For AC-3 audio [[ATSC52]] if the 'bsmod' field is 2 and the 'full_svc' field is 1 in the 'AC-3_audio_stream_descriptor()'</li>
+                          <li>For E-AC-3 audio [[ATSC52]] if the 'audio_service_type' field is 2 and the 'full_service_flag' is 1 in the 'E-AC-3_audio_descriptor()'</li>
+                          <li>For AAC audio [[SCTE193-2]] if the 'AAC_service_type' field is 2 and the 'receiver_mix_rqd' is 0 in the 'MPEG_AAC_descriptor()'</li>
+                        </ul>
+                      </li>
+                      <li>"sign" video components with a 'component_descriptor' [[DVB-SI]] in the SDT or EIT, where the 'stream_content' is "0x3" and the 'component_type' is "0x30" or "0x31"</li>
+                      <li>"translation": not first audio elementary stream in the PMT and the 'audio_type' field in the 'ISO_639_language_descriptor' is "0x00" or "0x01" <font color='red'>and bsmod=0</font></li>
+                      <li>"": otherwise</li>
+                    </ul>
+                  </li>
                 </ul>
               </td>
             </tr>
             <tr>
               <th>label</th>
               <td>
-                The DOMString representation of the 'component_name_string' field in the 'component_name_descriptor' [[ATSC65]] found immediately after the 'ES_info_length' field in the Program Map Table [[MPEG2TS]]. The empty string if the 'component_name_descriptor' is not present.
+                <ul>
+                  <li>If a 'component_descriptor' [[DVB-SI]] is present in the SDT or EIT, the DOMString representation of the content of the text field in that 'component_descriptor'</li>
+                  <li>If a 'component_name_descriptor' [[ATSC65]] is present for this elementary in the Program Map Table [[MPEG2TS]], the DOMString representation of the 'component_name_string' field in that descriptor .</li>
+                  <li> The empty string otherwise.</li>
+                </ul>
               </td>
             </tr>
             <tr>
               <th>language</th>
               <td>@kind is:
                 <ul>
-                  <li> "descriptions" or "main-desc": Content of the 'language' field in the 'AC-3_audio_stream_descriptor' [[ATSC52]].</li>
+                  <li> "descriptions" or "main-desc": Content of the 'language' field in the 'AC-3_audio_stream_descriptor' or  'AC-3_audio_stream_descriptor' [[ATSC52]] if present.</li>
                   <li> otherwise: Content of the 'ISO_639_language_code' field in the 'ISO_639_language_descriptor'.</li>
                 </ul>
               </td>
@@ -521,82 +608,100 @@
             </li>
 
             <li><p><dfn id='CEA708Cue'>Captions cues</dfn><p>
-              <p>
-                MPEG-2 TS captions are in the CEA 708 format [[CEA708]]. Caption data is carried in the video stream in Picture User Data [[ATSC53-4]] for 'stream_type' 0x02 and in Supplemental Enhancement Information [[ATSC72-1]] for 'stream_type' 0x1B. Browsers that can render the CEA 708 format should expose them in as yet to be specified CEA708Cue objects. Alternatively, browsers can also map the CEA 708 features to WebVTTCue objects [[VTT708]]. Finally, browsers that cannot render CEA 708 captions should expose them as DataCue objects [[HTML5]]. In this case, each 'service block' in a digital TV closed caption (DTVCC) transport channel creates a DataCue object with TextTrackCue attributes sourced as follows:
-              </p>
-              <table>
-                <thead>
-                  <th>Attribute</th>
-                  <th>How to source its value</th>
-                </thead>
-                <tr>
-                  <th>id</th>
-                  <td>Decimal representation of the 'service_number' in the 'service_block'.</td>
-                </tr>
-                <tr>
-                  <th>startTime</th>
-                  <td>
-                    The time, in the HTML media resource timeline, that corresponds to the presentation time stamp for the video frame that contained the first 'Caption Channel Data Byte' of the 'service_block'.
-                  </td>
-                </tr>
-                <tr>
-                  <th>endTime</th>
-                  <td>
-                    The sum of the startTime and 4 seconds.
-                    <p class='note'>
-                      CEA 708 captions do not have an explicit end time - a rendering device derives the end time for a caption based on subsequent caption data. Setting endTime equal to startTime might be more appropriate but this would require better support for zero-length cues, as proposed in <a href = 'https://www.w3.org/Bugs/Public/show_bug.cgi?id=25693'>HTML Bug 25693</a>.
-                    </p>
-                  </td>
-                </tr>
-                <tr>
-                  <th>pauseOnExit</th>
-                  <td>"false"</td>
-                </tr>
-                <tr>
-                  <th>data</th>
-                  <td>The 'service_block'.</td>
-                </tr>
-              </table>
+              <ul>
+                <li>CEA 708
+                  <p>
+                    MPEG-2 TS captions in the CEA 708 format [[CEA708]] are carried in the video stream in Picture User Data [[ATSC53-4]] for 'stream_type' 0x02 and in Supplemental Enhancement Information [[ATSC72-1]] for 'stream_type' 0x1B. Browsers that can render the CEA 708 format should expose them in as yet to be specified CEA708Cue objects. Alternatively, browsers can also map the CEA 708 features to WebVTTCue objects [[VTT708]]. Finally, browsers that cannot render CEA 708 captions should expose them as DataCue objects [[HTML5]]. In this case, each 'service block' in a digital TV closed caption (DTVCC) transport channel creates a DataCue object with TextTrackCue attributes sourced as follows:
+                  </p>
+                  <table>
+                    <thead>
+                      <th>Attribute</th>
+                      <th>How to source its value</th>
+                    </thead>
+                    <tr>
+                      <th>id</th>
+                      <td>Decimal representation of the 'service_number' in the 'service_block'.</td>
+                    </tr>
+                    <tr>
+                      <th>startTime</th>
+                      <td>
+                        The time, in the HTML media resource timeline, that corresponds to the presentation time stamp for the video frame that contained the first 'Caption Channel Data Byte' of the 'service_block'.
+                      </td>
+                    </tr>
+                    <tr>
+                      <th>endTime</th>
+                      <td>
+                        The sum of the startTime and 4 seconds.
+                        <p class='note'>
+                          CEA 708 captions do not have an explicit end time - a rendering device derives the end time for a caption based on subsequent caption data. Setting endTime equal to startTime might be more appropriate but this would require better support for zero-length cues, as proposed in <a href = 'https://www.w3.org/Bugs/Public/show_bug.cgi?id=25693'>HTML Bug 25693</a>.
+                        </p>
+                      </td>
+                    </tr>
+                    <tr>
+                      <th>pauseOnExit</th>
+                      <td>"false"</td>
+                    </tr>
+                    <tr>
+                      <th>data</th>
+                      <td>The 'service_block'.</td>
+                    </tr>
+                  </table>
+                </li>
+                <li><p>DVB</p>
+                  <p>
+                    MPEG-2 TS captions in the DVB subtitle format [[DVB-SUB]], ITU-R System B Teletext [[DVB-TXT]] and VBI [[DVB-VBI]] formats are not exposed in a TextTrackCue.
+                  </p>
+                </li>
+              </ul>
             </li>
 
             <li><p>Subtitles cues</p>
-              <p>
-                MPEG-2 subtitles are in the SCTE 27 format [[SCTE27]]. Browsers that can render the SCTE 27 format should expose them in as yet to be specified SCTE27Cue objects. Alternatively, browsers can also map the SCTE 27 features to WebVTTCue object via an as yet to be specified mapping process. Finally, browsers that cannot render SCTE 27 subtitles, should expose them as DataCue objects [[HTML5]]. In this case, each 'section' in an elementary stream identified as a subtitles text track creates a DataCue object with TextTrackCue attributes sourced as follows:
-              </p>
-              <table>
-                <thead>
-                  <th>Attribute</th>
-                  <th>How to source its value</th>
-                </thead>
-                <tr>
-                  <th>id</th>
-                  <td>
-                    Decimal representation of the 'table_id' in the first 8 bits of the 'section' data.
-                  </td>
-                </tr>
-                <tr>
-                  <th>startTime</th>
-                  <td>
-                    The time, in the HTML media resource timeline, that corresponds to the 'display_in_PTS' field in the section data.
-                  </td>
-                </tr>
-                <tr>
-                  <th>endTime</th>
-                  <td>
-                    The sum of the startTime and the 'display_duration' field in the section data expressed in seconds.
-                  </td>
-                </tr>
-                <tr>
-                  <th>pauseOnExit</th>
-                  <td>"false"</td>
-                </tr>
-                <tr>
-                  <th>data</th>
-                  <td>
-                    The 'section_length' number of bytes immediately following the 'section_length' field in the 'section'.
-                  </td>
-                </tr>
-              </table>
+              <ul>
+                <li>SCTE 27
+                  <p>
+                    MPEG-2 TS subtitles in the SCTE 27 format [[SCTE27]] should should be exposed in an as yet to be specified SCTE27Cue objects. Alternatively, browsers can also map the SCTE 27 features to WebVTTCue object via an as yet to be specified mapping process. Finally, browsers that cannot render SCTE 27 subtitles, should expose them as DataCue objects [[HTML5]]. In this case, each 'section' in an elementary stream identified as a subtitles text track creates a DataCue object with TextTrackCue attributes sourced as follows:
+                  </p>
+                  <table>
+                    <thead>
+                      <th>Attribute</th>
+                      <th>How to source its value</th>
+                    </thead>
+                    <tr>
+                      <th>id</th>
+                      <td>
+                        Decimal representation of the 'table_id' in the first 8 bits of the 'section' data.
+                      </td>
+                    </tr>
+                    <tr>
+                      <th>startTime</th>
+                      <td>
+                        The time, in the HTML media resource timeline, that corresponds to the 'display_in_PTS' field in the section data.
+                      </td>
+                    </tr>
+                    <tr>
+                      <th>endTime</th>
+                      <td>
+                        The sum of the startTime and the 'display_duration' field in the section data expressed in seconds.
+                      </td>
+                    </tr>
+                    <tr>
+                      <th>pauseOnExit</th>
+                      <td>"false"</td>
+                    </tr>
+                    <tr>
+                      <th>data</th>
+                      <td>
+                        The 'section_length' number of bytes immediately following the 'section_length' field in the 'section'.
+                      </td>
+                    </tr>
+                  </table>
+                </li>
+                <li><p>DVB</p>
+                  <p>
+                    MPEG-2 TS subtitles in the DVB subtitle format [[DVB-SUB]], ITU-R System B Teletext [[DVB-TXT]] and VBI [[DVB-VBI]] formats are not exposed in a TextTrackCue.
+                  </p>
+                </li>
+              </ul>
             </li>
           </ol>
         </li>
