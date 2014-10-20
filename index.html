@@ -160,7 +160,9 @@
     <section id='mpegdash'>
       <h2>MPEG DASH</h2>
       <b>MIME type/subtype: application/dash+xml</b>
-
+      <p>
+        [[MPEGDASH]] defines formats for a media manifest, called MPD (Media Presentation Description), which references media containers, called media segments; and for media segments based on [[MPEG2TS]] or [[ISOBMFF]]. Processing of media manifests and segments to expose tracks to Web applications can be done natively in the browser or by a part of the web applications. When the browser natively processes MPD and media segments and handles adaptive aspects (i.e selecting the active representation in an AdaptationSet), it shall expose a track for each media component present in the selected Representation of the selected AdaptationSets, as defined in this document. When the Web applications processes the MPD and media segments, it relies on the MediaSource Extension ([[MSE]]) specification, and decides how many SourceBuffer objects are created. In this case, the tracks corresponding to those SourceBuffer objects are exposed according to MSE. Applications may configure some parameters for those exposed tracks using the trackDefaults object.
+      </p>
       <ol>
         <li><p>Track Order</p>
           <p>
