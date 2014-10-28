@@ -149,7 +149,9 @@
         For every MIME-type/subtype of an existing media container format, this specification defines the following information:
       </p>
       <ol>
-        <li>Track order.</li>
+        <li>Track order.
+        <p>Tracks sourced according to this specification are referenced by HTML <code>TrackList</code> objects (<code>audioTracks</code>, <code>videoTracks</code> or <code>textTracks</code>). The HTML 5 specification mandates that the tracks in those objects be consistently ordered. This requirement insures that the order of tracks is not changed when a track is added or removed, e.g. that <code>videoTracks[3]</code> points to the same object if the tracks with indices 0, 1, 2 and 3 were not removed. This also insures a deterministic result when calls to <code>getTrackById</code> are made with media resources, possibly invalid, that declares two tracks with the same id. This specification defines a consistent ordering of tracks between the media resource and <code>TrackList</code> objects when the media resource is consumed by the user agent. However, in some media workflows, the order of tracks in a media resource may be subject to changes (e.g. tracks may be added or removed) between authoring and publication. Applications associated with a media resource should not rely on this order of tracks being the same between when the media resource was authored and when it consumed by the user agent. All media resource formats used in this specification support identifying tracks using a unique identifier. This specification defines how those unique identifiers are mapped onto the <code>id</code> attribute of HTML Track objects. Application authors are encouraged to use the <code>id</code> attribute to identify tracks, rather than the index in a <code>TrackList</code> object.</p>
+        </li>
         <li>How to identify the type of tracks.</li>
         <li>Setting track attributes 'id', 'kind', 'language' and 'label' for sourced Text Tracks.</li>
         <li>Setting track attributes 'id', 'kind', 'language' and 'label' for sourced Audio and Video tracks.</li>
