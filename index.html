@@ -131,6 +131,8 @@
       <p>
         The specification maintains mappings from in-band audio, video and other data tracks of media resources to HTML <code>VideoTrack</code>, <code>AudioTrack</code>, and <code>TextTrack</code> objects and their attribute values.
       </p>
+      <p>This specification defines the mapping of tracks from media resources depending on the MIME type of that resource. If an implementation claims to support that MIME type and exposes a track from a resource of that type, the exposed track must conform to this specification.</p>
+      <p>Which actual tracks are exposed by a user agent from a supported media resource is implementation dependent. A user agent may expose tracks, for which it supports parsing, decoding and rendering, for playback selection by the web application or user. A user agent may also decide to expose tracks coded in formats it is not able to decode, but which it can identify, and describe through metadata such as the HTML <code>kind</code> attribute and others as defined in this specification. For text tracks, the track content may be exposed to the Web application via TextTrackCue or DataCue objects.</p>
       <p>
         A generic rule to follow is that a track as exposed in HTML only ever represents a single semantic concept. When mapping from a media resource, sometimes an in-band track does not relate 1-to-1 to a HTML text, audio or video track.
       </p>
