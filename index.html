@@ -227,6 +227,12 @@
                 If @kind is "metadata" the concatenation of the AdaptationSet element and all child Role descriptors. The empty string otherwise.
               </td>
             </tr>
+            <tr>
+              <th>mode</th>
+              <td>
+                "disabled"
+              </td>
+            </tr>
           </table>
         </li>
 
@@ -467,6 +473,12 @@
               <th>inBandMetadataTrackDispatchType</th>
               <td>
                 If @kind is "metadata", then the concatenation of the 'stream_type' byte field in the program map table and 'ES_info_length' bytes following the 'ES_info_length' field expressed in hexadecimal using <a href="https://html.spec.whatwg.org/multipage/infrastructure.html#uppercase-ascii-hex-digits">uppercase ASCII hex digits</a>. The empty string otherwise.
+              </td>
+            </tr>
+            <tr>
+              <th>mode</th>
+              <td>
+                "disabled"
               </td>
             </tr>
           </table>
@@ -795,6 +807,12 @@
                 </ul>
               </td>
             </tr>
+            <tr>
+              <th>mode</th>
+              <td>
+                "disabled"
+              </td>
+            </tr>
           </table>
         </li>
 
@@ -1005,6 +1023,12 @@
                 If @kind is "metadata", then the value of the 'CodecID' element. The empty string otherwise.
               </td>
             </tr>
+            <tr>
+              <th>mode</th>
+              <td>
+                "disabled"
+              </td>
+            </tr>
           </table>
           <p>
             Tracks of kind "chapters" are found in the "Chapters" section of the WebM file Segment, which are all at the beginning of the WebM file, such that chapters can be used for navigation. The details of this mapping have not been specified yet and simply point to the more powerful Matroska chapter specification [[Matroska]]. Presumably, the 'id' attribute could be found in 'EditionUID', 'label' is empty, and 'language' can come from the first ChapterAtom's 'ChapLanguage' value.
@@ -1177,6 +1201,12 @@
               <th>inBandMetadataTrackDispatchType</th>
               <td>
                 If @kind is "metadata", then the value of the 'Role' header field. The empty string otherwise.
+              </td>
+            </tr>
+            <tr>
+              <th>mode</th>
+              <td>
+                "disabled"
               </td>
             </tr>
           </table>
