@@ -129,21 +129,21 @@
     <section>
       <h2>Introduction</h2>
       <p>
-        The specification maintains mappings from in-band audio, video and other data tracks of media resources to HTML VideoTrack, AudioTrack, and TextTrack objects and their attribute values.
+        The specification maintains mappings from in-band audio, video and other data tracks of media resources to HTML <code>VideoTrack</code>, <code>AudioTrack</code>, and <code>TextTrack</code> objects and their attribute values.
       </p>
       <p>
         A generic rule to follow is that a track as exposed in HTML only ever represents a single semantic concept. When mapping from a media resource, sometimes an in-band track does not relate 1-to-1 to a HTML text, audio or video track.
       </p>
-      <p class="note">For example, a HTML TextTrack object is either a subtitle track or a caption track, never both. However, in-band text tracks may encapsulate caption and subtitle cues of the same language as a single in-band track. Since a caption track is essentially a subtitle track with additional cues of transcripts of audio-only information, such an encapsulation in a single in-band track can save space. In HTML, these tracks should be exposed as two TextTrack objects, since they represent different semantic concepts. The cues appear in their relevant tracks - subtitle cues would be present in both. This allows users to choose between the two tracks and activate the desired one in the same manner that they do when the two tracks are provided through two track elements.
+      <p class="note">For example, a HTML <code>TextTrack</code> object is either a subtitle track or a caption track, never both. However, in-band text tracks may encapsulate caption and subtitle cues of the same language as a single in-band track. Since a caption track is essentially a subtitle track with additional cues of transcripts of audio-only information, such an encapsulation in a single in-band track can save space. In HTML, these tracks should be exposed as two <code>TextTrack</code> objects, since they represent different semantic concepts. The cues appear in their relevant tracks - subtitle cues would be present in both. This allows users to choose between the two tracks and activate the desired one in the same manner that they do when the two tracks are provided through two track elements.
       </p>
       <p class="note">
         A similar logic applies to in-band text tracks that have subtitle cues of different languages mixed together in one track. They, too, should be exposed in a track of their own language each.
       </p>
       <p class="note">
-        A further example is when a UA decides to implement rendering for a caption track but without exposing the caption track through the TextTrack API. To the Web developer and the Web page user, such a video appears as though it has burnt-in captions. Therefore, the UA could expose two video tracks on the HTMLMediaElement - one with captions and a kind="captions" and one without captions with a kind="main". In this way, the user and the Web developer still get the choice of whether to see the video with or without captions.
+        A further example is when a UA decides to implement rendering for a caption track but without exposing the caption track through the <code>TextTrack</code> API. To the Web developer and the Web page user, such a video appears as though it has burnt-in captions. Therefore, the UA could expose two video tracks on the HTMLMediaElement - one with captions and a <code>kind</code> attribute set to <code>captions</code> and one without captions with a <code>kind</code> attribute set to <code>main</code>. In this way, the user and the Web developer still get the choice of whether to see the video with or without captions.
       </p>
       <p>
-        Another generic rule to follow for in-band data tracks is that in order to map them to TextTrack objects, the contents of the track need to be mapped to media-time aligned cues that relate to a non-zero interval of time.
+        Another generic rule to follow for in-band data tracks is that in order to map them to <code>TextTrack</code> objects, the contents of the track need to be mapped to media-time aligned cues that relate to a non-zero interval of time.
       </p>
       <p>
         For every MIME-type/subtype of an existing media container format, this specification defines the following information:
@@ -153,17 +153,17 @@
         <p>Tracks sourced according to this specification are referenced by HTML <code>TrackList</code> objects (<code>audioTracks</code>, <code>videoTracks</code> or <code>textTracks</code>). The [[HTML5]]/[[HTML]] specification mandates that the tracks in those objects be consistently ordered. This requirement insures that the order of tracks is not changed when a track is added or removed, e.g. that <code>videoTracks[3]</code> points to the same object if the tracks with indices 0, 1, 2 and 3 were not removed. This also insures a deterministic result when calls to <code>getTrackById</code> are made with media resources, possibly invalid, that declares two tracks with the same id. This specification defines a consistent ordering of tracks between the media resource and <code>TrackList</code> objects when the media resource is consumed by the user agent. However, in some media workflows, the order of tracks in a media resource may be subject to changes (e.g. tracks may be added or removed) between authoring and publication. Applications associated with a media resource should not rely on this order of tracks being the same between when the media resource was authored and when it consumed by the user agent. All media resource formats used in this specification support identifying tracks using a unique identifier. This specification defines how those unique identifiers are mapped onto the <code>id</code> attribute of HTML Track objects. Application authors are encouraged to use the <code>id</code> attribute to identify tracks, rather than the index in a <code>TrackList</code> object.</p>
         </li>
         <li>How to identify the type of tracks.</li>
-        <li>Setting track attributes 'id', 'kind', 'language' and 'label' for sourced Text Tracks.</li>
-        <li>Setting track attributes 'id', 'kind', 'language' and 'label' for sourced Audio and Video tracks.</li>
+        <li>Setting the attributes <code>id</code>, <code>kind</code>, <code>language</code> and <code>label</code> for sourced <code>TextTrack</code> objects.</li>
+        <li>Setting the attributes <code>id</code>, <code>kind</code>, <code>language</code> and <code>label</code> for sourced <code>AudioTrack</code> and <code>VideoTrack</code> objects.</li>
         <li>Mapping Text Track content into text track cues.</li>
       </ol>
     </section>
 
     <section id='mpegdash'>
       <h2>MPEG DASH</h2>
-      <b>MIME type/subtype: application/dash+xml</b>
+      <b>MIME type/subtype: <code>application/dash+xml</code></b>
       <p>
-        [[MPEGDASH]] defines formats for a media manifest, called MPD (Media Presentation Description), which references media containers, called media segments. [[MPEGDASH]] also defines some media segments formats based on [[MPEG2TS]] or [[ISOBMFF]]. Processing of media manifests and segments to expose tracks to Web applications can be done by the user agent. Alternatively, a web application can process the manifests and segments to expose tracks. When the user agent processes MPD and media segments directly, it exposes tracks for AdaptationSets and ContentComponents, as defined in this document. When the Web application processes the MPD and media segments, it passes media segments to the user agent according to the MediaSource Extension ([MSE]) specification. In this case, the tracks are exposed by the user agent according to MSE. The Web application may set default track attributes from MPD data, using the trackDefaults object, that will be used by the user agent to set attributes not set from initialization segment data.
+        [[MPEGDASH]] defines formats for a media manifest, called MPD (Media Presentation Description), which references media containers, called media segments. [[MPEGDASH]] also defines some media segments formats based on [[MPEG2TS]] or [[ISOBMFF]]. Processing of media manifests and segments to expose tracks to Web applications can be done by the user agent. Alternatively, a web application can process the manifests and segments to expose tracks. When the user agent processes MPD and media segments directly, it exposes tracks for <code>AdaptationSet</code> and <code>ContentComponent</code> elements, as defined in this document. When the Web application processes the MPD and media segments, it passes media segments to the user agent according to the MediaSource Extension ([MSE]) specification. In this case, the tracks are exposed by the user agent according to MSE. The Web application may set default track attributes from MPD data, using the <code>trackDefaults</code> object, that will be used by the user agent to set attributes not set from initialization segment data.
       </p>
       <ol>
         <li><p>Track Order</p>
@@ -177,9 +177,9 @@
             A user agent recognises and supports data from a MPEG DASH media resource as being equivalent to a HTML track based on the AdaptationSet or ContentComponent mimeType:
           </p>
           <ul>
-            <li>text track: the mimeType is of main type "application" or "text"</li>
-            <li>video track: the mimeType is of main type "video"</li>
-            <li>audio track: the mimeType is of main type "audio"</li>
+            <li>text track: the <code>mimeType</code> is of main type "<code>application</code>" or "<code>text</code>"</li>
+            <li>video track: the <code>mimeType</code> is of main type "<code>video</code>"</li>
+            <li>audio track: the <code>mimeType</code> is of main type "<code>audio</code>"</li>
           </ul>
         </li>
 
@@ -193,44 +193,44 @@
               <th>How to source its value</th>
             </thead>
             <tr>
-              <th>id</th>
+              <th><code>id</code></th>
               <td>
-                Content of the 'id' attribute in the AdaptationSet or ContentComponent element. Empty string if 'id' attribute is not present.
+                Content of the <code>id</code> attribute in the <code>AdaptationSet</code> or <code>ContentComponent</code> element. Empty string if <code>id</code> attribute is not present.
               </td>
             </tr>
             <tr>
-              <th>kind</th>
+              <th><code>kind</code></th>
               <td>
-                <p>Given URN="urn:mpeg:dash:role:2011":</p>
+                <p>Given URN="<code>urn:mpeg:dash:role:2011</code>":</p>
                 <ul>
-                  <li>"captions": if the role descriptor's value is "caption"</li>
-                  <li>"subtitles": if the role descriptor's value is "subtitle"</li>
-                  <li>"metadata": otherwise</li>
+                  <li>"<code>captions</code>": if the <code>Role</code> descriptor's value is "<code>caption</code>"</li>
+                  <li>"<code>subtitles</code>": if the <code>Role</code> descriptor's value is "<code>subtitle</code>"</li>
+                  <li>"<code>metadata</code>": otherwise</li>
                 </ul>
               </td>
             </tr>
             <tr>
-              <th>label</th>
+              <th><code>label</code></th>
               <td>
                 The empty string.
               </td>
             </tr>
             <tr>
-              <th>language</th>
+              <th><code>language</code></th>
               <td>
-                Content of the 'lang' attribute in the AdaptationSet or ContentComponent element.
+                Content of the <code>lang</code> attribute in the <code>AdaptationSet</code> or <code>ContentComponent</code> element.
               </td>
             </tr>
             <tr>
-              <th>inBandMetadataTrackDispatchType</th>
+              <th><code>inBandMetadataTrackDispatchType</code></th>
               <td>
-                If @kind is "metadata" the concatenation of the AdaptationSet element and all child Role descriptors. The empty string otherwise.
+                If <code>kind</code> is "<code>metadata</code>" the concatenation of the <code>AdaptationSet</code> element and all child <code>Role</code> descriptors. The empty string otherwise.
               </td>
             </tr>
             <tr>
-              <th>mode</th>
+              <th><code>mode</code></th>
               <td>
-                "disabled"
+                "<code>disabled</code>"
               </td>
             </tr>
           </table>
@@ -246,39 +246,39 @@
               <th>How to source its value</th>
             </thead>
             <tr>
-              <th>id</th>
+              <th><code>id</code></th>
               <td>
-                Content of the 'id' attribute in the AdaptationSet or ContentComponent element. Empty string if 'id' attribute is not present.
+                Content of the <code>id</code> attribute in the <code>AdaptationSet</code> or <code>ContentComponent</code> element. Empty string if the <code>id</code> attribute is not present.
               </td>
             </tr>
             <tr>
-              <th>kind</th>
+              <th><code>kind</code></th>
               <td>
-                <p>Given a role scheme of "urn:mpeg:dash:role:2011", determine the 'kind' attribute from the value of the role descriptors in the AdaptationSet element.</p>
+                <p>Given a <code>Role</code> scheme of "<code>urn:mpeg:dash:role:2011</code>", determine the <code>kind</code> attribute from the value of the <code>Role</code> descriptors in the <code>AdaptationSet</code> element.</p>
                 <ul>
-                  <li>"alternative": if the role is "alternate" but not also "main" or "commentary", or "dub"</li>
-                  <li>"captions": if the role is "caption" and also "main"</li>
-                  <li>"descriptions": if the role is "description" and also "supplementary"</li>
-                  <li>"main": if the role is "main" but not also "caption", "subtitle", or "dub"</li>
-                  <li>"main-desc": if the role is "main" and also "description"</li>
-                  <li>"sign": not used</li>
-                  <li>"subtitles": if the role is "subtitle" and also "main"</li>
-                  <li>"translation": if the role is "dub" and also "main"</li>
-                  <li>"commentary": if the role is "commentary" but not also "main"</li>
+                  <li>"<code>alternative</code>": if the role is "<code>alternate</code>" but not also "<code>main</code>" or "<code>commentary</code>", or "<code>dub</code>"</li>
+                  <li>"<code>captions</code>": if the role is "<code>caption</code>" and also "<code>main</code>"</li>
+                  <li>"<code>descriptions</code>": if the role is "<code>description</code>" and also "<code>supplementary</code>"</li>
+                  <li>"<code>main</code>": if the role is "<code>main</code>" but not also "<code>caption</code>", "<code>subtitle</code>", or "<code>dub</code>"</li>
+                  <li>"<code>main-desc</code>": if the role is "<code>main</code>" and also "<code>description</code>"</li>
+                  <li>"<code>sign</code>": not used</li>
+                  <li>"<code>subtitles</code>": if the role is "<code>subtitle</code>" and also "<code>main</code>"</li>
+                  <li>"<code>translation</code>": if the role is "<code>dub</code>" and also "<code>main</code>"</li>
+                  <li>"<code>commentary</code>": if the role is "<code>commentary</code>" but not also "<code>main</code>"</li>
                   <li>"": otherwise</li>
                 </ul>
               </td>
             </tr>
             <tr>
-              <th>label</th>
+              <th><code>label</code></th>
               <td>
                 The empty string.
               </td>
             </tr>
             <tr>
-              <th>language</th>
+              <th><code>language</code></th>
               <td>
-                Content of the 'lang' attribute in the AdaptationSet or ContentComponent element.
+                Content of the <code>lang</code> attribute in the <code>AdaptationSet</code> or <code>ContentComponent</code> element.
               </td>
             </tr>
           </table>
@@ -286,13 +286,13 @@
 
         <li><p>Mapping Text Track content into text track cues</p>
           <p>
-            TextTrackCues may be sourced from DASH media content in the WebVTT, TTML, MPEG-2 TS or ISOBMFF format. 
+            <code>TextTrackCue</code> objects may be sourced from DASH media content in the WebVTT, TTML, MPEG-2 TS or ISOBMFF format. 
           </p>
           <p>
-            Media content with the MIME type "text/vtt" is in the WebVTT format and should be exposed as a VTTCue as defined in [[WEBVTT]].
+            Media content with the MIME type "<code>text/vtt</code>" is in the WebVTT format and should be exposed as a <code>VTTCue</code> object as defined in [[WEBVTT]].
           </p>
           <p>
-            Media content with the MIME type "application/ttml+xml" is in the TTML format and should be exposed as an as yet to be defined TTMLCue. Alternatively, browsers can also map the TTML features to WebVTTCue objects. Finally, browsers that cannot render TTML [[ttaf1-dfxp]] format data should expose them as DataCue objects [[HTML5]]. In this case, the TTML file must be parsed in its entirety and then converted into a sequence of TTML Intermediate Synchronic Documents (ISDs). Each ISD creates a DataCue object with attributes sourced as follows: 
+            Media content with the MIME type "<code>application/ttml+xml</code>" is in the TTML format and should be exposed as an as yet to be defined <code>TTMLCue</code> object. Alternatively, browsers can also map the TTML features to <code>VTTCue</code> objects. Finally, browsers that cannot render TTML [[ttaf1-dfxp]] format data should expose them as <code>DataCue</code> objects [[HTML5]]. In this case, the TTML file must be parsed in its entirety and then converted into a sequence of TTML Intermediate Synchronic Documents (ISDs). Each ISD creates a <code>DataCue</code> object with attributes sourced as follows: 
             <p>
               <table>
                 <thead>
@@ -300,37 +300,37 @@
                   <th>How to source its value</th>
                 </thead>
                 <tr>
-                  <th>id</th>
-                  <td>Decimal representation of the ‘id’ attribute of the ‘head’ element in the XML document. Null if there is no ‘id’ attribute.</td>
+                  <th><code>id</code></th>
+                  <td>Decimal representation of the <code>id</code> attribute of the <code>head</code> element in the XML document. Null if there is no <code>id</code> attribute.</td>
                 </tr>
                 <tr>
-                  <th>startTime</th>
+                  <th><code>startTime</code></th>
                   <td>
                     Value of the beginning media time of the active temporal interval of the ISD.
                   </td>
                 </tr>
                 <tr>
-                  <th>endTime</th>
+                  <th><code>endTime</code></th>
                   <td>
                     Value of the ending media time of the active temporal interval of the ISD.
                   </td>
                 </tr>
                 <tr>
-                  <th>pauseOnExit</th>
-                  <td>"false"</td>
+                  <th><code>pauseOnExit</code></th>
+                  <td>"<code>false</code>"</td>
                 </tr>
                 <tr>
-                  <th>data</th>
-                  <td>The (UTF-16 encoded) ArrayBuffer composing the ISD resource.</td>
+                  <th><code>data</code></th>
+                  <td>The (UTF-16 encoded) <code>ArrayBuffer</code> composing the ISD resource.</td>
                 </tr>
               </table>
             </p>
           </p>
           <p>
-            Media content with the MIME type "application/mp4"  or "video/mp4" is in the ISOBMFF format and should be exposed following the same rules as for <a href='#ISOBMFF-TT'>ISOBMFF text track</a>.
+            Media content with the MIME type "<code>application/mp4</code>"  or "<code>video/mp4</code>" is in the [[ISOBMFF]] format and should be exposed following the same rules as for <a href='#ISOBMFF-TT'>ISOBMFF text track</a>.
           </p>
           <p>
-            Media content with the MIME type "video/mp2t" is in the MPEG-2 TS format and should be exposed following the same rules as for <a href='#MPEG2TS-TT'>MPEG-2 TS text track</a>.
+            Media content with the MIME type "<code>video/mp2t</code>" is in the MPEG-2 TS format and should be exposed following the same rules as for <a href='#MPEG2TS-TT'>MPEG-2 TS text track</a>.
           </p>
         </li>
       </ol>
@@ -339,7 +339,7 @@
 
     <section id='mpeg2ts'>
       <h2>MPEG-2 Transport Streams</h2>
-      <b>MIME type/subtype: audio/mp2t , video/mp2t</b>
+      <b>MIME type/subtype: <code>audio/mp2t</code>, <code>video/mp2t</code></b>
 
       <ol>
         <li><p>Track Order</p>
@@ -351,31 +351,31 @@
 
         <li><p>Determining the type of track</p>
           <p>
-            A user agent recognises and supports data from a MPEG-2 TS resource as being equivalent to a HTML track based on the value of the 'stream_id' field of an elementary stream as given in a Transport or Program Stream header and which maps to a "stream type":
+            A user agent recognises and supports data from a MPEG-2 TS resource as being equivalent to a HTML track based on the value of the <code>stream_id</code> field of an elementary stream as given in a Transport or Program Stream header and which maps to a "stream type":
           </p>
           <ul>
             <li>text track:
               <ul>
-                <li>The elementary stream with PID 0x02 or the 'stream_type' value is "0x02", "0x05" or between "0x80" and "0xFF". </li>
+                <li>The elementary stream with PID 0x02 or the <code>stream_type</code> value is "0x02", "0x05" or between "0x80" and "0xFF". </li>
                 <li><dfn id="captionservice">The CEA 708 caption service</dfn> [[CEA708]], as identified by:
                   <ul>
-                    <li>A 'caption_service_descriptor' [[ATSC65]] in the 'Elementary Stream Descriptors' in the PMT entry for a video stream with stream type 0x02 or 0x1B.</li>
-                    <li>For 'stream_type' 0x02, the presence of caption data in the 'user_data()' field [[ATSC52]].</li>
-                    <li>For stream type 0x1B, the presence of caption data in the ‘ATSC1_data()’ field [[SCTE128-1]].</li>
+                    <li>A <code>caption_service_descriptor</code> [[ATSC65]] in the 'Elementary Stream Descriptors' in the PMT entry for a video stream with stream type 0x02 or 0x1B.</li>
+                    <li>For <code>stream_type</code> 0x02, the presence of caption data in the <code>user_data()</code> field [[ATSC52]].</li>
+                    <li>For <code>stream_type</code> 0x1B, the presence of caption data in the <code>ATSC1_data()</code> field [[SCTE128-1]].</li>
                   </ul>
                 </li>
-                <li>a DVB subtitle component [[DVB-SUB]] as identified by a 'subtitling_descriptor' [[DVB-SI]]in the 'Elementary Stream Descriptors' in the PMT entry for a stream with a 'stream_type' of  "0x06"</li>
-                <li>an ITU-R System B Teletext component [[DVB-TXT]] as identified by an 'teletext_descriptor' [[DVB-SI]] in the 'Elementary Stream Descriptors' in the PMT entry for a stream with a 'stream_type' of  "0x06"</li>
-                <li>a VBI data component [[DVB-VBI]] as identified by a 'VBI_data_descriptor' [[DVB-SI]] or a 'VBI_teletext_descriptor' [[DVB-SI]] in the 'Elementary Stream Descriptors' in the PMT entry for a stream with a 'stream_type' of  "0x06"</li>
+                <li>a DVB subtitle component [[DVB-SUB]] as identified by a <code>subtitling_descriptor</code> [[DVB-SI]]in the 'Elementary Stream Descriptors' in the PMT entry for a stream with a <code>stream_type</code> of "0x06"</li>
+                <li>an ITU-R System B Teletext component [[DVB-TXT]] as identified by an <code>teletext_descriptor</code> [[DVB-SI]] in the 'Elementary Stream Descriptors' in the PMT entry for a stream with a <code>stream_type</code> of "0x06"</li>
+                <li>a VBI data component [[DVB-VBI]] as identified by a <code>VBI_data_descriptor</code> [[DVB-SI]] or a <code>VBI_teletext_descriptor</code> [[DVB-SI]] in the 'Elementary Stream Descriptors' in the PMT entry for a stream with a <code>stream_type</code> of "0x06"</li>
               </ul>
-            <li>video track: the stream type value is "0x01", "0x02", "0x10", "0x1B", between "0x1E" and "0x24" or "0xEA".</li>
+            <li>video track: the <code>stream_type</code> value is "0x01", "0x02", "0x10", "0x1B", between "0x1E" and "0x24" or "0xEA".</li>
             <li>audio track:
               <ul>
-                <li>the stream type value is "0x03", "0x04", "0x0F", "0x11", "0x1C", "0x81" or "0x87".</li>
-                <li>an AC-3 audio component as identified by an 'AC-3_descriptor' [[DVB-SI]] in the 'Elementary Stream Descriptors' in the PMT entry for a stream with a 'stream_type' of  "0x06"</li>
-                <li>an Enhanced AC-3 audio component as identified by an 'enhanced_ac-3_descriptor' [[DVB-SI]]in the 'Elementary Stream Descriptors' in the PMT entry for a stream with a 'stream_type' of  "0x06"</li>
-                <li>a DTS&reg; audio component as identified by a 'DTS_audio_stream_descriptor' [[DVB-SI]] in the 'Elementary Stream Descriptors' in the PMT entry for a stream with a 'stream_type' of  "0x06"</li>
-                <li>a DTS-HD&reg; audio component as identified by a 'DTS-HD_audio_stream_descriptor' [[DVB-SI]] in the 'Elementary Stream Descriptors' in the PMT entry for a stream with a 'stream_type' of  "0x06"</li>
+                <li>the <code>stream_type</code> value is "0x03", "0x04", "0x0F", "0x11", "0x1C", "0x81" or "0x87".</li>
+                <li>an AC-3 audio component as identified by an <code>AC-3_descriptor</code> [[DVB-SI]] in the 'Elementary Stream Descriptors' in the PMT entry for a stream with a <code>stream_type</code> of "0x06"</li>
+                <li>an Enhanced AC-3 audio component as identified by an <code>enhanced_ac-3_descriptor</code> [[DVB-SI]]in the 'Elementary Stream Descriptors' in the PMT entry for a stream with a <code>stream_type</code> of "0x06"</li>
+                <li>a DTS&reg; audio component as identified by a <code>DTS_audio_stream_descriptor</code> [[DVB-SI]] in the 'Elementary Stream Descriptors' in the PMT entry for a stream with a <code>stream_type</code> of "0x06"</li>
+                <li>a DTS-HD&reg; audio component as identified by a <code>DTS-HD_audio_stream_descriptor</code> [[DVB-SI]] in the 'Elementary Stream Descriptors' in the PMT entry for a stream with a <code>stream_type</code> of "0x06"</li>
               </ul>
           </ul>
         </li>
@@ -387,22 +387,22 @@
               <th>How to source its value</th>
             </thead>
             <tr>
-              <th>id</th>
+              <th><code>id</code></th>
               <td>
-                Decimal representation of the elementary stream's identifier ('elementary_PID' field) in the PMT.
+                Decimal representation of the elementary stream's identifier (<code>elementary_PID</code> field) in the PMT.
                <p>
-                In the case of CEA 708 closed captions, decimal representation of the 'caption_service_number' in the 'Caption Service Descriptor' in the PMT.
+                In the case of CEA 708 closed captions, decimal representation of the <code>caption_service_number</code> in the 'Caption Service Descriptor' in the PMT.
               </p>
               <p>
                 If program 0 (zero) is present in the transport stream, a string of the format "OOOO.TTTT.SSSS.CC" consisting of the following, lower-case hexadecimal encoded fields:
                 <ul>
-                  <li>OOOO is the four character representation of the 16-bit 'original_network_id' [[DVB-SI]].</li>
-                  <li>TTTT is the four character representation of the 16-bit 'transport_stream_id' [[DVB-SI]].</li>
-                  <li>SSSS is the four character representation of the 16-bit 'service_id' [[DVB-SI]].</li>
+                  <li>OOOO is the four character representation of the 16-bit <code>original_network_id</code> [[DVB-SI]].</li>
+                  <li>TTTT is the four character representation of the 16-bit <code>transport_stream_id</code> [[DVB-SI]].</li>
+                  <li>SSSS is the four character representation of the 16-bit <code>service_id</code> [[DVB-SI]].</li>
                   <li>CC is:
                     <ul>
-                      <li>If a 'stream_identifier_descriptor' [[DVB-SI]] is present in the PMT, a two character representation of the 8-bit 'component_tag' value.</li>
-                      <li>Otherwise, a four character representation of the elementary stream's identifier (13-bit 'elementary_PID' field) in the PMT.</li>
+                      <li>If a <code>stream_identifier_descriptor</code> [[DVB-SI]] is present in the PMT, a two character representation of the 8-bit <code>component_tag</code> value.</li>
+                      <li>Otherwise, a four character representation of the elementary stream's identifier (13-bit <code>elementary_PID</code> field) in the PMT.</li>
                     </ul>
                   </li>
                 </ul>
@@ -410,75 +410,77 @@
               </td>
             </tr>
             <tr>
-              <th>kind</th>
+              <th><code>kind</code></th>
               <td>
                 <ul>
-                  <li>"captions":
+                  <li>"<code>captions</code>":
                     <ul>
                       <li>For a <a href="#captionservice">CEA708 caption service.</a></li>
-                      <li>for a DVB subtitle component [[DVB-SUB]] as identified by a 'subtitling_descriptor' [[DVB-SI]] in the PMT with a 'subtitling_type' in the range "0x20" to "0x25".</li>
-                      <li>an ITU-R System B Teletext component [[DVB-TXT]] as identified by an 'teletext_descriptor' [[DVB-SI]] with a 'teletext_type' value of "0x05" in the PMT</li>
-                      <li>a VBI data component [[DVB-VBI]] as identified by a 'VBI_teletext_descriptor' [[DVB-SI]] with a 'teletext_type' value of "0x05" in the PMT.</li>
+                      <li>for a DVB subtitle component [[DVB-SUB]] as identified by a <code>subtitling_descriptor</code> [[DVB-SI]] in the PMT with a <code>subtitling_type</code> in the range "0x20" to "0x25".</li>
+                      <li>an ITU-R System B Teletext component [[DVB-TXT]] as identified by an <code>teletext_descriptor</code> [[DVB-SI]] with a <code>teletext_type</code> value of "0x05" in the PMT</li>
+                      <li>a VBI data component [[DVB-VBI]] as identified by a <code>VBI_teletext_descriptor</code> [[DVB-SI]] with a <code>teletext_type</code> value of "0x05" in the PMT.</li>
                     </ul>
-                  <li>"subtitles":
+                  <li>"<code>subtitles</code>":
                     <ul>
                       <li>If the stream type value is "0x82".</li>
-                      <li>for a DVB subtitle component [[DVB-SUB]] as identified by a 'subtitling_descriptor' [[DVB-SI]] in the PMT with a 'subtitling_type' in the range "0x10" to "0x15".</li>
-                      <li>an ITU-R System B Teletext component [[DVB-TXT]] as identified by an 'teletext_descriptor' [[DVB-SI]] with a 'teletext_type' value of "0x02" in the PMT</li>
-                      <li>a VBI data component [[DVB-VBI]] as identified by a 'VBI_teletext_descriptor' [[DVB-SI]] with a 'teletext_type' value of "0x02" in the PMT.</li>
+                      <li>for a DVB subtitle component [[DVB-SUB]] as identified by a <code>subtitling_descriptor</code> [[DVB-SI]] in the PMT with a <code>subtitling_type</code> in the range "0x10" to "0x15".</li>
+                      <li>an ITU-R System B Teletext component [[DVB-TXT]] as identified by an <code>teletext_descriptor</code> [[DVB-SI]] with a <code>teletext_type</code> value of "0x02" in the PMT</li>
+                      <li>a VBI data component [[DVB-VBI]] as identified by a <code>VBI_teletext_descriptor</code> [[DVB-SI]] with a <code>teletext_type</code> value of "0x02" in the PMT.</li>
                     </ul>
-                  <li>"metadata": otherwise</li>
+                  <li>"<code>metadata</code>": otherwise</li>
                 </ul>
               </td>
             </tr>
             <tr>
-              <th>label</th>
+              <th><code>label</code></th>
               <td>
                 <ul>
-                  <li>If a 'component_name_descriptor' [[ATSC65]] is found immediately after the 'ES_info_length' field in the Program Map Table [[MPEG2TS]], the DOMString representation of the 'component_name_string' in that 'component_name_descriptor'.</li>
-                  <li>If a 'component_descriptor' [[DVB-SI]] for the component is present in the SDT or EIT, the DOMString representation of the content of the text field in that 'component_descriptor'</li>The empty string otherwise.
+                  <li>If a <code>component_name_descriptor</code> [[ATSC65]] is found immediately after the <code>ES_info_length</code> field in the Program Map Table [[MPEG2TS]], the <code>DOMString</code> representation of the <code>component_name_string</code> in that <code>component_name_descriptor</code>.</li>
+                  <li>If a <code>component_descriptor</code> [[DVB-SI]] for the component is present in the SDT or EIT, the <code>DOMString</code> representation of the content of the text field in that <code>component_descriptor</code></li>
+                  <li>The empty string otherwise.</li>
+                </ul>
               </td>
             </tr>
             <tr>
-              <th>language</th>
-              <td>@kind is
+              <th><code>language</code></th>
+              <td><code>kind</code> is
                 <ul>
-                  <li>"captions":
+                  <li>"<code>captions</code>":
                     <ul>
                       <li>For a <a href="#captionservice">CEA708 caption service.</a>
                         <ul>
-                          <li>Content of the 'language' field for the caption service in the 'caption_service_descriptor', if present.</li>
-                          <li>Otherwise, for the first caption service, as identified by the 'service_number' field in the 'service_block' [[CEA708]] with a value of 1, the value of '@language' of the audio track where '@kind' has the value "main".</li>
-                          <li>The empty string for all other caption services, as identified by values greater than 1 in the 'service_number' field.</li>
+                          <li>Content of the <code>language</code> field for the caption service in the <code>caption_service_descriptor</code>, if present.</li>
+                          <li>Otherwise, for the first caption service, as identified by the <code>service_number</code> field in the <code>service_block</code> [[CEA708]] with a value of 1, the value of <code>language</code> of the audio track where <code>kind</code> has the value "<code>main</code>".</li>
+                          <li>The empty string for all other caption services, as identified by values greater than 1 in the <code>service_number</code> field.</li>
                         </ul>
                       </li>
-                      <li>For a DVB subtitle component [[DVB-SUB]], the value of the 'ISO_639_language_code' field in the 'subtitling_descriptor' [[DVB-SI]] in the PMT</li>
-                      <li>For an ITU-R System B Teletext component [[DVB-TXT]], the value of the 'ISO_639_language_code' field in the 'teletext_descriptor' [[DVB-SI]] in the PMT</li>
-                      <li>For a VBI data component [[DVB-VBI]], the value of the 'ISO_639_language_code' field in the 'VBI_teletext_descriptor' [[DVB-SI]] in the PMT</li>
+                      <li>For a DVB subtitle component [[DVB-SUB]], the value of the <code>ISO_639_language_code</code> field in the <code>subtitling_descriptor</code> [[DVB-SI]] in the PMT</li>
+                      <li>For an ITU-R System B Teletext component [[DVB-TXT]], the value of the <code>ISO_639_language_code</code> field in the <code>teletext_descriptor</code> [[DVB-SI]] in the PMT</li>
+                      <li>For a VBI data component [[DVB-VBI]], the value of the <code>ISO_639_language_code</code> field in the <code>VBI_teletext_descriptor</code> [[DVB-SI]] in the PMT</li>
                     </ul>
                   </li>
-                  <li>"subtitles":
+                  <li>"<code>subtitles</code>":
                     <ul>
-                      <li> If 'stream_type' value is "0x82", the content of the 'ISO_639_language_code' field in the 'ISO_639_language_descriptor' in the elementary stream descriptor array in the PMT.</li>
-                      <li>for a DVB subtitle component [[DVB-SUB]], the value of the 'ISO_639_language_code' field in the 'subtitling_descriptor' [[DVB-SI]] in the PMT</li>
-                      <li>for an ITU-R System B Teletext component [[DVB-TXT]], the value of the 'ISO_639_language_code' field in the 'teletext_descriptor' [[DVB-SI]] in the PMT</li>
-                      <li>for a VBI data component [[DVB-VBI]], the value of the 'ISO_639_language_code' field in the 'VBI_teletext_descriptor' [[DVB-SI]] in the PMT</li>
+                      <li> If <code>stream_type</code> value is "0x82", the content of the <code>ISO_639_language_code</code> field in the <code>ISO_639_language_descriptor</code> in the elementary stream descriptor array in the PMT.</li>
+                      <li>for a DVB subtitle component [[DVB-SUB]], the value of the <code>ISO_639_language_code</code> field in the <code>subtitling_descriptor</code> [[DVB-SI]] in the PMT</li>
+                      <li>for an ITU-R System B Teletext component [[DVB-TXT]], the value of the <code>ISO_639_language_code</code> field in the <code>teletext_descriptor</code> [[DVB-SI]] in the PMT</li>
+                      <li>for a VBI data component [[DVB-VBI]], the value of the <code>ISO_639_language_code</code> field in the <code>VBI_teletext_descriptor</code> [[DVB-SI]] in the PMT</li>
                     </ul>
                   </li>
-                  <li>"metadata": The empty string.</li>
+                  <li>"<code>metadata</code>": The empty string.</li>
                 </ul>
               </td>
             </tr>
             <tr>
-              <th>inBandMetadataTrackDispatchType</th>
+              <th><code>inBandMetadataTrackDispatchType</code></th>
               <td>
-                If @kind is "metadata", then the concatenation of the 'stream_type' byte field in the program map table and 'ES_info_length' bytes following the 'ES_info_length' field expressed in hexadecimal using <a href="https://html.spec.whatwg.org/multipage/infrastructure.html#uppercase-ascii-hex-digits">uppercase ASCII hex digits</a>. The empty string otherwise.
+                If <code>kind</code> is "<code>metadata</code>", then the concatenation of the <code>stream_type</code> byte field in the program map table and <code>ES_info_length</code> bytes following the <code>ES_info_length</code> field expressed in hexadecimal using <a href="https://html.spec.whatwg.org/multipage/infrastructure.html#uppercase-ascii-hex-digits">uppercase ASCII hex digits</a>. The empty string otherwise.
               </td>
             </tr>
             <tr>
-              <th>mode</th>
+              <th><code>mode</code></th>
               <td>
-                "disabled"
+                "<code>disabled</code>"
               </td>
             </tr>
           </table>
@@ -491,19 +493,19 @@
               <th>How to source its value</th>
             </thead>
             <tr>
-              <th>id</th>
+              <th><code>id</code></th>
               <td>
                 <ul>
-                  <li>Decimal representation of the elementary stream's identifier ('elementary_PID' field) in the PMT.</li>
+                  <li>Decimal representation of the elementary stream's identifier (<code>elementary_PID</code> field) in the PMT.</li>
                   <li>If a program 0 (zero) is present in the transport stream, a string of the format "OOOO.TTTT.SSSS.CC" or "OOOO.TTTT.SSSS.CC&amp;CC", consisting of the following, lower-case hexadecimal encoded fields:
                     <ul>
-                      <li>OOOO is the four character representation of the 16-bit 'original_network_id' [[DVB-SI]].</li>
-                      <li>TTTT is the four character representation of the 16-bit 'transport_stream_id' [[DVB-SI]].</li>
-                      <li>SSSS is the four character representation of the 16-bit 'service_id' [[DVB-SI]].</li>
+                      <li>OOOO is the four character representation of the 16-bit <code>original_network_id</code> [[DVB-SI]].</li>
+                      <li>TTTT is the four character representation of the 16-bit <code>transport_stream_id</code> [[DVB-SI]].</li>
+                      <li>SSSS is the four character representation of the 16-bit <code>service_id</code> [[DVB-SI]].</li>
                       <li>CC is:
                         <ul>
-                          <li>If a 'stream_identifier_descriptor' [[DVB-SI]] is present in the PMT, a two character representation of the 8-bit 'component_tag' value.</li>
-                          <li>Otherwise, a four character representation of the elementary stream's identifier (13-bit 'elementary_PID' field) in the PMT.</li>
+                          <li>If a <code>stream_identifier_descriptor</code> [[DVB-SI]] is present in the PMT, a two character representation of the 8-bit <code>component_tag</code> value.</li>
+                          <li>Otherwise, a four character representation of the elementary stream's identifier (13-bit <code>elementary_PID</code> field) in the PMT.</li>
                         </ul>
                       </li>
                     </ul>
@@ -515,44 +517,44 @@
               </td>
             </tr>
             <tr>
-              <th>kind</th>
+              <th><code>kind</code></th>
               <td>
                 <ul>
-                  <li>If a 'supplementary_audio_descriptor' [[DVB-SI]] is present in the PMT for an audio component, the value is derived according to the audio purpose defined in table&nbsp;J.3 of [[DVB-SI]] using the following rules:
+                  <li>If a <code>supplementary_audio_descriptor</code> [[DVB-SI]] is present in the PMT for an audio component, the value is derived according to the audio purpose defined in table&nbsp;J.3 of [[DVB-SI]] using the following rules:
                     <ul>
-                      <li>"main" if PSI signalling of audio purpose indicates "Main audio" for the audio track that the user agent would select by default, otherwise to "translation"
+                      <li>"<code>main</code>" if PSI signalling of audio purpose indicates "Main audio" for the audio track that the user agent would select by default, otherwise to "<code>translation</code>"
                       <p class='note'>Need to define how UA would select track by default.</p>
                       </li>
-                      <li>components with an audio purpose of "Audio description (broadcast-mix)" map to "main-desc"</li>
+                      <li>components with an audio purpose of "Audio description (broadcast-mix)" map to "<code>main-desc</code>"</li>
                       <li>components with an audio purpose of "Audio description (receiver-mix)":
                         <ul>
-                          <li>The user agent exposes an audio track of @kind "main-desc" for each permitted combination of this track with another audio track as defined in annex J.2 of [[DVB-SI]]. Enabling this track results in the combination being presented.</li>
-                          <li>If the user agent can present the stream in isolation, it also exposes an audio track of @kind "descriptions" for this audio component.</li>
+                          <li>The user agent exposes an audio track of <code>kind</code> "<code>main-desc</code>" for each permitted combination of this track with another audio track as defined in annex&nbsp;J.2 of [[DVB-SI]]. Enabling this track results in the combination being presented.</li>
+                          <li>If the user agent can present the stream in isolation, it also exposes an audio track of <code>kind</code> "<code>descriptions</code>" for this audio component.</li>
                         </ul>
                       </li>
-                      <li>components with an audio purpose of "Clean audio (broadcast-mix)", "Parametric data dependent stream", or "Unspecific audio for the general audience" map to "alternative"</li>
+                      <li>components with an audio purpose of "Clean audio (broadcast-mix)", "Parametric data dependent stream", or "Unspecific audio for the general audience" map to "<code>alternative</code>"</li>
                       <li>components with other audio purposes map to the empty string</li>
                     </ul>
                   </li>
                   <li>Otherwise:
                     <ul>
-                      <li>"descriptions":
+                      <li>"<code>descriptions</code>":
                         <ul>
-                          <li>For AC-3 audio [[ATSC52]] if the 'bsmod' field is 2 and the 'full_svc' field is 0 in the 'AC-3_audio_stream_descriptor()' in the PMT</li>
-                          <li>For E-AC-3 audio [[ATSC52]] if the 'audio_service_type' field is 2 and the 'full_service_flag' is 0 in the 'E-AC-3_audio_descriptor()' in the PMT</li>
-                          <li>For AAC audio [[SCTE193-2]] if the 'AAC_service_type' field is 2 and the 'receiver_mix_rqd' is 1 in the 'MPEG_AAC_descriptor()' in the PMT</li>
+                          <li>For AC-3 audio [[ATSC52]] if the <code>bsmod</code> field is 2 and the <code>full_svc</code> field is 0 in the <code>AC-3_audio_stream_descriptor()</code> in the PMT</li>
+                          <li>For E-AC-3 audio [[ATSC52]] if the <code>audio_service_type</code> field is 2 and the <code>full_service_flag</code> is 0 in the <code>E-AC-3_audio_descriptor()</code> in the PMT</li>
+                          <li>For AAC audio [[SCTE193-2]] if the <code>AAC_service_type</code> field is 2 and the <code>receiver_mix_rqd</code> is 1 in the <code>MPEG_AAC_descriptor()</code> in the PMT</li>
                         </ul>
                       </li><!-- see http://www.atsc.org/cms/pdf/bootcamp/PSIP_Captions_rev2.pdf -->
-                      <li>"main" if the first audio (video) elementary stream in the PMT and the 'audio_type' field in the 'ISO_639_language_descriptor', if present, is "0x00" or "0x01"</li>
-                      <li>"main-desc":
+                      <li>"<code>main</code>" if the first audio (video) elementary stream in the PMT and the <code>audio_type</code> field in the <code>ISO_639_language_descriptor</code>, if present, is "0x00" or "0x01"</li>
+                      <li>"<code>main-desc</code>":
                         <ul>
-                          <li>For AC-3 audio [[ATSC52]] if the 'bsmod' field is 2 and the 'full_svc' field is 1 in the 'AC-3_audio_stream_descriptor()'</li>
-                          <li>For E-AC-3 audio [[ATSC52]] if the 'audio_service_type' field is 2 and the 'full_service_flag' is 1 in the 'E-AC-3_audio_descriptor()'</li>
-                          <li>For AAC audio [[SCTE193-2]] if the 'AAC_service_type' field is 2 and the 'receiver_mix_rqd' is 0 in the 'MPEG_AAC_descriptor()'</li>
+                          <li>For AC-3 audio [[ATSC52]] if the <code>bsmod</code> field is 2 and the <code>full_svc</code> field is 1 in the <code>AC-3_audio_stream_descriptor()</code></li>
+                          <li>For E-AC-3 audio [[ATSC52]] if the <code>audio_service_type</code> field is 2 and the <code>full_service_flag</code> is 1 in the <code>E-AC-3_audio_descriptor()</code></li>
+                          <li>For AAC audio [[SCTE193-2]] if the <code>AAC_service_type</code> field is 2 and the <code>receiver_mix_rqd</code> is 0 in the <code>MPEG_AAC_descriptor()</code></li>
                         </ul>
                       </li>
-                      <li>"sign" video components with a 'component_descriptor' [[DVB-SI]] in the SDT or EIT, where the 'stream_content' is "0x3" and the 'component_type' is "0x30" or "0x31"</li>
-                      <li>"translation": not first audio elementary stream in the PMT and the 'audio_type' field in the 'ISO_639_language_descriptor' is "0x00" or "0x01" <font color='red'>and bsmod=0</font></li>
+                      <li>"<code>sign</code>" video components with a <code>component_descriptor</code> [[DVB-SI]] in the SDT or EIT, where the <code>stream_content</code> is "0x3" and the <code>component_type</code> is "0x30" or "0x31"</li>
+                      <li>"<code>translation</code>": not first audio elementary stream in the PMT and the <code>audio_type</code> field in the <code>ISO_639_language_descriptor</code> is "0x00" or "0x01" <font color='red'>and bsmod=0</font></li>
                       <li>"": otherwise</li>
                     </ul>
                   </li>
@@ -560,21 +562,21 @@
               </td>
             </tr>
             <tr>
-              <th>label</th>
+              <th><code>label</code></th>
               <td>
                 <ul>
-                  <li>If a 'component_descriptor' [[DVB-SI]] is present in the SDT or EIT, the DOMString representation of the content of the text field in that 'component_descriptor'</li>
-                  <li>If a 'component_name_descriptor' [[ATSC65]] is present for this elementary in the Program Map Table [[MPEG2TS]], the DOMString representation of the 'component_name_string' field in that descriptor .</li>
+                  <li>If a <code>component_descriptor</code> [[DVB-SI]] is present in the SDT or EIT, the <code>DOMString</code> representation of the content of the text field in that <code>component_descriptor</code></li>
+                  <li>If a <code>component_name_descriptor</code> [[ATSC65]] is present for this elementary in the Program Map Table [[MPEG2TS]], the <code>DOMString</code> representation of the <code>component_name_string</code> field in that descriptor .</li>
                   <li> The empty string otherwise.</li>
                 </ul>
               </td>
             </tr>
             <tr>
-              <th>language</th>
-              <td>@kind is:
+              <th><code>language</code></th>
+              <td><code>kind</code> is:
                 <ul>
-                  <li> "descriptions" or "main-desc": Content of the 'language' field in the 'AC-3_audio_stream_descriptor' or  'AC-3_audio_stream_descriptor' [[ATSC52]] if present.</li>
-                  <li> otherwise: Content of the 'ISO_639_language_code' field in the 'ISO_639_language_descriptor'.</li>
+                  <li>"<code>descriptions</code>" or "<code>main-desc</code>": Content of the <code>language</code> field in the <code>AC-3_audio_stream_descriptor</code> or  <code>AC-3_audio_stream_descriptor</code> [[ATSC52]] if present.</li>
+                  <li> otherwise: Content of the <code>ISO_639_language_code</code> field in the <code>ISO_639_language_descriptor</code>.</li>
                 </ul>
               </td>
             </tr>
@@ -582,12 +584,12 @@
         </li>
         <li><p><dfn id='MPEG2TS-TT'>Mapping Text Track content into text track cues for MPEG-2 TS</dfn></p>
           <p>
-            MPEG-2 transport streams may contain data that should be exposed as cues on 'captions', 'subtitles' or 'metadata' text tracks. No data is defined that equates to 'descriptions' or 'chapters' text track cues.
+            MPEG-2 transport streams may contain data that should be exposed as cues on "<code>captions</code>", "<code>subtitles</code>" or "<code>metadata</code>" text tracks. No data is defined that equates to "<code>descriptions</code>" or "<code>chapters</code>" text track cues.
           </p>
           <ol type=a>
             <li><p>Metadata cues</p>
               <p>
-                Cues on an MPEG-2 metadata text track are created as DataCue objects [[HTML5]]. Each 'section' in an elementary stream identified as a text track creates a DataCue object with its TextTrackCue attributes sourced as follows:
+                Cues on an MPEG-2 metadata text track are created as <code>DataCue</code> objects [[HTML5]]. Each <code>section</code> in an elementary stream identified as a text track creates a <code>DataCue</code> object with its <code>TextTrackCue</code> attributes sourced as follows:
               </p>
               <table>
                 <thead>
@@ -595,29 +597,29 @@
                   <th>How to source its value</th>
                 </thead>
                 <tr>
-                  <th>id</th>
+                  <th><code>id</code></th>
                   <td>
-                    Decimal representation of the 'table_id' in the first 8 bits of the 'section' data.
+                    Decimal representation of the <code>table_id</code> in the first 8 bits of the <code>section</code> data.
                   </td>
                 </tr>
                 <tr>
-                  <th>startTime</th>
+                  <th><code>startTime</code></th>
                   <td>0</td>
                 </tr>
                 <tr>
-                  <th>endTime</th>
+                  <th><code>endTime</code></th>
                   <td>
-                    The time, in the media resource timeline, that corresponds to the presentation time of the video frame received immediately prior to the 'section' in the media resource.
+                    The time, in the media resource timeline, that corresponds to the presentation time of the video frame received immediately prior to the <code>section</code> in the media resource.
                   </td>
                 </tr>
                 <tr>
-                  <th>pauseOnExit</th>
-                  <td>"false"</td>
+                  <th><code>pauseOnExit</code></th>
+                  <td>"<code>false</code>"</td>
                 </tr>
                 <tr>
-                  <th>data</th>
+                  <th><code>data</code></th>
                   <td>
-                    The 'section_length' number of bytes immediately following the 'section_length' field in the 'section'.
+                    The <code>section_length</code> number of bytes immediately following the <code>section_length</code> field in the <code>section</code>.
                   </td>
                 </tr>
               </table>
@@ -627,7 +629,7 @@
               <ul>
                 <li>CEA 708
                   <p>
-                    MPEG-2 TS captions in the CEA 708 format [[CEA708]] are carried in the video stream in Picture User Data [[ATSC53-4]] for 'stream_type' 0x02 and in Supplemental Enhancement Information [[ATSC72-1]] for 'stream_type' 0x1B. Browsers that can render the CEA 708 format should expose them in as yet to be specified CEA708Cue objects. Alternatively, browsers can also map the CEA 708 features to WebVTTCue objects [[VTT708]]. Finally, browsers that cannot render CEA 708 captions should expose them as DataCue objects [[HTML5]]. In this case, each 'service block' in a digital TV closed caption (DTVCC) transport channel creates a DataCue object with TextTrackCue attributes sourced as follows:
+                    MPEG-2 TS captions in the CEA 708 format [[CEA708]] are carried in the video stream in Picture User Data [[ATSC53-4]] for <code>stream_type</code> 0x02 and in Supplemental Enhancement Information [[ATSC72-1]] for <code>stream_type</code> 0x1B. Browsers that can render the CEA 708 format should expose them in as yet to be specified <code>CEA708Cue</code> objects. Alternatively, browsers can also map the CEA 708 features to <code>VTTCue</code> objects [[VTT708]]. Finally, browsers that cannot render CEA 708 captions should expose them as <code>DataCue</code> objects [[HTML5]]. In this case, each <code>service_block</code> in a digital TV closed caption (DTVCC) transport channel creates a <code>DataCue</code> object with <code>TextTrackCue</code> attributes sourced as follows:
                   </p>
                   <table>
                     <thead>
@@ -635,37 +637,37 @@
                       <th>How to source its value</th>
                     </thead>
                     <tr>
-                      <th>id</th>
-                      <td>Decimal representation of the 'service_number' in the 'service_block'.</td>
+                      <th><code>id</code></th>
+                      <td>Decimal representation of the <code>service_number</code> in the <code>service_block</code>.</td>
                     </tr>
                     <tr>
-                      <th>startTime</th>
+                      <th><code>startTime</code></th>
                       <td>
-                        The time, in the HTML media resource timeline, that corresponds to the presentation time stamp for the video frame that contained the first 'Caption Channel Data Byte' of the 'service_block'.
+                        The time, in the HTML media resource timeline, that corresponds to the presentation time stamp for the video frame that contained the first 'Caption Channel Data Byte' of the <code>service_block</code>.
                       </td>
                     </tr>
                     <tr>
-                      <th>endTime</th>
+                      <th><code>endTime</code></th>
                       <td>
-                        The sum of the startTime and 4 seconds.
+                        The sum of the <code>startTime</code> and 4 seconds.
                         <p class='note'>
-                          CEA 708 captions do not have an explicit end time - a rendering device derives the end time for a caption based on subsequent caption data. Setting endTime equal to startTime might be more appropriate but this would require better support for zero-length cues, as proposed in <a href = 'https://www.w3.org/Bugs/Public/show_bug.cgi?id=25693'>HTML Bug 25693</a>.
+                          CEA 708 captions do not have an explicit end time - a rendering device derives the end time for a caption based on subsequent caption data. Setting <code>endTime</code> equal to <code>startTime</code> might be more appropriate but this would require better support for zero-length cues, as proposed in <a href = 'https://www.w3.org/Bugs/Public/show_bug.cgi?id=25693'>HTML Bug 25693</a>.
                         </p>
                       </td>
                     </tr>
                     <tr>
-                      <th>pauseOnExit</th>
-                      <td>"false"</td>
+                      <th><code>pauseOnExit</code></th>
+                      <td>"<code>false</code>"</td>
                     </tr>
                     <tr>
-                      <th>data</th>
-                      <td>The 'service_block'.</td>
+                      <th><code>data</code></th>
+                      <td>The <code>service_block</code></td>
                     </tr>
                   </table>
                 </li>
                 <li><p>DVB</p>
                   <p>
-                    MPEG-2 TS captions in the DVB subtitle format [[DVB-SUB]], ITU-R System B Teletext [[DVB-TXT]] and VBI [[DVB-VBI]] formats are not exposed in a TextTrackCue.
+                    MPEG-2 TS captions in the DVB subtitle format [[DVB-SUB]], ITU-R System B Teletext [[DVB-TXT]] and VBI [[DVB-VBI]] formats are not exposed in a <code>TextTrackCue</code>.
                   </p>
                 </li>
               </ul>
@@ -675,7 +677,7 @@
               <ul>
                 <li>SCTE 27
                   <p>
-                    MPEG-2 TS subtitles in the SCTE 27 format [[SCTE27]] should should be exposed in an as yet to be specified SCTE27Cue objects. Alternatively, browsers can also map the SCTE 27 features to WebVTTCue object via an as yet to be specified mapping process. Finally, browsers that cannot render SCTE 27 subtitles, should expose them as DataCue objects [[HTML5]]. In this case, each 'section' in an elementary stream identified as a subtitles text track creates a DataCue object with TextTrackCue attributes sourced as follows:
+                    MPEG-2 TS subtitles in the SCTE 27 format [[SCTE27]] should should be exposed in an as yet to be specified <code>SCTE27Cue</code> objects. Alternatively, browsers can also map the SCTE 27 features to <code>VTTCue</code> object via an as yet to be specified mapping process. Finally, browsers that cannot render SCTE 27 subtitles, should expose them as <code>DataCue</code> objects [[HTML5]]. In this case, each <code>section</code> in an elementary stream identified as a subtitles text track creates a <code>DataCue</code> object with <code>TextTrackCue</code> attributes sourced as follows:
                   </p>
                   <table>
                     <thead>
@@ -683,38 +685,38 @@
                       <th>How to source its value</th>
                     </thead>
                     <tr>
-                      <th>id</th>
+                      <th><code>id</code></th>
                       <td>
-                        Decimal representation of the 'table_id' in the first 8 bits of the 'section' data.
+                        Decimal representation of the <code>table_id</code> in the first 8 bits of the <code>section</code> data.
                       </td>
                     </tr>
                     <tr>
-                      <th>startTime</th>
+                      <th><code>startTime</code></th>
                       <td>
-                        The time, in the HTML media resource timeline, that corresponds to the 'display_in_PTS' field in the section data.
+                        The time, in the HTML media resource timeline, that corresponds to the <code>display_in_PTS</code> field in the <code>section</code> data.
                       </td>
                     </tr>
                     <tr>
-                      <th>endTime</th>
+                      <th><code>endTime</code></th>
                       <td>
-                        The sum of the startTime and the 'display_duration' field in the section data expressed in seconds.
+                        The sum of the <code>startTime</code> and the <code>display_duration</code> field in the <code>section</code> data expressed in seconds.
                       </td>
                     </tr>
                     <tr>
-                      <th>pauseOnExit</th>
-                      <td>"false"</td>
+                      <th><code>pauseOnExit</code></th>
+                      <td>"<code>false</code>"</td>
                     </tr>
                     <tr>
-                      <th>data</th>
+                      <th><code>data</code></th>
                       <td>
-                        The 'section_length' number of bytes immediately following the 'section_length' field in the 'section'.
+                        The <code>section_length</code> number of bytes immediately following the <code>section_length</code> field in the <code>section</code>.
                       </td>
                     </tr>
                   </table>
                 </li>
                 <li><p>DVB</p>
                   <p>
-                    MPEG-2 TS subtitles in the DVB subtitle format [[DVB-SUB]], ITU-R System B Teletext [[DVB-TXT]] and VBI [[DVB-VBI]] formats are not exposed in a TextTrackCue.
+                    MPEG-2 TS subtitles in the DVB subtitle format [[DVB-SUB]], ITU-R System B Teletext [[DVB-TXT]] and VBI [[DVB-VBI]] formats are not exposed in a <code>TextTrackCue</code>.
                   </p>
                 </li>
               </ul>
@@ -727,23 +729,23 @@
 
     <section id='mpeg4'>
       <h2>MPEG-4 ISOBMFF</h2>
-      <b>MIME type/subtype: audio/mp4 , video/mp4</b>
+      <b>MIME type/subtype: <code>audio/mp4</code>, <code>video/mp4</code>, <code>application/mp4</code></b>
 
       <ol>
         <li><p>Track Order</p>
           <p>
-            The order of tracks specified by TrackBox ('trak') boxes in the MovieBox ('moov') container [[ISOBMFF]] is maintained when sourcing multiple MPEG-4 tracks into HTML.
+            The order of tracks specified by <code>TrackBox</code> (<code>trak</code>) boxes in the <code>MovieBox</code> (<code>moov</code>) container [[ISOBMFF]] is maintained when sourcing multiple MPEG-4 tracks into HTML.
           </p>
         </li>
 
         <li><p>Determining the type of track</p>
           <p>
-            A user agent recognises and supports data from a MPEG-4 TrackBox as being equivalent to a HTML track based on the value of the 'handler_type' field in the HandlerBox ('hdlr) of the MediaBox ('mdia') of the TrackBox:
+            A user agent recognises and supports data from a <code>TrackBox</code> as being equivalent to a HTML track based on the value of the <code>handler_type</code> field in the <code>HandlerBox</code> (<code>hdlr</code>) of the <code>MediaBox</code> (<code>mdia</code>) of the <code>TrackBox</code>:
           </p>
           <ul>
-            <li>text track: the 'handler_type' value is "meta", "subt" or "text"</li>
-            <li>video track: the 'handler_type' value is "vide"</li>
-            <li>audio track: the 'handler_type' value is "soun"</li>
+            <li>text track: the <code>handler_type</code> value is "<code>meta</code>", "<code>subt</code>" or "<code>text</code>"</li>
+            <li>video track: the <code>handler_type</code> value is "<code>vide</code>"</li>
+            <li>audio track: the <code>handler_type</code> value is "<code>soun</code>"</li>
           </ul>
         </li>
 
@@ -754,52 +756,52 @@
               <th>How to source its value</th>
             </thead>
             <tr>
-              <th>id</th>
+              <th><code>id</code></th>
               <td>
-                Decimal representation of the 'track_ID' of a TrackHeaderBox ('tkhd') in a TrackBox ('trak').
+                Decimal representation of the <code>track_ID</code> of a <code>TrackHeaderBox</code> (<code>tkhd</code>) in a <code>TrackBox</code> (<code>trak</code>).
               </td>
             </tr>
             <tr>
-              <th>kind</th>
+              <th><code>kind</code></th>
               <td><!-- see http://www.mp4ra.org/codecs.html -->
                 <ul>
-                  <li>"captions":
+                  <li>"<code>captions</code>":
                     <ul>
-                      <li><dfn id="WebVTTcaption">WebVTT caption</dfn>: 'handler_type' is "text" and SampleEntry format is 'WVTTSampleEntry' [[ISO14496-30]] and the VTT metadata header 'Kind' is "captions"</li>
-                      <li><dfn id="SMPTETTcaption">SMPTE-TT caption</dfn>: 'handler_type' is "subt" and SampleEntry format is 'XMLSubtitleSampleEntry' [[ISO14496-30]] and the 'namespace' is set to "http://www.smpte-ra.org/schemas/2052-1/2013/smpte-tt#cea708 [[SMPTE2052-11]].</li>
-                      <li><li><dfn id="3GPPcaption">3GPP caption</dfn>:'handler_type' is "text" and the SampleEntry code ('format' field) is "tx3g". <p class='note'>Are all sample entries of this type "captions"?</p></li>
+                      <li><dfn id="WebVTTcaption">WebVTT caption</dfn>: <code>handler_type</code> is "<code>text</code>" and <code>SampleEntry</code> format is <code>WVTTSampleEntry</code> [[ISO14496-30]] and the VTT metadata header <code>Kind</code> is "<code>captions</code>"</li>
+                      <li><dfn id="SMPTETTcaption">SMPTE-TT caption</dfn>: <code>handler_type</code> is "<code>subt</code>" and <code>SampleEntry</code> format is <code>XMLSubtitleSampleEntry</code> [[ISO14496-30]] and the <code>namespace</code> is set to "<code>http://www.smpte-ra.org/schemas/2052-1/2013/smpte-tt#cea708</code>" [[SMPTE2052-11]].</li>
+                      <li><li><dfn id="3GPPcaption">3GPP caption</dfn>: <code>handler_type</code> is "<code>text</code>" and the <code>SampleEntry</code> code (<code>format</code> field) is "<code>tx3g</code>". <p class='note'>Are all sample entries of this type "<code>captions</code>"?</p></li>
                     </ul>
                   </li>
                   <li>"subtitles":
                     <ul>
-                      <li><dfn id="WebVTTsubtitle">WebVTT subtitle</dfn>: 'handler_type' is "text" and SampleEntry format is 'WVTTSampleEntry' [[ISO14496-30]] and the VTT metadata header 'Kind' is "subtitles"</li>
-                      <li><dfn id="SMPTE-TT subtitle">SMPTE-TT subtitle</dfn>: 'handler_type' is "subt" and SampleEntry format is 'XMLSubtitleSampleEntry' [[ISO14496-30]] and the 'namespace' is set to a TTML namespace that does not indicate a <a href="#SMPTETTcaption">SMPTE-TT caption</a>.</li>
+                      <li><dfn id="WebVTTsubtitle">WebVTT subtitle</dfn>: <code>handler_type</code> is "<code>text</code>" and <code>SampleEntry</code> format is <code>WVTTSampleEntry</code> [[ISO14496-30]] and the VTT metadata header <code>Kind</code> is "<code>subtitles</code>"</li>
+                      <li><dfn id="SMPTE-TT subtitle">SMPTE-TT subtitle</dfn>: <code>handler_type</code> is "<code>subt</code>" and <code>SampleEntry</code> format is <code>XMLSubtitleSampleEntry</code> [[ISO14496-30]] and the <code>namespace</code> is set to a TTML namespace that does not indicate a <a href="#SMPTETTcaption">SMPTE-TT caption</a>.</li>
                     </ul>
                   </li>
-                  <li>"metadata": otherwise</li>
+                  <li>"<code>metadata</code>": otherwise</li>
                 </ul>
               </td>
             </tr>
             <tr>
-              <th>label</th>
+              <th><code>label</code></th>
               <td>
-                Content of the 'name' field in the HandlerBox.
+                Content of the <code>name</code> field in the <code>HandlerBox</code>.
               </td>
             </tr>
             <tr>
-              <th>language</th>
+              <th><code>language</code></th>
               <td>
-                Content of the 'language' field in the MediaHeaderBox.
+                Content of the <code>language</code> field in the <code>MediaHeaderBox</code>.
               </td>
             </tr>
             <tr>
-              <th>inBandMetadataTrackDispatchType</th>
+              <th><code>inBandMetadataTrackDispatchType</code></th>
               <td>
                 <ul>
-                  <li>@kind is "metadata":
+                  <li><code>kind</code> is "<code>metadata</code>":
                     <ul>
-                      <li>if a 'XMLMetaDataSampleEntry' box is present the concatenation of the string "metx", a U+0020 SPACE character, and the value of the 'namespace' field</li>
-                      <li>if a 'TextMetaDataSampleEntry' box is present the concatenation of the string "mett", a U+0020 SPACE character, and the value of the 'mime_format field'</li>
+                      <li>if a <code>XMLMetaDataSampleEntry</code> box is present the concatenation of the string "<code>metx</code>", a U+0020 SPACE character, and the value of the <code>namespace</code> field</li>
+                      <li>if a <code>TextMetaDataSampleEntry</code> box is present the concatenation of the string "<code>mett</code>", a U+0020 SPACE character, and the value of the <code>mime_format</code> field</li>
                       <li>otherwise the empty string</li>
                     </ul>
                   </li>
@@ -808,9 +810,9 @@
               </td>
             </tr>
             <tr>
-              <th>mode</th>
+              <th><code>mode</code></th>
               <td>
-                "disabled"
+                "<code>disabled</code>"
               </td>
             </tr>
           </table>
@@ -823,48 +825,48 @@
               <th>How to source its value</th>
             </thead>
             <tr>
-              <th>id</th>
+              <th><code>id</code></th>
               <td>
-                Decimal representation of the 'track_ID' of a TrackHeaderBox ('tkhd') in a TrackBox ('trak').
+                Decimal representation of the <code>track_ID</code> of a <code>TrackHeaderBox</code> (<code>tkhd</code>) in a <code>TrackBox</code> (<code>trak</code>).
               </td>
             </tr>
             <tr>
-              <th>kind</th>
+              <th><code>kind</code></th>
               <td>
                 <ul>
-                  <li>"alternative": not used</li>
-                  <li>"captions": not used</li>
-                  <li>"descriptions": not used</li>
-                  <li>"main": first audio (video) track</li>
-                  <li>"main-desc": not used</li>
-                  <li>"sign": not used</li>
-                  <li>"subtitles": not used</li>
-                  <li>"translation": not first audio (video) track</li>
-                  <li>"commentary": not used</li>
+                  <li>"<code>alternative</code>": not used</li>
+                  <li>"<code>captions</code>": not used</li>
+                  <li>"<code>descriptions</code>": not used</li>
+                  <li>"<code>main</code>": first audio (video) track</li>
+                  <li>"<code>main-desc</code>": not used</li>
+                  <li>"<code>sign</code>": not used</li>
+                  <li>"<code>subtitles</code>": not used</li>
+                  <li>"<code>translation</code>": not first audio (video) track</li>
+                  <li>"<code>commentary</code>": not used</li>
                   <li>"": otherwise</li>
                 </ul>
               </td>
             </tr>
             <tr>
-              <th>label</th>
+              <th><code>label</code></th>
               <td>
-                Content of the 'name' field in the HandlerBox.
+                Content of the <code>name</code> field in the <code>HandlerBox</code>.
               </td>
             </tr>
             <tr>
-              <th>language</th>
+              <th><code>language</code></th>
               <td>
-                Content of the 'language' field in the MediaHeaderBox.
+                Content of the <code>language</code> field in the <code>MediaHeaderBox</code>.
               </td>
             </tr>
           </table>
         </li>
         <li><p><dfn id='ISOBMFF-TT'>Mapping Text Track content into text track cues for MPEG-4 ISOBMFF</dfn></p>
           <p>
-            ISOBMFF text tracks may be in the WebVTT or TTML format [[ISO14496-30]], 3GPP Timed Text format [[3GPP-TT]], or other format.
+            [[ISOBMFF]] text tracks may be in the WebVTT or TTML format [[ISO14496-30]], 3GPP Timed Text format [[3GPP-TT]], or other format.
           </p>
           <p>
-            ISOBMFF text tracks carry WebVTT data if the media handler type is "text" and a 'WVTTSampleEntry' format is used, as described in [[ISO14496-30]]. Browsers that can render text tracks in the WebVTT format should expose a VTTCue [[WEBVTT]] as follows:
+            [[ISOBMFF]] text tracks carry WebVTT data if the media handler type is "<code>text</code>" and a <code>WVTTSampleEntry</code> format is used, as described in [[ISO14496-30]]. Browsers that can render text tracks in the WebVTT format should expose a <code>VTTCue</code> [[WEBVTT]] as follows:
           </p>
           <p>
             <table>
@@ -873,43 +875,43 @@
                 <th>How to source its value</th>
               </thead>
               <tr>
-                <th>id</th>
+                <th><code>id</code></th>
                 <td>
-                  The 'cue_id' field in the 'CueIDBox'.
+                  The <code>cue_id</code> field in the <code>CueIDBox</code>.
                 </td>
               </tr>
               <tr>
-                <th>startTime</th>
+                <th><code>startTime</code></th>
                 <td>
                   The sample presentation time.
                 </td>
               </tr>
               <tr>
-                <th>endTime</th>
+                <th><code>endTime</code></th>
                 <td>
-                  The sum of the startTime and the sample duration.
+                  The sum of the <code>startTime</code> and the sample duration.
                 </td>
               </tr>
               <tr>
-                <th>pauseOnExit</th>
-                <td>"false"</td>
+                <th><code>pauseOnExit</code></th>
+                <td>"<code>false</code>"</td>
               </tr>
               <tr>
                 <th>cue setting attributes</th>
                 <td>
-                  The 'settings' field in the 'CueSettingsBox'.
+                  The <code>settings</code> field in the <code>CueSettingsBox</code>.
                 </td>
               </tr>
               <tr>
-                <th>text</th>
+                <th><code>text</code></th>
                 <td>
-                  The 'cue_text' field in the 'CuePayloadBox'.
+                  The <code>cue_text</code> field in the <code>CuePayloadBox</code>.
                 </td>
               </tr>
             </table>
           </p>
           <p>
-            ISOBMFF text tracks carry TTML data if the media handler type is "subt" and an 'XMLSubtileSampleEntry' format is used with a TTML-based 'name_space' field, as described in [[ISO14496-30]]. Browsers that can render text tracks in the TTML format should expose an as yet to be defined TTMLCue. Alternatively, browsers can also map the TTML features to WebVTTCue objects. Finally, browsers that cannot render TTML [[ttaf1-dfxp]] format data should expose them as DataCue objects [[HTML5]]. Each TTML subtitle sample consists of an XML document and creates a DataCue object with attributes sourced as follows: 
+            ISOBMFF text tracks carry TTML data if the media handler type is "<code>subt</code>" and an <code>XMLSubtileSampleEntry</code> format is used with a TTML-based <code>name_space</code> field, as described in [[ISO14496-30]]. Browsers that can render text tracks in the TTML format should expose an as yet to be defined <code>TTMLCue</code>. Alternatively, browsers can also map the TTML features to <code>VTTCue</code> objects. Finally, browsers that cannot render TTML [[ttaf1-dfxp]] format data should expose them as <code>DataCue</code> objects [[HTML5]]. Each TTML subtitle sample consists of an XML document and creates a <code>DataCue</code> object with attributes sourced as follows: 
             <p>
               <table>
                 <thead>
@@ -917,28 +919,28 @@
                   <th>How to source its value</th>
                 </thead>
                 <tr>
-                  <th>id</th>
-                  <td>Decimal representation of the ‘id’ attribute of the ‘head’ element in the XML document. Null if there is no ‘id’ attribute.</td>
+                  <th><code>id</code></th>
+                  <td>Decimal representation of the <code>id</code> attribute of the <code>head</code> element in the XML document. Null if there is no <code>id</code> attribute.</td>
                 </tr>
                 <tr>
-                  <th>startTime</th>
+                  <th><code>startTime</code></th>
                   <td>
                     Value of the beginning media time of the top-level temporal interval of the XML document.
                   </td>
                 </tr>
                 <tr>
-                  <th>endTime</th>
+                  <th><code>endTime</code></th>
                   <td>
                     Value of the ending media time of the top-level temporal interval of the XML document.
                   </td>
                 </tr>
                 <tr>
-                  <th>pauseOnExit</th>
-                  <td>"false"</td>
+                  <th><code>pauseOnExit</code></th>
+                  <td>"<code>false</code>"</td>
                 </tr>
                 <tr>
-                  <th>data</th>
-                  <td>The (UTF-16 encoded) ArrayBuffer composing the XML document.</td>
+                  <th><code>data</code></th>
+                  <td>The (UTF-16 encoded) <code>ArrayBuffer</code> composing the XML document.</td>
                 </tr>
               </table>
             </p>
@@ -947,7 +949,7 @@
             TTML data may contain tunneled CEA708 captions [[SMPTE2052-11]]. Browsers that can render CEA708 data should expose it as defined for <a href='#CEA708Cue'>MPEG-2 TS CEA708 cues</a>.
           </p>
           <p>
-            3GPP timed text data is carried in ISOBMFF as described in [[3GPP-TT]]. Browsers that can render text tracks in the 3GPP Timed Text format should expose an as yet to be defined 3GPPCue. Alternatively, browsers can also map the 3GPP features to WebVTTCue objects.
+            3GPP timed text data is carried in [[ISOBMFF]] as described in [[3GPP-TT]]. Browsers that can render text tracks in the 3GPP Timed Text format should expose an as yet to be defined <code>3GPPCue</code>. Alternatively, browsers can also map the 3GPP features to <code>VTTCue</code> objects.
           </p>
         </li>
       </ol>
@@ -956,7 +958,7 @@
 
     <section id='webm'>
       <h2>WebM</h2>
-      <b>MIME type/subtype: audio/webm , video/webm</b>
+      <b>MIME type/subtype: <code>audio/webm</code>, <code>video/webm</code></b>
 
       <ol>
         <li><p>Track Order</p>
@@ -967,12 +969,12 @@
 
         <li><p>Determining the type of track</p>
           <p>
-            A user agent recognises and supports data from a WebM resource as being equivalent to a HTML track based on the value of the 'TrackType' field of the track in the Segment info:
+            A user agent recognises and supports data from a WebM resource as being equivalent to a HTML track based on the value of the <code>TrackType</code> field of the track in the Segment info:
           </p>
           <ul>
-            <li>text track: 'TrackType' field is "0x11" or "0x21"</li>
-            <li>video track: 'TrackType' field is "0x01"</li>
-            <li>audio track: 'TrackType' field is "0x02"</li>
+            <li>text track: <code>TrackType</code> field is "0x11" or "0x21"</li>
+            <li>video track: <code>TrackType</code> field is "0x01"</li>
+            <li>audio track: <code>TrackType</code> field is "0x02"</li>
           </ul>
         </li>
 
@@ -986,55 +988,55 @@
               <th>How to source its value</th>
             </thead>
             <tr>
-              <th>id</th>
+              <th><code>id</code></th>
               <td>
-                Decimal representation of the 'TrackNumber' field of the track in the "Track" section of the WebM file Segment.
+                Decimal representation of the <code>TrackNumber</code> field of the track in the <code>Track</code> section of the WebM file Segment.
               </td>
             </tr>
             <tr>
-              <th>kind</th>
+              <th><code>kind</code></th>
               <td>
                 <p>
-                  Map the content of the 'TrackType' and 'CodecID' fields of the track as follows:
+                  Map the content of the <code>TrackType</code> and <code>CodecID</code> fields of the track as follows:
                 </p>
                 <ul>
-                  <li>"captions": 'TrackType' is "0x11" and 'CodecId' is “D_WEBVTT/captions“</li>
-                  <li>"subtitles": 'TrackType' is "0x11" and 'CodecId' is “D_WEBVTT/subtitles“</li>
-                  <li>"descriptions": 'TrackType' is "0x11" and 'CodecId' is “D_WEBVTT/descriptions“</li>
-                  <li>"metadata": otherwise</li>
+                  <li>"<code>captions</code>": <code>TrackType</code> is "0x11" and <code>CodecId</code> is "<code>D_WEBVTT/captions</code>"</li>
+                  <li>"<code>subtitles</code>": <code>TrackType</code> is "0x11" and <code>CodecId</code> is "<code>D_WEBVTT/subtitles</code>"</li>
+                  <li>"<code>descriptions</code>": <code>TrackType</code> is "0x11" and <code>CodecId</code> is "<code>D_WEBVTT/descriptions</code>"</li>
+                  <li>"<code>metadata</code>": otherwise</li>
                 </ul>
               </td>
             </tr>
             <tr>
-              <th>label</th>
+              <th><code>label</code></th>
               <td>
-                Content of the 'name' field of the track.
+                Content of the <code>name</code> field of the track.
               </td>
             </tr>
             <tr>
-              <th>language</th>
+              <th><code>language</code></th>
               <td>
-                Content of the 'language' field of the track.
+                Content of the <code>language</code> field of the track.
               </td>
             </tr>
             <tr>
-              <th>inBandMetadataTrackDispatchType</th>
+              <th><code>inBandMetadataTrackDispatchType</code></th>
               <td>
-                If @kind is "metadata", then the value of the 'CodecID' element. The empty string otherwise.
+                If <code>kind</code> is "<code>metadata</code>", then the value of the <code>CodecID</code> element. The empty string otherwise.
               </td>
             </tr>
             <tr>
-              <th>mode</th>
+              <th><code>mode</code></th>
               <td>
-                "disabled"
+                "<code>disabled</code>"
               </td>
             </tr>
           </table>
           <p>
-            Tracks of kind "chapters" are found in the "Chapters" section of the WebM file Segment, which are all at the beginning of the WebM file, such that chapters can be used for navigation. The details of this mapping have not been specified yet and simply point to the more powerful Matroska chapter specification [[Matroska]]. Presumably, the 'id' attribute could be found in 'EditionUID', 'label' is empty, and 'language' can come from the first ChapterAtom's 'ChapLanguage' value.
+            Tracks of <code>kind</code> "<code>chapters</code>" are found in the "<code>Chapters</code>" section of the WebM file Segment, which are all at the beginning of the WebM file, such that chapters can be used for navigation. The details of this mapping have not been specified yet and simply point to the more powerful Matroska chapter specification [[Matroska]]. Presumably, the <code>id</code> attribute could be found in <code>EditionUID</code>, <code>label</code> is empty, and <code>language</code> can come from the first ChapterAtom's <code>ChapLanguage</code> value.
           </p>
           <p class='note'>
-            The Matroska container format, which is the basis for WebM, has specifications for other text tracks, in particular SRT, SSA/ASS, and VOBSUB. The described attribute mappings can be applied to these, too, except that the 'kind' field will always be "subtitles". The information of their 'CodecPrivate' field is exposed in the 'inBandMetadataTrackDispatchType' attribute.
+            The Matroska container format, which is the basis for WebM, has specifications for other text tracks, in particular SRT, SSA/ASS, and VOBSUB. The described attribute mappings can be applied to these, too, except that the <code>kind</code> field will always be "<code>subtitles</code>". The information of their <code>CodecPrivate</code> field is exposed in the <code>inBandMetadataTrackDispatchType</code> attribute.
           </p>
         </li>
 
@@ -1045,38 +1047,38 @@
               <th>How to source its value</th>
             </thead>
             <tr>
-              <th>id</th>
+              <th><code>id</code></th>
               <td>
-                Decimal representation of the 'TrackNumber' field of the track in the Segment info.
+                Decimal representation of the <code>TrackNumber</code> field of the track in the Segment info.
               </td>
             </tr>
             <tr>
-              <th>kind</th>
+              <th><code>kind</code></th>
               <td>
                 <ul>
-                  <li>"alternative": not used</li>
-                  <li>"captions": not used</li>
-                  <li>"descriptions": not used</li>
-                  <li>"main": the 'FlagDefault' element is set on the track</li>
-                  <li>"main-desc": not used</li>
-                  <li>"sign": not used</li>
-                  <li>"subtitles": not used</li>
-                  <li>"translation": not first audio (video) track</li>
-                  <li>"commentary": not used</li>
+                  <li>"<code>alternative</code>": not used</li>
+                  <li>"<code>captions</code>": not used</li>
+                  <li>"<code>descriptions</code>": not used</li>
+                  <li>"<code>main</code>": the <code>FlagDefault</code> element is set on the track</li>
+                  <li>"<code>main-desc</code>": not used</li>
+                  <li>"<code>sign</code>": not used</li>
+                  <li>"<code>subtitles</code>": not used</li>
+                  <li>"<code>translation</code>": not first audio (video) track</li>
+                  <li>"<code>commentary</code>": not used</li>
                   <li>"": otherwise</li>
                 </ul>
               </td>
             </tr>
             <tr>
-              <th>label</th>
+              <th><code>label</code></th>
               <td>
-                Content of the 'name' field of the track in the Segment info.
+                Content of the <code>name</code> field of the track in the Segment info.
               </td>
             </tr>
             <tr>
-              <th>language</th>
+              <th><code>language</code></th>
               <td>
-                Content of the 'language' field of the track in the Segment info.
+                Content of the <code>language</code> field of the track in the Segment info.
               </td>
             </tr>
           </table>
@@ -1084,7 +1086,7 @@
 
         <li><p>Mapping Text Track content into text track cues</p>
           <p>
-            The only types of text tracks that WebM is defined for are in the WebVTT format [[WEBVTT-WEBM]]. Therefore, cues on a text track are created as VTTCue objects [[WEBVTT]]. Each 'Block' in the 'BlockGroup' of the WebM track that has the actual data of the text track creates a VTTCue object with its TextTrackCue attributes sourced as follows:
+            The only types of text tracks that WebM is defined for are in the WebVTT format [[WEBVTT-WEBM]]. Therefore, cues on a text track are created as <code>VTTCue</code> objects [[WEBVTT]]. Each <code>Block</code> in the <code>BlockGroup</code> of the WebM track that has the actual data of the text track creates a <code>VTTCue</code> object with its <code>TextTrackCue</code> attributes sourced as follows:
           </p>
           <table>
             <thead>
@@ -1092,26 +1094,26 @@
               <th>How to source its value</th>
             </thead>
             <tr>
-              <th>id</th>
+              <th><code>id</code></th>
               <td>
                 First line of the Block's data.
               </td>
             </tr>
             <tr>
-              <th>startTime</th>
+              <th><code>startTime</code></th>
               <td>
-                Calculated from the 'BlockTimecode' field in the Block's header and the 'Timecode' field in the Cluster relative to which 'BlockTimecode' is specified.
+                Calculated from the <code>BlockTimecode</code> field in the Block's header and the <code>Timecode</code> field in the Cluster relative to which <code>BlockTimecode</code> is specified.
               </td>
             </tr>
             <tr>
-              <th>endTime</th>
+              <th><code>endTime</code></th>
               <td>
-                Calculated from the 'BlockDuration' filed in the Block's header and the startTime.
+                Calculated from the <code>BlockDuration</code> filed in the Block's header and the <code>startTime</code>.
               </td>
             </tr>
             <tr>
-              <th>pauseOnExit</th>
-              <td>"false"</td>
+              <th><code>pauseOnExit</code></th>
+              <td>"<code>false</code>"</td>
             </tr>
             <tr>
               <th>cue setting attributes</th>
@@ -1120,13 +1122,13 @@
               </td>
             </tr>
             <tr>
-              <th>text</th>
+              <th><code>text</code></th>
               <td>
                 The third and all following lines of the Block's data.
               </td>
             </tr>
           </table>
-          <p class='note'>Other Matroska container format's text tracks can also be mapped to TextTrackCue objects. These will be created as DataCue objects [[HTML5]] with 'id', 'startTime', 'endTime', and 'pauseOnExit' attributes filled identically to the VTTCue objects, and the 'data' attribute containing the Block's data.
+          <p class='note'>Other Matroska container format's text tracks can also be mapped to <code>TextTrackCue</code> objects. These will be created as <code>DataCue</code> objects [[HTML5]] with <code>id</code>, <code>startTime</code>, <code>endTime</code>, and <code>pauseOnExit</code> attributes filled identically to the <code>VTTCue</code> objects, and the <code>data</code> attribute containing the Block's data.
           </p>
         </li>
       </ol>
@@ -1135,7 +1137,7 @@
 
     <section id='ogg'>
       <h2>Ogg</h2>
-      <b>MIME type/subtype: audio/ogg , video/ogg</b>
+      <b>MIME type/subtype: <code>audio/ogg</code>, <code>video/ogg</code></b>
 
       <ol>
         <li><p>Track Order</p>
@@ -1146,12 +1148,12 @@
 
         <li><p>Determining the type of track</p>
           <p>
-            A user agent recognises and supports data from a Ogg resource as being equivalent to a HTML track based on the value of the 'Role' field of the fisbone header in Ogg Skeleton:
+            A user agent recognises and supports data from a Ogg resource as being equivalent to a HTML track based on the value of the <code>Role</code> field of the fisbone header in Ogg Skeleton:
           </p>
           <ul>
-            <li>text track:  'Role' starts with "text"</li>
-            <li>video track: 'Role' starts with "video"</li>
-            <li>audio track: 'Role' starts with "audio"</li>
+            <li>text track:  <code>Role</code> starts with "<code>text</code>"</li>
+            <li>video track: <code>Role</code> starts with "<code>video</code>"</li>
+            <li>audio track: <code>Role</code> starts with "<code>audio</code>"</li>
           </ul>
           <p>
             If no Skeleton track is available, determine the type based on the codec used in the BOS pages, e.g. Vorbis is an "audio" track and "theora" is a video track.
@@ -1165,48 +1167,48 @@
               <th>How to source its value</th>
             </thead>
             <tr>
-              <th>id</th>
+              <th><code>id</code></th>
               <td>
-                Content of the 'name' message header field of the fisbone header in Ogg Skeleton. If no Skeleton header is available, use a decimal representation of the stream's serialnumber as given in the BOS.
+                Content of the <code>name</code> message header field of the fisbone header in Ogg Skeleton. If no Skeleton header is available, use a decimal representation of the stream's serialnumber as given in the BOS.
               </td>
             </tr>
             <tr>
-              <th>kind</th>
+              <th><code>kind</code></th>
               <td>
                 <p>
-                  Map the content of the 'Role' message header fields of Ogg Skeleton as follows:
+                  Map the content of the <code>Role</code> message header fields of Ogg Skeleton as follows:
                 </p>
                 <ul>
-                  <li>"captions": 'Role' is "text/captions“</li>
-                  <li>"subtitles": 'Role' is "text/subtitle" or "text/karaoke“</li>
-                  <li>"descriptions": 'Role' is "text/textaudiodesc“</li>
-                  <li>"chapters": 'Role' is "text/chapters"</li>
-                  <li>"metadata": otherwise</li>
+                  <li>"<code>captions</code>": <code>Role</code> is "<code>text/captions</code>"</li>
+                  <li>"<code>subtitles</code>": <code>Role</code> is "<code>text/subtitle</code>" or "<code>text/karaoke</code>"</li>
+                  <li>"<code>descriptions</code>": <code>Role</code> is "<code>text/textaudiodesc</code>"</li>
+                  <li>"<code>chapters</code>": <code>Role</code> is "<code>text/chapters</code>"</li>
+                  <li>"<code>metadata</code>": otherwise</li>
                 </ul>
               </td>
             </tr>
             <tr>
-              <th>label</th>
+              <th><code>label</code></th>
               <td>
-                Content of the 'title' message header field of the fisbone header. If no Skeleton header is available, the empty string.
+                Content of the <code>title</code> message header field of the fisbone header. If no Skeleton header is available, the empty string.
               </td>
             </tr>
             <tr>
-              <th>language</th>
+              <th><code>language</code></th>
               <td>
-                Content of the 'language' message header field of the fisbone header. If no Skeleton header is available, the empty string.
+                Content of the <code>language</code> message header field of the fisbone header. If no Skeleton header is available, the empty string.
               </td>
             </tr>
             <tr>
-              <th>inBandMetadataTrackDispatchType</th>
+              <th><code>inBandMetadataTrackDispatchType</code></th>
               <td>
-                If @kind is "metadata", then the value of the 'Role' header field. The empty string otherwise.
+                If <code>kind</code> is "<code>metadata</code>", then the value of the <code>Role</code> header field. The empty string otherwise.
               </td>
             </tr>
             <tr>
-              <th>mode</th>
+              <th><code>mode</code></th>
               <td>
-                "disabled"
+                "<code>disabled</code>"
               </td>
             </tr>
           </table>
@@ -1219,41 +1221,41 @@
               <th>How to source its value</th>
             </thead>
             <tr>
-              <th>id</th>
+              <th><code>id</code></th>
               <td>
-                Content of the 'name' message header field of the fisbone header in Ogg Skeleton. If no Skeleton header is available, use a decimal representation of the stream's serialnumber as given in the BOS.
+                Content of the <code>name</code> message header field of the fisbone header in Ogg Skeleton. If no Skeleton header is available, use a decimal representation of the stream's serialnumber as given in the BOS.
               </td>
             </tr>
             <tr>
-              <th>kind</th>
+              <th><code>kind</code></th>
               <td>
                 <p>
-                  Map the content of the 'Role' message header fields of Ogg Skeleton as follows:
+                  Map the content of the <code>Role</code> message header fields of Ogg Skeleton as follows:
                 </p>
                 <ul>
-                  <li>"alternative": 'Role' is "audio/alternate" or "video/alternate"</li>
-                  <li>"captions": 'Role' is "video/captioned"</li>
-                  <li>"descriptions": 'Role' is "audio/audiodesc"</li>
-                  <li>"main": 'Role' is "audio/main" or "video/main"</li>
-                  <li>"main-desc": 'Role' is "audio/described"</li>
-                  <li>"sign": 'Role' is "video/sign"</li>
-                  <li>"subtitles": 'Role' is "video/subtitled"</li>
-                  <li>"translation": 'Role' is "audio/dub"</li>
-                  <li>"commentary": 'Role' is "audio/commentary"</li>
+                  <li>"<code>alternative</code>": <code>Role</code> is "<code>audio/alternate</code>" or "<code>video/alternate</code>"</li>
+                  <li>"<code>captions</code>": <code>Role</code> is "<code>video/captioned</code>"</li>
+                  <li>"<code>descriptions</code>": <code>Role</code> is "<code>audio/audiodesc</code>"</li>
+                  <li>"<code>main</code>": <code>Role</code> is "<code>audio/main</code>" or "<code>video/main</code>"</li>
+                  <li>"<code>main-desc</code>": <code>Role</code> is "<code>audio/described</code>"</li>
+                  <li>"<code>sign</code>": <code>Role</code> is "<code>video/sign</code>"</li>
+                  <li>"<code>subtitles</code>": <code>Role</code> is "<code>video/subtitled</code>"</li>
+                  <li>"<code>translation</code>": <code>Role</code> is "<code>audio/dub</code>"</li>
+                  <li>"<code>commentary</code>": <code>Role</code> is "<code>audio/commentary</code>"</li>
                   <li>"": otherwise</li>
                 </ul>
               </td>
             </tr>
             <tr>
-              <th>label</th>
+              <th><code>label</code></th>
               <td>
-                Content of the 'title' message header field of the fisbone header. If no Skeleton header is available, the empty string.
+                Content of the <<code>title</code> message header field of the fisbone header. If no Skeleton header is available, the empty string.
               </td>
             </tr>
             <tr>
-              <th>language</th>
+              <th><code>language</code></th>
               <td>
-                Content of the 'language' message header field of the fisbone header. If no Skeleton header is available, the empty string.
+                Content of the <code>language</code> message header field of the fisbone header. If no Skeleton header is available, the empty string.
               </td>
             </tr>
           </table>
