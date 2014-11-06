@@ -344,14 +344,14 @@
       <ol>
         <li><p>Track Order</p>
           <p>
-            Tracks are called "elementary streams" in a MPEG-2 Transport Stream (TS) [[MPEG2TS]]. The order in which elementary streams are listed in the "Program Map Table" (PMT) of a MPEG-2 TS is maintained when sourcing multiple MPEG-2 tracks into HTML.
+            Tracks are called "elementary streams" in a MPEG-2 Transport Stream (TS) [[MPEG2TS]]. The order in which elementary streams are listed in the "Program Map Table" (PMT) of a MPEG-2 TS is maintained when sourcing multiple MPEG-2 tracks into HTML. Additions or deletions of elementary streams in the PMT should invoke <code>addtrack</code> or <code>removetrack</code> events in the user agent.
           </p>
           <p class='note'>The order of elementary streams in the PMT may change between when the media resource was created and when it is received by the user agent. Scripts should not infer any information from the ordering, or rely on any particular ordering being present.</p>
         </li>
 
         <li><p>Determining the type of track</p>
           <p>
-            A user agent recognises and supports data from a MPEG-2 TS resource as being equivalent to a HTML track based on the value of the <code>stream_id</code> field of an elementary stream as given in a Transport or Program Stream header and which maps to a "stream type":
+            A user agent recognizes and supports data in an MPEG-2 TS elementary stream identified by the <code>elementary_PID</code> field in the Program Map Table as being equivalent to an HTML track based on the value of the <code>stream_type</code> field associated with that <code>elementary_PID</code>:
           </p>
           <ul>
             <li>text track:
