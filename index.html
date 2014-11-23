@@ -836,9 +836,18 @@
                 <ul>
                   <li>"<code>alternative</code>": not used</li>
                   <li>"<code>captions</code>": not used</li>
-                  <li>"<code>descriptions</code>": not used</li>
+                  <li>"<code>descriptions</code>"
+                    <ul>
+                      <li>For E-AC-3 audio [[ETSI102366]] if the <code>bsmod</code> field is 2 and the <code>asvc</code> is 1 in the <code>EC3SpecificBox</code></li>
+                    </ul>
+                  </li>
                   <li>"<code>main</code>": first audio (video) track</li>
-                  <li>"<code>main-desc</code>": not used</li>
+                  <li>"<code>main-desc</code>
+                    <ul>
+                      <li>For AC-3 audio [[ETSI102366]] if the <code>bsmod</code> field is 2 in the <code>AC3SpecificBox</code></li>
+                      <li>For E-AC-3 audio [[ETSI102366]] if the <code>bsmod</code> field is 2 and the <code>asvc</code> is 0 in the <code>EC3SpecificBox</code></li>
+                    </ul>
+                  </li>
                   <li>"<code>sign</code>": not used</li>
                   <li>"<code>subtitles</code>": not used</li>
                   <li>"<code>translation</code>": not first audio (video) track</li>
