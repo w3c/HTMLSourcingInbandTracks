@@ -3,6 +3,17 @@
 
 cd "$(dirname $0)"
 
+echo "# Check GitHub for updates"
+LOCAL=$(git rev-parse @{0})
+REMOTE=$(git rev-parse @{u})
+if [ $LOCAL = $REMOTE ]; then
+    echo "Up-to-date"
+    exit 0
+else
+  git pull
+fi
+
+# Check CVS
 GITUSER="$(git config --get user.email)"
 if [ $GITUSER = silviapfeiffer1@gmail.com ]; then
     CVSUSER=spfeiffe
@@ -10,7 +21,6 @@ else
     echo "Unable to map $GITUSER to a CVS user"
     exit 1
 fi
-
 export CVSROOT=$CVSUSER@dev.w3.org:/sources/public
 export CVS_RSH=ssh
 
@@ -32,8 +42,8 @@ echo "# Commit to CVS"
 if [ "$1" != "-f" ]; then
     read -p "Really commit? (y) " CONTINUE
     if [ "$CONTINUE" != "y" ]; then
-	echo "Not really."
-	exit 1
+        echo "Not really."
+        exit 1
     fi
 fi
 COMMIT="$(git rev-parse HEAD)"
