@@ -191,7 +191,7 @@
             <li>text track:
               <ul>
                 <li>the <code>AdaptationSet mimeType</code> is of main type "<code>application</code>" or "<code>text</code>"</li>
-                <li><mark>the <code>AdaptationSet mimeType</code> is of main type "<code>video</code>" and the <code>AdaptationSet</code> contains one or more <a href="#mp4avcceacaption"> ISOBMFF CEA 608 or 708 caption services</a>.</mark></li>
+                <li>the <code>AdaptationSet mimeType</code> is of main type "<code>video</code>" and the <code>AdaptationSet</code> contains one or more <a href="#mp4avcceacaption"> ISOBMFF CEA 608 or 708 caption services</a>.</li>
               </ul>
             <li>video track: the <code>mimeType</code> is of main type "<code>video</code>"</li>
             <li>audio track: the <code>mimeType</code> is of main type "<code>audio</code>"</li>
@@ -212,9 +212,9 @@
               <td>
                 The track is:
                 <ul>
-                  <li><mark>An <a href="#mp4avcceacaption"> ISOBMFF CEA 608 caption service</a>: "<code>1</code>".</mark></li>
-                  <li><mark>An <a href="#mp4avcceacaption"> ISOBMFF CEA 708 caption service</a>: the <code>SERVICE NUMBER</code> as found in the 708 caption service block header.</mark></li>
-                  <li>Otherwise, the content of the <code>id</code> attribute in the <code>AdaptationSet</code> or <code>ContentComponent</code> element. Empty string if <code>id</code> attribute is not present.</li>
+                  <li>An <a href="#mp4avcceacaption"> ISOBMFF CEA 608 caption service</a>: value of the '<code>channel-number</code>' field in the <code>Accessibility</code> descriptor.</li>
+                  <li>An <a href="#mp4avcceacaption"> ISOBMFF CEA 708 caption service</a>: value of the '<code>service-number</code>' field in the <code>Accessibility</code> descriptor.</li>
+                  <li>Otherwise, the content of the '<code>id</code>' attribute in the <code>AdaptationSet</code> or <code>ContentComponent</code> element. Empty string if '<code>id</code>' attribute is not present.</li>
                 </ul>
               </td>
             </tr>
@@ -228,7 +228,7 @@
                       <li>"<code>subtitles</code>": if the <code>Role</code> descriptor's value is "<code>subtitle</code>"</li>
                       <li>"<code>metadata</code>": otherwise</li>
                     </ul></li>
-                  <li><mark>"<code>captions</code>": is an <a href="#mp4avcceacaption"> ISOBMFF CEA 608 or 708 caption service</a>.</mark></li>
+                  <li>Is an <a href="#mp4avcceacaption"> ISOBMFF CEA 608 or 708 caption service</a>: "<code>captions</code>".</li>
                 </ul>
               </td>
             </tr>
@@ -242,8 +242,8 @@
               <th><code>language</code></th>
               <td>The track is:
                 <ul>
-                  <li><mark>An <a href="#mp4avcceacaption"> ISOBMFF CEA 608 708 caption service</a>: the value of the <code>LANG</code> field encoded in the <code>value</code> attribute where the <code>Service</code> is the same as this track <code>id</code>.</mark></li>
-                  <li>Otherwise: the content of the <code>lang</code> attribute in the <code>AdaptationSet</code> or <code>ContentComponent</code> element.</li>
+                  <li>An <a href="#mp4avcceacaption"> ISOBMFF CEA 608 708 caption service</a>: the value of the '<code>language</code>' field in the <code>Accessibility</code> descriptor where the corresponding '<code>channel-number</code>' or '<code>service-number</code>' is the same as this track's '<code>id</code>' attribute. The empty string if there is no such corresponding '<code>channel-number</code>' or '<code>service-number</code>'.</li>
+                  <li>Otherwise: the content of the '<code>lang</code>'ßß attribute in the <code>AdaptationSet</code> or <code>ContentComponent</code> element.</li>
                 </ul>
               </td>
             </tr>
@@ -417,7 +417,7 @@
               <td>
                 Decimal representation of the elementary stream's identifier (<code>elementary_PID</code> field) in the PMT.
                <p>
-                In the case of CEA 708 closed captions, decimal representation of the <code>caption_service_number</code> in the 'Caption Service Descriptor' in the PMT.
+                In the case of CEA 708 closed captions, decimal representation of the <code>service_number</code> field in the 'Caption Channel Service Block'.
               </p>
               <p>
                 If program 0 (zero) is present in the transport stream, a string of the format "OOOO.TTTT.SSSS.CC" consisting of the following, lower-case hexadecimal encoded fields:
@@ -772,7 +772,7 @@
             <li>text track:
               <ul>
                 <li>the <code>handler_type</code> value is "<code>meta</code>", "<code>subt</code>" or "<code>text</code>"</li>
-                <li><mark>An <dfn id="mp4avcceacaption"> ISOBMFF CEA 608 or 708 caption service </dfn> encapsulated in the video track as an SEI message as defined in [[DASHIFIOP]].</mark></li>
+                <li>the <code>handler_type</code> value is "<code>vide</code>" and an <dfn id="mp4avcceacaption"> ISOBMFF CEA 608 or 708 caption service </dfn> is encapsulated in the video track as an SEI message as defined in [[DASHIFIOP]].</li>
               </ul>
             <li>video track: the <code>handler_type</code> value is "<code>vide</code>"</li>
             <li>audio track: the <code>handler_type</code> value is "<code>soun</code>"</li>
@@ -788,7 +788,7 @@
             <tr>
               <th><code>id</code></th>
               <td>
-                <mark>If the track is an <a href="#mp4avcceacaption"> ISOBMFF CEA 608 or 708 caption service</a> then "<code>1</code>" for a CEA 608 caption or the string representation of the <code>"SERVICE NUMBER"</code> for a CEA 708 caption [[DASHIFIOP]].</mark>
+                If the track is an <a href="#mp4avcceacaption"> ISOBMFF CEA 608 or 708 caption service</a> then the concatenation of the string "cc" and the string representation of the channel number for a CEA 608 caption or the string representation of the <code>"service_number"</code> in the Caption Channel Service Block for a CEA 708 caption.
                 <p>
                   Otherwise, the decimal representation of the <code>track_ID</code> of a <code>TrackHeaderBox</code> (<code>tkhd</code>) in a <code>TrackBox</code> (<code>trak</code>).
                 </p>
@@ -802,7 +802,7 @@
                     <ul>
                       <li><dfn id="WebVTTcaption">WebVTT caption</dfn>: <code>handler_type</code> is "<code>text</code>" and <code>SampleEntry</code> format is <code>WVTTSampleEntry</code> [[ISO14496-30]] and the VTT metadata header <code>Kind</code> is "<code>captions</code>"</li>
                       <li><dfn id="SMPTETTcaption">SMPTE-TT caption</dfn>: <code>handler_type</code> is "<code>subt</code>" and <code>SampleEntry</code> format is <code>XMLSubtitleSampleEntry</code> [[ISO14496-30]] and the <code>namespace</code> is set to "<code>http://www.smpte-ra.org/schemas/2052-1/2013/smpte-tt#cea708</code>" [[SMPTE2052-11]].</li>
-                      <li><mark>An<a href="#mp4avcceacaption"> ISOBMFF CEA 608 or 708 caption service</a>.<mark></li>
+                      <li>An<a href="#mp4avcceacaption"> ISOBMFF CEA 608 or 708 caption service</a>.</li>
                       <li><dfn id="3GPPcaption">3GPP caption</dfn>: <code>handler_type</code> is "<code>text</code>" and the <code>SampleEntry</code> code (<code>format</code> field) is "<code>tx3g</code>". <p class='note'>Are all sample entries of this type "<code>captions</code>"?</p></li>
                     </ul>
                   </li>
@@ -825,12 +825,12 @@
             <tr>
               <th><code>language</code></th>
               <td>
-                <mark>If the track is an <a href="#mp4avcceacaption"> ISOBMFF CEA 608 or 708 caption service</a> then the empty string ("").</mark>
+                If the track is an <a href="#mp4avcceacaption"> ISOBMFF CEA 608 or 708 caption service</a> then the empty string ("").
                 <p>
                   Otherwise, the content of the <code>language</code> field in the <code>MediaHeaderBox</code>.
                 </p>
                 <p class='note'>
-                  <mark>No signaling is currently defined for specifying the langaugae of CEA 608 or 708 captions in ISOBMFF. MPEG DASH MPDs may specify caption track metadata, including language [[DASHIFIOP]]. The user agent should set the <code>language</code> attribute of CEA 608 or 708 caption text tracks to the empty string so that script may use the media source extensions [[MSE]] <code>TrackDefault</code> object to provide a default for the <code>language</code> attribute.</mark>
+                  No signaling is currently defined for specifying the langaugae of CEA 608 or 708 captions in ISOBMFF. MPEG DASH MPDs may specify caption track metadata, including language [[DASHIFIOP]]. The user agent should set the <code>language</code> attribute of CEA 608 or 708 caption text tracks to the empty string so that script may use the media source extensions [[MSE]] <code>TrackDefault</code> object to provide a default for the <code>language</code> attribute.
                 </p>
               </td>
             </tr>
