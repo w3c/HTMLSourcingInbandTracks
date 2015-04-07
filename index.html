@@ -161,9 +161,11 @@
       </p>
       <ol>
         <li>Track order.
-        <p>Tracks sourced according to this specification are referenced by HTML <code>TrackList</code> objects (<code>audioTracks</code>, <code>videoTracks</code> or <code>textTracks</code>). The [[HTML5]]/[[HTML]] specification mandates that the tracks in those objects be consistently ordered. This requirement insures that the order of tracks is not changed when a track is added or removed, e.g. that <code>videoTracks[3]</code> points to the same object if the tracks with indices 0, 1, 2 and 3 were not removed. This also insures a deterministic result when calls to <code>getTrackById</code> are made with media resources, possibly invalid, that declares two tracks with the same id. This specification defines a consistent ordering of tracks between the media resource and <code>TrackList</code> objects when the media resource is consumed by the user agent. However, in some media workflows, the order of tracks in a media resource may be subject to changes (e.g. tracks may be added or removed) between authoring and publication. Applications associated with a media resource should not rely on this order of tracks being the same between when the media resource was authored and when it consumed by the user agent. All media resource formats used in this specification support identifying tracks using a unique identifier. This specification defines how those unique identifiers are mapped onto the <code>id</code> attribute of HTML Track objects. Application authors are encouraged to use the <code>id</code> attribute to identify tracks, rather than the index in a <code>TrackList</code> object.</p>
+        <p>Tracks sourced according to this specification are referenced by HTML <code>TrackList</code> objects (<code>audioTracks</code>, <code>videoTracks</code> or <code>textTracks</code>). The [[HTML5]]/[[HTML]] specification mandates that the tracks in those objects be consistently ordered. This requirement insures that the order of tracks is not changed when a track is added or removed, e.g. that <code>videoTracks[3]</code> points to the same object if the tracks with indices 0, 1, 2 and 3 were not removed. This also insures a deterministic result when calls to <code>getTrackById</code> are made with media resources, possibly invalid, that declares two tracks with the same id. This specification defines a consistent ordering of tracks between the media resource and <code>TrackList</code> objects when the media resource is consumed by the user agent.</p>
+        <p>Note that in some media workflows, the order of tracks in a media resource may be subject to changes (e.g. tracks may be added or removed) between authoring and publication. Applications associated with a media resource should not rely on an order of tracks being the same between when the media resource was authored and when it is consumed by the user agent.</p>
+        <p>All media resource formats used in this specification support identifying tracks using a unique identifier. This specification defines how those unique identifiers are mapped onto the <code>id</code> attribute of HTML Track objects. Application authors are encouraged to use the <code>id</code> attribute to identify tracks, rather than the index in a <code>TrackList</code> object.</p>
         </li>
-        <li>How to identify the type of tracks.</li>
+        <li>How to identify the type of tracks - one of audio, video or text.</li>
         <li>Setting the attributes <code>id</code>, <code>kind</code>, <code>language</code> and <code>label</code> for sourced <code>TextTrack</code> objects.</li>
         <li>Setting the attributes <code>id</code>, <code>kind</code>, <code>language</code> and <code>label</code> for sourced <code>AudioTrack</code> and <code>VideoTrack</code> objects.</li>
         <li>Mapping Text Track content into text track cues.</li>
@@ -174,7 +176,7 @@
       <h2>MPEG DASH</h2>
       <b>MIME type/subtype: <code>application/dash+xml</code></b>
       <p>
-        [[MPEGDASH]] defines formats for a media manifest, called MPD (Media Presentation Description), which references media containers, called media segments. [[MPEGDASH]] also defines some media segments formats based on [[MPEG2TS]] or [[ISOBMFF]]. Processing of media manifests and segments to expose tracks to Web applications can be done by the user agent. Alternatively, a web application can process the manifests and segments to expose tracks. When the user agent processes MPD and media segments directly, it exposes tracks for <code>AdaptationSet</code> and <code>ContentComponent</code> elements, as defined in this document. When the Web application processes the MPD and media segments, it passes media segments to the user agent according to the MediaSource Extension ([MSE]) specification. In this case, the tracks are exposed by the user agent according to MSE. The Web application may set default track attributes from MPD data, using the <code>trackDefaults</code> object, that will be used by the user agent to set attributes not set from initialization segment data.
+        [[MPEGDASH]] defines formats for a media manifest, called MPD (Media Presentation Description), which references media containers, called media segments. [[MPEGDASH]] also defines some media segments formats based on [[MPEG2TS]] or [[ISOBMFF]]. Processing of media manifests and segments to expose tracks to Web applications can be done by the user agent. Alternatively, a web application can process the manifests and segments to expose tracks. When the user agent processes MPD and media segments directly, it exposes tracks for <code>AdaptationSet</code> and <code>ContentComponent</code> elements, as defined in this document. When the Web application processes the MPD and media segments, it passes media segments to the user agent according to the MediaSource Extension [[MSE]] specification. In this case, the tracks are exposed by the user agent according to [[MSE]]. The Web application may set default track attributes from MPD data, using the <code>trackDefaults</code> object, that will be used by the user agent to set attributes not set from initialization segment data.
       </p>
       <ol>
         <li><p>Track Order</p>
@@ -185,7 +187,7 @@
 
         <li><p>Determining the type of track</p>
           <p>
-            A user agent recognises and supports data from a MPEG DASH media resource as being equivalent to a HTML track based on the AdaptationSet or ContentComponent mimeType:
+            A user agent recognises and supports data from a MPEG DASH media resource as being equivalent to a HTML track based on the <code>AdaptationSet</code> or <code>ContentComponent</code> <code>mimeType</code>:
           </p>
           <ul>
             <li>text track:
@@ -250,7 +252,7 @@
             <tr>
               <th><code>inBandMetadataTrackDispatchType</code></th>
               <td>
-                If <code>kind</code> is "<code>metadata</code>" the concatenation of the <code>AdaptationSet</code> element and all child <code>Role</code> descriptors. The empty string otherwise.
+                If <code>kind</code> is "<code>metadata</code>", the concatenation of the <code>AdaptationSet</code> element and all child <code>Role</code> descriptors. The empty string otherwise.
               </td>
             </tr>
             <tr>
@@ -318,7 +320,7 @@
             Media content with the MIME type "<code>text/vtt</code>" is in the WebVTT format and should be exposed as a <code>VTTCue</code> object as defined in [[WEBVTT]].
           </p>
           <p>
-            Media content with the MIME type "<code>application/ttml+xml</code>" is in the TTML format and should be exposed as an as yet to be defined <code>TTMLCue</code> object. Alternatively, browsers can also map the TTML features to <code>VTTCue</code> objects. Finally, browsers that cannot render TTML [[ttaf1-dfxp]] format data should expose them as <code>DataCue</code> objects [[HTML5]]. In this case, the TTML file must be parsed in its entirety and then converted into a sequence of TTML Intermediate Synchronic Documents (ISDs). Each ISD creates a <code>DataCue</code> object with attributes sourced as follows: 
+            Media content with the MIME type "<code>application/ttml+xml</code>" is in the TTML format and should be exposed as an as yet to be defined <code>TTMLCue</code> object. Alternatively, browsers can also map the TTML features to <code>VTTCue</code> objects [[WEBVTT]]. Finally, browsers that cannot render TTML [[ttaf1-dfxp]] format data should expose them as <code>DataCue</code> objects [[HTML51]]. In this case, the TTML file must be parsed in its entirety and then converted into a sequence of TTML Intermediate Synchronic Documents (ISDs). Each ISD creates a <code>DataCue</code> object with attributes sourced as follows:
             <p>
               <table>
                 <thead>
@@ -390,7 +392,7 @@
                     <li>For <code>stream_type</code> 0x1B, the presence of caption data in the <code>ATSC1_data()</code> field [[SCTE128-1]].</li>
                   </ul>
                 </li>
-                <li>a DVB subtitle component [[DVB-SUB]] as identified by a <code>subtitling_descriptor</code> [[DVB-SI]]in the 'Elementary Stream Descriptors' in the PMT entry for a stream with a <code>stream_type</code> of "0x06"</li>
+                <li>a DVB subtitle component [[DVB-SUB]] as identified by a <code>subtitling_descriptor</code> [[DVB-SI]] in the 'Elementary Stream Descriptors' in the PMT entry for a stream with a <code>stream_type</code> of "0x06"</li>
                 <li>an ITU-R System B Teletext component [[DVB-TXT]] as identified by an <code>teletext_descriptor</code> [[DVB-SI]] in the 'Elementary Stream Descriptors' in the PMT entry for a stream with a <code>stream_type</code> of "0x06"</li>
                 <li>a VBI data component [[DVB-VBI]] as identified by a <code>VBI_data_descriptor</code> [[DVB-SI]] or a <code>VBI_teletext_descriptor</code> [[DVB-SI]] in the 'Elementary Stream Descriptors' in the PMT entry for a stream with a <code>stream_type</code> of "0x06"</li>
               </ul>
@@ -615,7 +617,7 @@
           <ol type=a>
             <li><p>Metadata cues</p>
               <p>
-                Cues on an MPEG-2 metadata text track are created as <code>DataCue</code> objects [[HTML5]]. Each <code>section</code> in an elementary stream identified as a text track creates a <code>DataCue</code> object with its <code>TextTrackCue</code> attributes sourced as follows:
+                Cues on an MPEG-2 metadata text track are created as <code>DataCue</code> objects [[HTML51]]. Each <code>section</code> in an elementary stream identified as a text track creates a <code>DataCue</code> object with its <code>TextTrackCue</code> attributes sourced as follows:
               </p>
               <table>
                 <thead>
@@ -655,7 +657,7 @@
               <ul>
                 <li>CEA 708
                   <p>
-                    MPEG-2 TS captions in the CEA 708 format [[CEA708]] are carried in the video stream in Picture User Data [[ATSC53-4]] for <code>stream_type</code> 0x02 and in Supplemental Enhancement Information [[ATSC72-1]] for <code>stream_type</code> 0x1B. Browsers that can render the CEA 708 format should expose them in as yet to be specified <code>CEA708Cue</code> objects. Alternatively, browsers can also map the CEA 708 features to <code>VTTCue</code> objects [[VTT708]]. Finally, browsers that cannot render CEA 708 captions should expose them as <code>DataCue</code> objects [[HTML5]]. In this case, each <code>service_block</code> in a digital TV closed caption (DTVCC) transport channel creates a <code>DataCue</code> object with <code>TextTrackCue</code> attributes sourced as follows:
+                    MPEG-2 TS captions in the CEA 708 format [[CEA708]] are carried in the video stream in Picture User Data [[ATSC53-4]] for <code>stream_type</code> 0x02 and in Supplemental Enhancement Information [[ATSC72-1]] for <code>stream_type</code> 0x1B. Browsers that can render the CEA 708 format should expose them in as yet to be specified <code>CEA708Cue</code> objects. Alternatively, browsers can also map the CEA 708 features to <code>VTTCue</code> objects [[VTT708]]. Finally, browsers that cannot render CEA 708 captions should expose them as <code>DataCue</code> objects [[HTML51]]. In this case, each <code>service_block</code> in a digital TV closed caption (DTVCC) transport channel creates a <code>DataCue</code> object with <code>TextTrackCue</code> attributes sourced as follows:
                   </p>
                   <table>
                     <thead>
@@ -703,7 +705,7 @@
               <ul>
                 <li>SCTE 27
                   <p>
-                    MPEG-2 TS subtitles in the SCTE 27 format [[SCTE27]] should should be exposed in an as yet to be specified <code>SCTE27Cue</code> objects. Alternatively, browsers can also map the SCTE 27 features to <code>VTTCue</code> object via an as yet to be specified mapping process. Finally, browsers that cannot render SCTE 27 subtitles, should expose them as <code>DataCue</code> objects [[HTML5]]. In this case, each <code>section</code> in an elementary stream identified as a subtitles text track creates a <code>DataCue</code> object with <code>TextTrackCue</code> attributes sourced as follows:
+                    MPEG-2 TS subtitles in the SCTE 27 format [[SCTE27]] should should be exposed in an as yet to be specified <code>SCTE27Cue</code> objects. Alternatively, browsers can also map the SCTE 27 features to <code>VTTCue</code> object via an as yet to be specified mapping process. Finally, browsers that cannot render SCTE 27 subtitles, should expose them as <code>DataCue</code> objects [[HTML51]]. In this case, each <code>section</code> in an elementary stream identified as a subtitles text track creates a <code>DataCue</code> object with <code>TextTrackCue</code> attributes sourced as follows:
                   </p>
                   <table>
                     <thead>
@@ -960,7 +962,7 @@
             </table>
           </p>
           <p>
-            ISOBMFF text tracks carry TTML data if the media handler type is "<code>subt</code>" and an <code>XMLSubtileSampleEntry</code> format is used with a TTML-based <code>name_space</code> field, as described in [[ISO14496-30]]. Browsers that can render text tracks in the TTML format should expose an as yet to be defined <code>TTMLCue</code>. Alternatively, browsers can also map the TTML features to <code>VTTCue</code> objects. Finally, browsers that cannot render TTML [[ttaf1-dfxp]] format data should expose them as <code>DataCue</code> objects [[HTML5]]. Each TTML subtitle sample consists of an XML document and creates a <code>DataCue</code> object with attributes sourced as follows: 
+            ISOBMFF text tracks carry TTML data if the media handler type is "<code>subt</code>" and an <code>XMLSubtileSampleEntry</code> format is used with a TTML-based <code>name_space</code> field, as described in [[ISO14496-30]]. Browsers that can render text tracks in the TTML format should expose an as yet to be defined <code>TTMLCue</code>. Alternatively, browsers can also map the TTML features to <code>VTTCue</code> objects. Finally, browsers that cannot render TTML [[ttaf1-dfxp]] format data should expose them as <code>DataCue</code> objects [[HTML51]]. Each TTML subtitle sample consists of an XML document and creates a <code>DataCue</code> object with attributes sourced as follows:
             <p>
               <table>
                 <thead>
@@ -1177,7 +1179,7 @@
               </td>
             </tr>
           </table>
-          <p class='note'>Other Matroska container format's text tracks can also be mapped to <code>TextTrackCue</code> objects. These will be created as <code>DataCue</code> objects [[HTML5]] with <code>id</code>, <code>startTime</code>, <code>endTime</code>, and <code>pauseOnExit</code> attributes filled identically to the <code>VTTCue</code> objects, and the <code>data</code> attribute containing the Block's data.
+          <p class='note'>Other Matroska container format's text tracks can also be mapped to <code>TextTrackCue</code> objects. These will be created as <code>DataCue</code> objects [[HTML51]] with <code>id</code>, <code>startTime</code>, <code>endTime</code>, and <code>pauseOnExit</code> attributes filled identically to the <code>VTTCue</code> objects, and the <code>data</code> attribute containing the Block's data.
           </p>
         </li>
       </ol>
@@ -1298,7 +1300,7 @@
             <tr>
               <th><code>label</code></th>
               <td>
-                Content of the <<code>title</code> message header field of the fisbone header. If no Skeleton header is available, the empty string.
+                Content of the <code>title</code> message header field of the fisbone header. If no Skeleton header is available, the empty string.
               </td>
             </tr>
             <tr>
