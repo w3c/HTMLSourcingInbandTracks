@@ -172,7 +172,7 @@
       <ol>
         <li><p>Track Order</p>
           <p>
-            The order of tracks specified in the MPD (Media Presentation Description) format [[MPEGDASH]] is maintained when sourcing multiple MPEG DASH tracks into HTML.
+            If an <code>AdaptationSet</code> contains <code>ContentComponents</code>, a track is created for each <code>ContentComponent</code>. Otherwise, a track is created for the <code>AdaptationSet</code> itself. The order of tracks specified in the MPD (Media Presentation Description) format [[MPEGDASH]] is maintained when sourcing multiple MPEG DASH tracks into HTML.
           </p>
         </li>
 
