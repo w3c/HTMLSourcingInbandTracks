@@ -164,7 +164,7 @@
     </section>
 
     <section id='mpegdash'>
-      <h2>MPEG DASH</h2>
+      <h2>MPEG-DASH</h2>
       <b>MIME type/subtype: <code>application/dash+xml</code></b>
       <p>
         [[MPEGDASH]] defines formats for a media manifest, called MPD (Media Presentation Description), which references media containers, called media segments. [[MPEGDASH]] also defines some media segments formats based on [[MPEG2TS]] or [[ISOBMFF]]. Processing of media manifests and segments to expose tracks to Web applications can be done by the user agent. Alternatively, a web application can process the manifests and segments to expose tracks. When the user agent processes MPD and media segments directly, it exposes tracks for <code>AdaptationSet</code> and <code>ContentComponent</code> elements, as defined in this document. When the Web application processes the MPD and media segments, it passes media segments to the user agent according to the MediaSource Extension [[MSE]] specification. In this case, the tracks are exposed by the user agent according to [[MSE]]. The Web application may set default track attributes from MPD data, using the <code>trackDefaults</code> object, that will be used by the user agent to set attributes not set from initialization segment data.
@@ -172,28 +172,28 @@
       <ol>
         <li><p>Track Order</p>
           <p>
-            The order of tracks specified in the MPD (Media Presentation Description) format [[MPEGDASH]] is maintained when sourcing multiple MPEG DASH tracks into HTML.
+            If an <code>AdaptationSet</code> contains <code>ContentComponents</code>, a track is created for each <code>ContentComponent</code>. Otherwise, a track is created for the <code>AdaptationSet</code> itself. The order of tracks specified in the MPD (Media Presentation Description) format [[MPEGDASH]] is maintained when sourcing multiple MPEG DASH tracks into HTML.
           </p>
         </li>
 
         <li><p>Determining the type of track</p>
           <p>
-            A user agent recognises and supports data from a MPEG DASH media resource as being equivalent to a HTML track based on the <code>AdaptationSet</code> or <code>ContentComponent</code> <code>mimeType</code>:
+            A user agent recognises and supports data from a MPEG DASH media resource as being equivalent to a HTML track using the content type given by the MPD. The content type of the track is the first present value out of: The <code>ContentComponents</code>'s "contentType" attribute, the <code>AdaptationSet</code>'s "contentType" attribute, or the main type in the <code>AdaptationSet</code>'s "mimeType" attribute (i.e. for "video/mp2t", the main type is "video").
           </p>
           <ul>
             <li>text track:
               <ul>
-                <li>the <code>AdaptationSet mimeType</code> is of main type "<code>application</code>" or "<code>text</code>"</li>
-                <li>the <code>AdaptationSet mimeType</code> is of main type "<code>video</code>" and the <code>AdaptationSet</code> contains one or more <a href="#mp4avcceacaption">ISOBMFF CEA 608 or 708 caption services</a>.</li>
+                <li>the content type is "<code>application</code>" or "<code>text</code>"</li>
+                <li>the content type is "<code>video</code>" and the <code>AdaptationSet</code> contains one or more <a href="#mp4avcceacaption">ISOBMFF CEA 608 or 708 caption services</a>.</li>
               </ul>
-            <li>video track: the <code>mimeType</code> is of main type "<code>video</code>"</li>
-            <li>audio track: the <code>mimeType</code> is of main type "<code>audio</code>"</li>
+            <li>video track: the content type is "<code>video</code>"</li>
+            <li>audio track: the content type is "<code>audio</code>"</li>
           </ul>
         </li>
 
         <li><p>Track Attributes for sourced Text Tracks</p>
           <p>
-            Data for sourcing text track attributes may exist in the media content or in the MPD. Text track attribute values are first sourced from track data in the media container, as described for <a href='#mpeg2tstta'>text track attributes in MPEG-2 Transport Streams</a> and <a href='#mpeg4tta'>text track attributes in MPEG-4 ISOBMFF</a>. If a track attribute value cannot be determined from the media container, then the track attribute value is sourced from data in the MPD as follows:
+            Data for sourcing text track attributes may exist in the media content or in the MPD. Text track attribute values are first sourced from track data in the media container, as described for <a href='#mpeg2tstta'>text track attributes in MPEG-2 Transport Streams</a> and <a href='#mpeg4tta'>text track attributes in MPEG-4 ISOBMFF</a>. If a track attribute's value cannot be determined from the media container, then the track attribute value is sourced from data in the track's <code>ContentComponent</code>. If the needed attribute or element does not exist on the <code>ContentComponent</code> (or if the <code>AdaptationSet</code> doesn't contain any <code>ContentComponents</code>), then that attribute or element is sourced from the <code>AdaptationSet</code>:
           </p>
           <table>
             <thead>
@@ -205,9 +205,9 @@
               <td>
                 The track is:
                 <ul>
-                  <li>An <a href="#mp4avcceacaption">ISOBMFF CEA 608 caption service</a>: value of the '<code>channel-number</code>' field in the <code>Accessibility</code> descriptor in the <code>AdaptationSet</code>.</li>
-                  <li>An <a href="#mp4avcceacaption">ISOBMFF CEA 708 caption service</a>: value of the '<code>service-number</code>' field in the <code>Accessibility</code> descriptor in the <code>AdaptationSet</code>.</li>
-                  <li>Otherwise, the content of the '<code>id</code>' attribute in the <code>AdaptationSet</code> or <code>ContentComponent</code> element. Empty string if '<code>id</code>' attribute is not present.</li>
+                  <li>An <a href="#mp4avcceacaption">ISOBMFF CEA 608 caption service</a>: the string "cc" concatenated with the value of the '<code>channel-number</code>' field in the <code>Accessibility</code> descriptor in the <code>ContentComponent</code> or <code>AdaptationSet</code>.</li>
+                  <li>An <a href="#mp4avcceacaption">ISOBMFF CEA 708 caption service</a>: the string "sn" concatenated with the value of the '<code>service-number</code>' field in the <code>Accessibility</code> descriptor in the <code>ContentComponent</code> or <code>AdaptationSet</code>.</li>
+                  <li>Otherwise, the content of the '<code>id</code>' attribute in the <code>ContentComponent</code>, or <code>AdaptationSet</code>.</li>
                 </ul>
               </td>
             </tr>
@@ -215,7 +215,7 @@
               <th><code>kind</code></th>
               <td>The track:
                 <ul>
-                  <li>Represents an <code>AdaptationSet</code> containing a <code>Role</code> descriptor with <code>schemeIdURI</code> attribute = "<code>urn:mpeg:dash:role:2011</code>":
+                  <li>Represents a <code>ContentComponent</code> or <code>AdaptationSet</code> containing a <code>Role</code> descriptor with <code>schemeIdURI</code> attribute = "<code>urn:mpeg:dash:role:2011</code>":
                     <ul>
                       <li>"<code>captions</code>": if the <code>Role</code> descriptor's value is "<code>caption</code>"</li>
                       <li>"<code>subtitles</code>": if the <code>Role</code> descriptor's value is "<code>subtitle</code>"</li>
@@ -235,15 +235,15 @@
               <th><code>language</code></th>
               <td>The track is:
                 <ul>
-                  <li>An <a href="#mp4avcceacaption">ISOBMFF CEA 608 708 caption service</a>: the value of the '<code>language</code>' field in the <code>Accessibility</code> descriptor, in the <code>AdaptationSet</code>, where the corresponding '<code>channel-number</code>' or '<code>service-number</code>' is the same as this track's '<code>id</code>' attribute. The empty string if there is no such corresponding '<code>channel-number</code>' or '<code>service-number</code>'.</li>
-                  <li>Otherwise: the content of the '<code>lang</code>'ßß attribute in the <code>AdaptationSet</code> or <code>ContentComponent</code> element.</li>
+                  <li>An <a href="#mp4avcceacaption">ISOBMFF CEA 608 708 caption service</a>: the value of the '<code>language</code>' field in the <code>Accessibility</code> descriptor, in the <code>ContentComponent</code> or <code>AdaptationSet</code>, where the corresponding '<code>channel-number</code>' or '<code>service-number</code>' is the same as this track's '<code>id</code>' attribute. The empty string if there is no such corresponding '<code>channel-number</code>' or '<code>service-number</code>'.</li>
+                  <li>Otherwise: the content of the '<code>lang</code>' attribute in the <code>ContentComponent</code> or <code>AdaptationSet</code> element.</li>
                 </ul>
               </td>
             </tr>
             <tr>
               <th><code>inBandMetadataTrackDispatchType</code></th>
               <td>
-                If <code>kind</code> is "<code>metadata</code>", the concatenation of the <code>AdaptationSet</code> element and all child <code>Role</code> descriptors. The empty string otherwise.
+                If <code>kind</code> is "<code>metadata</code>", an XML document containing the <code>AdaptationSet</code> element and all child <code>Role</code> descriptors and <code>ContentComponents</code>, and their child <code>Role</code> descriptors. The empty string otherwise.
               </td>
             </tr>
             <tr>
@@ -257,7 +257,7 @@
 
         <li><p>Track Attributes for sourced Audio and Video Tracks</p>
           <p>
-            Data for sourcing audio and video track attributes may exist in the media content or in the MPD. Audio and video track attribute values are first sourced from track data in the media container, as described for <a href='#mpeg2tsavta'>audio and video track attributes in MPEG-2 Transport Streams</a> and <a href='#mpeg4avta'>audio and video track attributes in MPEG-4 ISOBMFF</a>. If a track attribute value cannot be determined from the media container, then the track attribute value is sourced from data in the MPD as follows:
+            Data for sourcing audio and video track attributes may exist in the media content or in the MPD. Audio and video track attribute values are first sourced from track data in the media container, as described for <a href='#mpeg2tsavta'>audio and video track attributes in MPEG-2 Transport Streams</a> and <a href='#mpeg4avta'>audio and video track attributes in MPEG-4 ISOBMFF</a>.  If a track attribute's value cannot be determined from the media container, then the track attribute value is sourced from data in the track's <code>ContentComponent</code>. If the needed attribute or element does not exist on the <code>ContentComponent</code> (or if the <code>AdaptationSet</code> doesn't contain any <code>ContentComponents</code>), then that attribute or element is sourced from the <code>AdaptationSet</code>:
           </p>
           <table>
             <thead>
@@ -267,13 +267,13 @@
             <tr>
               <th><code>id</code></th>
               <td>
-                Content of the <code>id</code> attribute in the <code>AdaptationSet</code> or <code>ContentComponent</code> element. Empty string if the <code>id</code> attribute is not present.
+                Content of the <code>id</code> attribute in the <code>ContentComponent</code> or <code>AdaptationSet</code> element. Empty string if the <code>id</code> attribute is not present on either element.
               </td>
             </tr>
             <tr>
               <th><code>kind</code></th>
               <td>
-                <p>Given a <code>Role</code> scheme of "<code>urn:mpeg:dash:role:2011</code>", determine the <code>kind</code> attribute from the value of the <code>Role</code> descriptors in the <code>AdaptationSet</code> element.</p>
+                <p>Given a <code>Role</code> scheme of "<code>urn:mpeg:dash:role:2011</code>", determine the <code>kind</code> attribute from the value of the <code>Role</code> descriptors in the <code>ContentComponent</code> <b>and</b> <code>AdaptationSet</code> elements.</p>
                 <ul>
                   <li>"<code>alternative</code>": if the role is "<code>alternate</code>" but not also "<code>main</code>" or "<code>commentary</code>", or "<code>dub</code>"</li>
                   <li>"<code>captions</code>": if the role is "<code>caption</code>" and also "<code>main</code>"</li>
@@ -297,7 +297,7 @@
             <tr>
               <th><code>language</code></th>
               <td>
-                Content of the <code>lang</code> attribute in the <code>AdaptationSet</code> or <code>ContentComponent</code> element.
+                Content of the <code>lang</code> attribute in the <code>ContentComponent</code> or <code>AdaptationSet</code> element.
               </td>
             </tr>
           </table>
@@ -410,7 +410,10 @@
               <td>
                 Decimal representation of the elementary stream's identifier (<code>elementary_PID</code> field) in the PMT.
                <p>
-                In the case of CEA 708 closed captions, decimal representation of the <code>service_number</code> field in the 'Caption Channel Service Block'.
+                For CEA 608 closed captions, the string "cc" concatenated with the decimal representation of the channel number.
+               </p>
+               <p>
+                For CEA 708 closed captions, the string "sn" concatenated with the decimal representation of the <code>service_number</code> field in the 'Caption Channel Service Block'.
               </p>
               <p>
                 If program 0 (zero) is present in the transport stream, a string of the format "OOOO.TTTT.SSSS.CC" consisting of the following, lower-case hexadecimal encoded fields:
@@ -618,7 +621,7 @@
                 <tr>
                   <th><code>id</code></th>
                   <td>
-                    Decimal representation of the <code>table_id</code> in the first 8 bits of the <code>section</code> data.
+                    The empty string.
                   </td>
                 </tr>
                 <tr>
@@ -638,7 +641,7 @@
                 <tr>
                   <th><code>data</code></th>
                   <td>
-                    The <code>section_length</code> number of bytes immediately following the <code>section_length</code> field in the <code>section</code>.
+                    The entire MPEG-TS section, starting with <code>table_id</code> and ending <code>section_length</code> bytes after the <code>section_length</code> field.
                   </td>
                 </tr>
               </table>
@@ -706,7 +709,7 @@
                     <tr>
                       <th><code>id</code></th>
                       <td>
-                        Decimal representation of the <code>table_id</code> in the first 8 bits of the <code>section</code> data.
+                        The empty string.
                       </td>
                     </tr>
                     <tr>
@@ -728,7 +731,7 @@
                     <tr>
                       <th><code>data</code></th>
                       <td>
-                        The <code>section_length</code> number of bytes immediately following the <code>section_length</code> field in the <code>section</code>.
+                        The entire MPEG-TS section, starting with <code>table_id</code> and ending <code>section_length</code> bytes after the <code>section_length</code> field.
                       </td>
                     </tr>
                   </table>
@@ -781,7 +784,12 @@
             <tr>
               <th><code>id</code></th>
               <td>
-                If the track is an <a href="#mp4avcceacaption">ISOBMFF CEA 608 or 708 caption service</a> then the concatenation of the string "cc" and the string representation of the channel number for a CEA 608 caption or the string representation of the <code>"service_number"</code> in the Caption Channel Service Block for a CEA 708 caption.
+                <p>
+                  For <a href="#mp4avcceacaption">ISOBMFF CEA 608 closed captions</a>, the string "cc" concatenated with the decimal representation of the <code>channel_number</code>.
+                </p>
+                <p>
+                  For <a href="#mp4avcceacaption">ISOBMFF CEA 708 closed captions</a>, the string "sn" concatenated with the decimal representation of the <code>service_number</code> field in the 'Caption Channel Service Block'.
+                </p>
                 <p>
                   Otherwise, the decimal representation of the <code>track_ID</code> of a <code>TrackHeaderBox</code> (<code>tkhd</code>) in a <code>TrackBox</code> (<code>trak</code>).
                 </p>
