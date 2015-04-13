@@ -205,8 +205,8 @@
               <td>
                 The track is:
                 <ul>
-                  <li>An <a href="#mp4avcceacaption">ISOBMFF CEA 608 caption service</a>: value of the '<code>channel-number</code>' field in the <code>Accessibility</code> descriptor in the <code>ContentComponent</code> or <code>AdaptationSet</code>.</li>
-                  <li>An <a href="#mp4avcceacaption">ISOBMFF CEA 708 caption service</a>: value of the '<code>service-number</code>' field in the <code>Accessibility</code> descriptor in the <code>ContentComponent</code> or <code>AdaptationSet</code>.</li>
+                  <li>An <a href="#mp4avcceacaption">ISOBMFF CEA 608 caption service</a>: the string "cc" concatenated with the value of the '<code>channel-number</code>' field in the <code>Accessibility</code> descriptor in the <code>ContentComponent</code> or <code>AdaptationSet</code>.</li>
+                  <li>An <a href="#mp4avcceacaption">ISOBMFF CEA 708 caption service</a>: the string "sn" concatenated with the value of the '<code>service-number</code>' field in the <code>Accessibility</code> descriptor in the <code>ContentComponent</code> or <code>AdaptationSet</code>.</li>
                   <li>Otherwise, the content of the '<code>id</code>' attribute in the <code>ContentComponent</code>, or <code>AdaptationSet</code>.</li>
                 </ul>
               </td>
@@ -410,7 +410,10 @@
               <td>
                 Decimal representation of the elementary stream's identifier (<code>elementary_PID</code> field) in the PMT.
                <p>
-                In the case of CEA 708 closed captions, decimal representation of the <code>service_number</code> field in the 'Caption Channel Service Block'.
+                For CEA 608 closed captions, the string "cc" concatenated with the decimal representation of the channel number.
+               </p>
+               <p>
+                For CEA 708 closed captions, the string "sn" concatenated with the decimal representation of the <code>service_number</code> field in the 'Caption Channel Service Block'.
               </p>
               <p>
                 If program 0 (zero) is present in the transport stream, a string of the format "OOOO.TTTT.SSSS.CC" consisting of the following, lower-case hexadecimal encoded fields:
@@ -781,7 +784,12 @@
             <tr>
               <th><code>id</code></th>
               <td>
-                If the track is an <a href="#mp4avcceacaption">ISOBMFF CEA 608 or 708 caption service</a> then the concatenation of the string "cc" and the string representation of the channel number for a CEA 608 caption or the string representation of the <code>"service_number"</code> in the Caption Channel Service Block for a CEA 708 caption.
+                <p>
+                  For <a href="#mp4avcceacaption">ISOBMFF CEA 608 closed captions</a>, the string "cc" concatenated with the decimal representation of the <code>channel_number</code>.
+                </p>
+                <p>
+                  For <a href="#mp4avcceacaption">ISOBMFF CEA 708 closed captions</a>, the string "sn" concatenated with the decimal representation of the <code>service_number</code> field in the 'Caption Channel Service Block'.
+                </p>
                 <p>
                   Otherwise, the decimal representation of the <code>track_ID</code> of a <code>TrackHeaderBox</code> (<code>tkhd</code>) in a <code>TrackBox</code> (<code>trak</code>).
                 </p>
