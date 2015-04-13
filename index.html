@@ -621,7 +621,7 @@
                 <tr>
                   <th><code>id</code></th>
                   <td>
-                    Decimal representation of the <code>table_id</code> in the first 8 bits of the <code>section</code> data.
+                    The empty string.
                   </td>
                 </tr>
                 <tr>
@@ -641,7 +641,7 @@
                 <tr>
                   <th><code>data</code></th>
                   <td>
-                    The <code>section_length</code> number of bytes immediately following the <code>section_length</code> field in the <code>section</code>.
+                    The entire MPEG-TS section, starting with <code>table_id</code> and ending <code>section_length</code> bytes after the <code>section_length</code> field.
                   </td>
                 </tr>
               </table>
@@ -709,7 +709,7 @@
                     <tr>
                       <th><code>id</code></th>
                       <td>
-                        Decimal representation of the <code>table_id</code> in the first 8 bits of the <code>section</code> data.
+                        The empty string.
                       </td>
                     </tr>
                     <tr>
@@ -731,7 +731,7 @@
                     <tr>
                       <th><code>data</code></th>
                       <td>
-                        The <code>section_length</code> number of bytes immediately following the <code>section_length</code> field in the <code>section</code>.
+                        The entire MPEG-TS section, starting with <code>table_id</code> and ending <code>section_length</code> bytes after the <code>section_length</code> field.
                       </td>
                     </tr>
                   </table>
