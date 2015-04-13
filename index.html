@@ -178,16 +178,16 @@
 
         <li><p>Determining the type of track</p>
           <p>
-            A user agent recognises and supports data from a MPEG DASH media resource as being equivalent to a HTML track based on the <code>AdaptationSet</code> or <code>ContentComponent</code> <code>mimeType</code>:
+            A user agent recognises and supports data from a MPEG DASH media resource as being equivalent to a HTML track using the content type given by the MPD. The content type of the track is the first present value out of: The <code>ContentComponents</code>'s "contentType" attribute, the <code>AdaptationSet</code>'s "contentType" attribute, or the main type in the <code>AdaptationSet</code>'s "mimeType" attribute (i.e. for "video/mp2t", the main type is "video").
           </p>
           <ul>
             <li>text track:
               <ul>
-                <li>the <code>AdaptationSet mimeType</code> is of main type "<code>application</code>" or "<code>text</code>"</li>
-                <li>the <code>AdaptationSet mimeType</code> is of main type "<code>video</code>" and the <code>AdaptationSet</code> contains one or more <a href="#mp4avcceacaption">ISOBMFF CEA 608 or 708 caption services</a>.</li>
+                <li>the content type is "<code>application</code>" or "<code>text</code>"</li>
+                <li>the content type is "<code>video</code>" and the <code>AdaptationSet</code> contains one or more <a href="#mp4avcceacaption">ISOBMFF CEA 608 or 708 caption services</a>.</li>
               </ul>
-            <li>video track: the <code>mimeType</code> is of main type "<code>video</code>"</li>
-            <li>audio track: the <code>mimeType</code> is of main type "<code>audio</code>"</li>
+            <li>video track: the content type is "<code>video</code>"</li>
+            <li>audio track: the content type is "<code>audio</code>"</li>
           </ul>
         </li>
 
