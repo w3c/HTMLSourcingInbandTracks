@@ -193,7 +193,7 @@
 
         <li><p>Track Attributes for sourced Text Tracks</p>
           <p>
-            Data for sourcing text track attributes may exist in the media content or in the MPD. Text track attribute values are first sourced from track data in the media container, as described for <a href='#mpeg2tstta'>text track attributes in MPEG-2 Transport Streams</a> and <a href='#mpeg4tta'>text track attributes in MPEG-4 ISOBMFF</a>. If a track attribute value cannot be determined from the media container, then the track attribute value is sourced from data in the MPD as follows:
+            Data for sourcing text track attributes may exist in the media content or in the MPD. Text track attribute values are first sourced from track data in the media container, as described for <a href='#mpeg2tstta'>text track attributes in MPEG-2 Transport Streams</a> and <a href='#mpeg4tta'>text track attributes in MPEG-4 ISOBMFF</a>. If a track attribute's value cannot be determined from the media container, then the track attribute value is sourced from data in the track's <code>ContentComponent</code>. If the needed attribute or element does not exist on the <code>ContentComponent</code> (or if the <code>AdaptationSet</code> doesn't contain any <code>ContentComponents</code>), then that attribute or element is sourced from the <code>AdaptationSet</code>:
           </p>
           <table>
             <thead>
@@ -205,9 +205,9 @@
               <td>
                 The track is:
                 <ul>
-                  <li>An <a href="#mp4avcceacaption">ISOBMFF CEA 608 caption service</a>: value of the '<code>channel-number</code>' field in the <code>Accessibility</code> descriptor in the <code>AdaptationSet</code>.</li>
-                  <li>An <a href="#mp4avcceacaption">ISOBMFF CEA 708 caption service</a>: value of the '<code>service-number</code>' field in the <code>Accessibility</code> descriptor in the <code>AdaptationSet</code>.</li>
-                  <li>Otherwise, the content of the '<code>id</code>' attribute in the <code>AdaptationSet</code> or <code>ContentComponent</code> element. Empty string if '<code>id</code>' attribute is not present.</li>
+                  <li>An <a href="#mp4avcceacaption">ISOBMFF CEA 608 caption service</a>: value of the '<code>channel-number</code>' field in the <code>Accessibility</code> descriptor in the <code>ContentComponent</code> or <code>AdaptationSet</code>.</li>
+                  <li>An <a href="#mp4avcceacaption">ISOBMFF CEA 708 caption service</a>: value of the '<code>service-number</code>' field in the <code>Accessibility</code> descriptor in the <code>ContentComponent</code> or <code>AdaptationSet</code>.</li>
+                  <li>Otherwise, the content of the '<code>id</code>' attribute in the <code>ContentComponent</code>, or <code>AdaptationSet</code>.</li>
                 </ul>
               </td>
             </tr>
@@ -215,7 +215,7 @@
               <th><code>kind</code></th>
               <td>The track:
                 <ul>
-                  <li>Represents an <code>AdaptationSet</code> containing a <code>Role</code> descriptor with <code>schemeIdURI</code> attribute = "<code>urn:mpeg:dash:role:2011</code>":
+                  <li>Represents a <code>ContentComponent</code> or <code>AdaptationSet</code> containing a <code>Role</code> descriptor with <code>schemeIdURI</code> attribute = "<code>urn:mpeg:dash:role:2011</code>":
                     <ul>
                       <li>"<code>captions</code>": if the <code>Role</code> descriptor's value is "<code>caption</code>"</li>
                       <li>"<code>subtitles</code>": if the <code>Role</code> descriptor's value is "<code>subtitle</code>"</li>
@@ -235,8 +235,8 @@
               <th><code>language</code></th>
               <td>The track is:
                 <ul>
-                  <li>An <a href="#mp4avcceacaption">ISOBMFF CEA 608 708 caption service</a>: the value of the '<code>language</code>' field in the <code>Accessibility</code> descriptor, in the <code>AdaptationSet</code>, where the corresponding '<code>channel-number</code>' or '<code>service-number</code>' is the same as this track's '<code>id</code>' attribute. The empty string if there is no such corresponding '<code>channel-number</code>' or '<code>service-number</code>'.</li>
-                  <li>Otherwise: the content of the '<code>lang</code>'ßß attribute in the <code>AdaptationSet</code> or <code>ContentComponent</code> element.</li>
+                  <li>An <a href="#mp4avcceacaption">ISOBMFF CEA 608 708 caption service</a>: the value of the '<code>language</code>' field in the <code>Accessibility</code> descriptor, in the <code>ContentComponent</code> or <code>AdaptationSet</code>, where the corresponding '<code>channel-number</code>' or '<code>service-number</code>' is the same as this track's '<code>id</code>' attribute. The empty string if there is no such corresponding '<code>channel-number</code>' or '<code>service-number</code>'.</li>
+                  <li>Otherwise: the content of the '<code>lang</code>' attribute in the <code>ContentComponent</code> or <code>AdaptationSet</code> element.</li>
                 </ul>
               </td>
             </tr>
@@ -257,7 +257,7 @@
 
         <li><p>Track Attributes for sourced Audio and Video Tracks</p>
           <p>
-            Data for sourcing audio and video track attributes may exist in the media content or in the MPD. Audio and video track attribute values are first sourced from track data in the media container, as described for <a href='#mpeg2tsavta'>audio and video track attributes in MPEG-2 Transport Streams</a> and <a href='#mpeg4avta'>audio and video track attributes in MPEG-4 ISOBMFF</a>. If a track attribute value cannot be determined from the media container, then the track attribute value is sourced from data in the MPD as follows:
+            Data for sourcing audio and video track attributes may exist in the media content or in the MPD. Audio and video track attribute values are first sourced from track data in the media container, as described for <a href='#mpeg2tsavta'>audio and video track attributes in MPEG-2 Transport Streams</a> and <a href='#mpeg4avta'>audio and video track attributes in MPEG-4 ISOBMFF</a>.  If a track attribute's value cannot be determined from the media container, then the track attribute value is sourced from data in the track's <code>ContentComponent</code>. If the needed attribute or element does not exist on the <code>ContentComponent</code> (or if the <code>AdaptationSet</code> doesn't contain any <code>ContentComponents</code>), then that attribute or element is sourced from the <code>AdaptationSet</code>:
           </p>
           <table>
             <thead>
@@ -267,13 +267,13 @@
             <tr>
               <th><code>id</code></th>
               <td>
-                Content of the <code>id</code> attribute in the <code>AdaptationSet</code> or <code>ContentComponent</code> element. Empty string if the <code>id</code> attribute is not present.
+                Content of the <code>id</code> attribute in the <code>ContentComponent</code> or <code>AdaptationSet</code> element. Empty string if the <code>id</code> attribute is not present on either element.
               </td>
             </tr>
             <tr>
               <th><code>kind</code></th>
               <td>
-                <p>Given a <code>Role</code> scheme of "<code>urn:mpeg:dash:role:2011</code>", determine the <code>kind</code> attribute from the value of the <code>Role</code> descriptors in the <code>AdaptationSet</code> element.</p>
+                <p>Given a <code>Role</code> scheme of "<code>urn:mpeg:dash:role:2011</code>", determine the <code>kind</code> attribute from the value of the <code>Role</code> descriptors in the <code>ContentComponent</code> <b>and</b> <code>AdaptationSet</code> elements.</p>
                 <ul>
                   <li>"<code>alternative</code>": if the role is "<code>alternate</code>" but not also "<code>main</code>" or "<code>commentary</code>", or "<code>dub</code>"</li>
                   <li>"<code>captions</code>": if the role is "<code>caption</code>" and also "<code>main</code>"</li>
@@ -297,7 +297,7 @@
             <tr>
               <th><code>language</code></th>
               <td>
-                Content of the <code>lang</code> attribute in the <code>AdaptationSet</code> or <code>ContentComponent</code> element.
+                Content of the <code>lang</code> attribute in the <code>ContentComponent</code> or <code>AdaptationSet</code> element.
               </td>
             </tr>
           </table>
