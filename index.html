@@ -651,41 +651,8 @@
               <ul>
                 <li>CEA 708
                   <p>
-                    MPEG-2 TS captions in the CEA 708 format [[CEA708]] are carried in the video stream in Picture User Data [[ATSC53-4]] for <code>stream_type</code> 0x02 and in Supplemental Enhancement Information [[ATSC72-1]] for <code>stream_type</code> 0x1B. Browsers that can render the CEA 708 format should expose them in as yet to be specified <code>CEA708Cue</code> objects. Alternatively, browsers can also map the CEA 708 features to <code>VTTCue</code> objects [[VTT708]]. Finally, browsers that cannot render CEA 708 captions should expose them as <code>DataCue</code> objects [[HTML51]]. In this case, each <code>service_block</code> in a digital TV closed caption (DTVCC) transport channel creates a <code>DataCue</code> object with <code>TextTrackCue</code> attributes sourced as follows:
+                    MPEG-2 TS captions in the CEA 708 format [[CEA708]] are carried in the video stream in Picture User Data [[ATSC53-4]] for <code>stream_type</code> 0x02 and in Supplemental Enhancement Information [[ATSC72-1]] for <code>stream_type</code> 0x1B. Browsers that can render the CEA 708 format should expose the caption data to the web application by mapping the CEA 708 features to <code>VTTCue</code> objects [[VTT708]].
                   </p>
-                  <table>
-                    <thead>
-                      <th>Attribute</th>
-                      <th>How to source its value</th>
-                    </thead>
-                    <tr>
-                      <th><code>id</code></th>
-                      <td>Decimal representation of the <code>service_number</code> in the <code>service_block</code>.</td>
-                    </tr>
-                    <tr>
-                      <th><code>startTime</code></th>
-                      <td>
-                        The time, in the HTML media resource timeline, that corresponds to the presentation time stamp for the video frame that contained the first 'Caption Channel Data Byte' of the <code>service_block</code>.
-                      </td>
-                    </tr>
-                    <tr>
-                      <th><code>endTime</code></th>
-                      <td>
-                        The sum of the <code>startTime</code> and 4 seconds.
-                        <p class='note'>
-                          CEA 708 captions do not have an explicit end time - a rendering device derives the end time for a caption based on subsequent caption data. Setting <code>endTime</code> equal to <code>startTime</code> might be more appropriate but this would require better support for zero-length cues, as proposed in <a href = 'https://www.w3.org/Bugs/Public/show_bug.cgi?id=25693'>HTML Bug 25693</a>.
-                        </p>
-                      </td>
-                    </tr>
-                    <tr>
-                      <th><code>pauseOnExit</code></th>
-                      <td>"<code>false</code>"</td>
-                    </tr>
-                    <tr>
-                      <th><code>data</code></th>
-                      <td>The <code>service_block</code></td>
-                    </tr>
-                  </table>
                 </li>
                 <li><p>DVB</p>
                   <p>
@@ -959,6 +926,9 @@
                 </td>
               </tr>
             </table>
+          </p>
+          <p>
+            [[ISOBMFF]] captions in the CEA 708 format [[CEA708]] are carried in the video stream in SEI messages [[DASHIFIOP]]. Browsers that can render the CEA 708 format should expose the caption data to the web application by mapping the CEA 708 features to VTTCue objects [[VTT708]].
           </p>
           <p>
             ISOBMFF text tracks carry TTML data if the media handler type is "<code>subt</code>" and an <code>XMLSubtileSampleEntry</code> format is used with a TTML-based <code>name_space</code> field, as described in [[ISO14496-30]]. Browsers that can render text tracks in the TTML format should expose an as yet to be defined <code>TTMLCue</code>. Alternatively, browsers can also map the TTML features to <code>VTTCue</code> objects. Finally, browsers that cannot render TTML [[ttaf1-dfxp]] format data should expose them as <code>DataCue</code> objects [[HTML51]]. Each TTML subtitle sample consists of an XML document and creates a <code>DataCue</code> object with attributes sourced as follows:
